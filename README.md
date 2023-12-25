@@ -2,6 +2,9 @@
 [![cpp-logo](https://img.shields.io/badge/C%2B%2B-v17-blue?logo=cplusplus)](
 https://en.wikipedia.org/wiki/C++
 )
+[![qt-logo](https://img.shields.io/badge/Qt-v5.15-blue?logo=qt)](
+https://en.wikipedia.org/wiki/C++
+)
 
 Road traffic simulation using Qt 
 
