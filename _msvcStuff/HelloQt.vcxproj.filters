@@ -22,6 +22,12 @@
     <Filter Include="Header Files\uic">
       <UniqueIdentifier>{3e218d88-6206-4f9e-8dd8-ab0f38709f7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Via">
+      <UniqueIdentifier>{686a3f7a-30af-4939-b743-06e8f2c0c1f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Via\GraphicsView">
+      <UniqueIdentifier>{c0f10e66-03fc-46ac-9905-c87e41c99743}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -70,6 +76,15 @@
     </ClInclude>
     <ClInclude Include="..\src\Simulation\VehicleGenerator.h">
       <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\BaseQGraphicsView.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\ZoomableQGraphicsView.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\DraggableQGraphicsView.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

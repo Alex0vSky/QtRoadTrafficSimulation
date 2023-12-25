@@ -1,19 +1,20 @@
 ﻿// src\Simulation\Vehicle.h - vehicle
-namespace Simulation { class Vehicle : public IVehicle {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
+class Vehicle : public IVehicle {
     uint m_index = 0;
-    double m_v_max_, m_v, m_a = 0, m_x = 0;
+    uint m_idxRoadIndex = 0;
+    qreal m_v_max_, m_v, m_a = 0, m_x = 0;
     bool m_isStopped = false;
     bool m_isRemoved = false;
-    uint m_currentRoadIndex = 0;
     uint m_length = 4;
     uint m_width = 2;
     uint m_space = 4; // s0
     uint m_T = 1;
-    double m_v_max = 16.6, m_a_max = 1.44, m_b_max = 4.61;
-    double m_sqrt_ab;
-    double m_lastTimeStopped = 0, m_waitingTime = 0;
+    qreal m_v_max = 16.6, m_a_max = 1.44, m_b_max = 4.61;
+    qreal m_sqrt_ab;
+    qreal m_lastTimeStopped = 0, m_waitingTime = 0;
     std::vector<uint> m_path;
-    //std::pair< double, double > m_position;
+    //std::pair< double, qreal > m_position;
 
 public:
 	Vehicle(std::vector<uint> path = { } ) :
@@ -27,10 +28,10 @@ public:
 		// OR create stoping object
         //m_v = 0;
     }
-    double x() const override {
+    qreal x() const override {
 		return m_x;
 	}
-    double v() const override {
+    qreal v() const override {
 		return m_v;
 	}
     uint length() const override {
@@ -42,20 +43,26 @@ public:
 	std::vector<uint> const& path() const override {
 		return m_path;
 	}
-    uint currentRoadIndex() const override {
-		return m_currentRoadIndex;
+    uint currentIdxRoadIndex() const override {
+		return m_idxRoadIndex;
 	}
 	void resetPositionOnRoad() override {
 		m_x = 0;
 	}
-	void incCurrentRoadIndex() override {
-		++m_currentRoadIndex;
+	void incCurrentIdxRoadIndex() override {
+		++m_idxRoadIndex;
 	}
     void setVehicleIndex(uint index) override {
 		m_index = index;
 	}
+	void setPositionOnRoad(qreal x) override {
+		m_x = x;
+	}
+	void setIdxRoadIndex(uint idxRoadIndex) override {
+		m_idxRoadIndex = idxRoadIndex;
+	}
 
-    void update(IVehicle* lead, double dt, Road* road) override {
+    void update(IVehicle* lead, qreal dt, Road* road) override {
         //# Update position and velocity
         if ( ( this->m_v + this->m_a * dt ) < 0) {
             this->m_x -= 1 / 2 * this->m_v * this->m_v / this->m_a;
@@ -65,37 +72,37 @@ public:
             this->m_x += this->m_v * dt + this->m_a * dt * dt / 2;
         }
         //# Update acceleration
-        double alpha = 0;
+        qreal alpha = 0;
         if (lead) {
-            double delta_x = lead->x( ) - this->m_x - lead->length( );
-            double delta_v = this->m_v - lead->v( );
+            qreal delta_x = lead->x( ) - this->m_x - lead->length( );
+            qreal delta_v = this->m_v - lead->v( );
             alpha = (this->m_space + std::max(0.0, this->m_T * this->m_v + delta_v * this->m_v / this->m_sqrt_ab)) / delta_x;
         }
         this->m_a = this->m_a_max * (1 - std::pow(this->m_v / this->m_v_max, 4) - std::pow(alpha, 2));
         if (this->m_isStopped) {
             this->m_a = -this->m_b_max * this->m_v / this->m_v_max;
         }
-        //# Update position
-        double sin = road->angle_sin( );
-        double cos = road->angle_cos( );
-        double x = road->start( ).x( ) + cos * this->m_x;
-        double y = road->start( ).y( ) + sin * this->m_x;
+        ////# Update position
+        //qreal sin = road->angle_sin( );
+        //qreal cos = road->angle_cos( );
+        //qreal x = road->start( ).x( ) + cos * this->m_x;
+        //qreal y = road->start( ).y( ) + sin * this->m_x;
         //this->m_position = std::make_pair(x, y);
     }
-    void stop(double t) override {
+    void stop(qreal t) override {
         if (!this->m_isStopped) {
             this->m_lastTimeStopped = t;
             this->m_isStopped = true;
         }
     }
-    void unstop(double t) override {
+    void unstop(qreal t) override {
         if (this->m_isStopped) {
             this->m_waitingTime += (t - this->m_lastTimeStopped);
             this->m_lastTimeStopped = NULL;
             this->m_isStopped = false;
         }
     }
-    void slow(double traffic_light_slow_factor) override {
+    void slow(qreal traffic_light_slow_factor) override {
         m_v_max = m_v_max_ * traffic_light_slow_factor;
 	}
     void unslow() override {
@@ -116,4 +123,4 @@ public:
 		return m_isRemoved;
 	}
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

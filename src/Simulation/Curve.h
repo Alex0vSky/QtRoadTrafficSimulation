@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Curve.h - 
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 struct Curve {
 	// @from https://www.codeconvert.ai/python-to-c++-converter
 	static const int TURN_LEFT = 0;
@@ -36,4 +36,4 @@ struct Curve {
 		return curve_road(start, end, control, resolution);
 	}
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

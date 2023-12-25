@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Draw.h - drawing tools
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 class Draw {
 	int m_width, m_height;
 	int m_zoom;
@@ -42,4 +42,4 @@ public:
 		return points;
 	}
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

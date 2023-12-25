@@ -1,10 +1,10 @@
 ﻿// src\Simulation\Road.h - road segment
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 class Road {
-	vehicles_t m_vehicles;
+	vehicles_t m_cars;
 	uint m_index;
-	QPointF m_start, m_end;
 	qreal m_distance;
+	QPointF m_start, m_end;
 	qreal m_angle_sin, m_angle_cos;
 	friend class AllRoads;
 	void setIndex(uint index) {
@@ -77,9 +77,9 @@ public:
 		m_start( start )
 		, m_end( end )
 		// @insp https://www.qtcentre.org/threads/51253-Why-doesn-t-QPointF-have-a-norm-function
-		, m_distance( QLineF( m_start, m_end ).length( ) )
-		, m_angle_sin( ( m_end.y( ) - m_start.y( ) ) / m_distance )
-		, m_angle_cos( ( m_end.x( ) - m_start.x( ) ) / m_distance )
+		, m_distance( QLineF( start, end ).length( ) )
+		, m_angle_sin( ( end.y( ) - start.y( ) ) / m_distance )
+		, m_angle_cos( ( end.x( ) - start.x( ) ) / m_distance )
 	{}
 	qreal length() const {
 		return m_distance;
@@ -98,21 +98,19 @@ public:
 	}
 
 	void addVehicle(IVehicle *p) { 
-		//qDebug( ) << "road" << m_index << "addVehicle" << p << p ->getVehicleIndex( );
-		m_vehicles.push_back( p );
+//		qDebug( ) << "road" << m_index << "addVehicle" << p << p ->getVehicleIndex( );
+		m_cars.push_back( p );
 	}
 	vehicles_t getVehicles() { 
-		return m_vehicles;
+		return m_cars;
 	}
-    //virtual void popFrontVehicle() = 0;
-	//void popFrontVehicle() {
 	void popFrontVehicle() {
-		//auto p = m_vehicles.front( ); qDebug( ) << "road" << m_index << "popFrontVehicle" << p << p ->getVehicleIndex( );
-		m_vehicles.erase( m_vehicles.begin( ) );
+//		auto p = m_cars.front( ); qDebug( ) << "road" << m_index << "popFrontVehicle" << p << p ->getVehicleIndex( );
+		m_cars.erase( m_cars.begin( ) );
 	}
 	void removeFrontVehicle() {
-		m_vehicles.front( ) ->setRemoved( );
-		m_vehicles.erase( m_vehicles.begin( ) );
+		m_cars.front( ) ->setRemoved( );
+		m_cars.erase( m_cars.begin( ) );
 	}
 
 	uint getIndex() const {
@@ -120,4 +118,4 @@ public:
 	}
 
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

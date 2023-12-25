@@ -1,4 +1,5 @@
 ﻿// src\Info.h - just do it // @insp https://github.com/huangqinjin/CMakeQt/blob/master/main.cpp
+namespace syscross::QtRoadTrafficSimulation {
 struct Info {
 	static void to_qDebug() {
 #if QT_VERSION_MAJOR < 6
@@ -28,3 +29,4 @@ struct Info {
 #endif
 	}
 };
+} // namespace syscross::QtRoadTrafficSimulation

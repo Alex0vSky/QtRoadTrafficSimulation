@@ -1,6 +1,6 @@
 ﻿// src\viaQml.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
 // TODO(alex): not QML, rename
-
+namespace syscross::QtRoadTrafficSimulation {
 // @insp https://evileg.com/ru/post/296/
 class MyQQuickItem : public QQuickItem {
 	W_OBJECT( MyQQuickItem ) //Q_OBJECT
@@ -223,3 +223,4 @@ struct viaQml { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
+} // namespace syscross::QtRoadTrafficSimulation

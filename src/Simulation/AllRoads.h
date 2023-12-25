@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Roads.h - 
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 // TrafficSimulator\Setups\two_way_intersection.py
 class AllRoads {
 	static const uint c_curveResolution = 15;
@@ -173,28 +173,28 @@ public:
 				// WEST RIGHT SOUTH
 				, { 1, { 0, turn( 12 ), 5 } }
 				// WEST LEFT NORTH
-				 //, { 1, { 0, turn( 27 ), 7 } } // collision
+//				, { 1, { 0, turn( 27 ), 7 } } // collision
 
 				// SOUTH STRAIGHT NORTH
 				, { 3, { 1, { 9 }, 7 } }
 				// SOUTH RIGHT EAST
 				, { 1, { 1, turn( 42 ), 6 } }
 				// SOUTH LEFT WEST
-				//,  { 1, { 1, turn( 57 ), 4 } } // collision
+//				,  { 1, { 1, turn( 57 ), 4 } } // collision
 
 				// EAST STRAIGHT WEST
 				, { 3, { 2, { 10 }, 4 } }
 				// EAST RIGHT NORTH
 				, { 1, { 2, turn( 72 ), 7 } }
 				// EAST LEFT SOUTH
-				//, { 1, { 2, turn( 87 ), 5 } } // collision
+//				, { 1, { 2, turn( 87 ), 5 } } // collision
 	
 				// NORTH STRAIGHT SOUTH
 				, { 3, { 3, { 11 }, 5 } }
 				// NORTH RIGHT WEST
 				, { 1, { 3, turn( 102 ), 4 } }
 				// NORTH LEFT EAST
-				//, { 1, { 3, turn( 117 ), 6 } } // collision
+//				, { 1, { 3, turn( 117 ), 6 } } // collision
 			};
 		typedef std::pair
 					< 
@@ -232,4 +232,4 @@ public:
 		return signalIdxRoads;
 	}
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

@@ -1,4 +1,5 @@
 ﻿// src\viaQQuickPaintedItem.h - using QQuickView, QWidget::createWindowContainer, render in separate thread
+namespace syscross::QtRoadTrafficSimulation {
 class MyQQuickPaintedItem : public QQuickPaintedItem {
 	W_OBJECT( MyQQuickPaintedItem ) //Q_OBJECT
 
@@ -132,3 +133,4 @@ struct viaQQuickPaintedItem { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
+} // namespace syscross::QtRoadTrafficSimulation

@@ -1,127 +1,43 @@
 ﻿// src\viaQGraphicsView.h - render via QGraphicsView, render in main thread
-
-// TODO(alex): inher tree, base=>Zoomable=>Dragable=>StatusAware
-class MyQGraphicsView : public QGraphicsView {
-	W_OBJECT( MyQGraphicsView ) //Q_OBJECT
-	QMainWindow *m_parent;
-	const QPoint m_viewportTopleft = { -20, -20 };
-	const QPoint m_viewportBottomRight = { 20, 20 };
-	QPointF m_topLeft;
-	QPointF m_bottomRight;
+namespace syscross::QtRoadTrafficSimulation {
+class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 	QTimer m_timer;
-	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
-    virtual void wheelEvent(QWheelEvent *pQEvent) override {
-		//qDebug() << "Wheel Event:";
-		// pos() -> virtual canvas
-		QPointF point = pQEvent->position( );
-		QPointF pos = mapToScene( point.toPoint( ) );
-		//qDebug() << "mouse pos:" << pos;
-		// scale from wheel angle
-		float delta = 1.0f + pQEvent->angleDelta().y() / 1200.0f;
-		//qDebug() << "angleDelta:" << pQEvent->angleDelta().y();
-		m_delta += pQEvent->angleDelta().y();
-		//qDebug() << "scale factor:" << delta;
-		// modify transform matrix
-		QTransform xform = transform();
-		xform.translate(pos.x(), pos.y()); // origin to spot
-		xform.scale(delta, delta); // scale
-		xform.translate(-pos.x(), -pos.y()); // spot to origin
-		setTransform(xform);
-		//qDebug() << "transform:" << xform;
-		// force update
-		update( );
-		pQEvent->accept( );
-		showStatus( );
-	}
+	typedef std::chrono::steady_clock time_point_t;
+	static constexpr auto now = time_point_t::now;
+	const time_point_t::time_point c_dtZero;
+	time_point_t::time_point m_dtLast;
 	void showStatus() {
-		QString text = QString( "scale: %1, LT: %2/%3, BR: %4/%5" )
-				.arg( m_delta )
-				.arg( m_topLeft.x( ) )
-				.arg( m_topLeft.y( ) )
-				.arg( m_bottomRight.x( ) )
-				.arg( m_bottomRight.y( ) )
+		//QString text = QString( "scale: %1, LT: %2/%3, BR: %4/%5" )
+		//		.arg( m_delta )
+		//		.arg( m_topLeft.x( ) )
+		//		.arg( m_topLeft.y( ) )
+		//		.arg( m_bottomRight.x( ) )
+		//		.arg( m_bottomRight.y( ) )
+		//	;
+		QString text = QString( "zoom scale: %1" )
+				.arg( getZoomDelta( ) )
 			;
 		m_parent ->statusBar( ) ->showMessage( text );
 	}
 
-	// @insp https://stackoverflow.com/questions/55007339/allow-qgraphicsview-to-move-outside-scene/55043082
-	void mouseMoveEvent(QMouseEvent* event) override {
-		QGraphicsView::mouseMoveEvent(event);
-		if (event->buttons() & Qt::LeftButton)
-			// If we are moveing with the left button down, update the scene to trigger autocompute
-			scene()->update(mapToScene(rect()).boundingRect());
-	}
-	void mousePressEvent(QMouseEvent* event) override {
-		if (event->buttons() & Qt::LeftButton)
-			// Set drag mode when left button is pressed
-			setDragMode(QGraphicsView::ScrollHandDrag);
-		QGraphicsView::mousePressEvent(event);
-	}
-	void mouseReleaseEvent(QMouseEvent* event) override {
-		if (dragMode() & QGraphicsView::ScrollHandDrag)
-			// Unset drag mode when left button is released
-			setDragMode(QGraphicsView::NoDrag);
-		QGraphicsView::mouseReleaseEvent(event);
-	}
-	void autocomputeSceneSize(const QList<QRectF>& region) {
-		Q_UNUSED(region);
-		if ( !m_draw ) 
-			return;
-
-		//qDebug( ) << region;
-
-		// Widget viewport recangle
-		QRectF widget_rect_in_scene(
-				mapToScene( m_viewportTopleft )
-				, mapToScene( rect( ).bottomRight( ) + m_viewportBottomRight )
-			);
-		// Copy the new size from the old one
-		m_topLeft = sceneRect().topLeft();
-		m_bottomRight = sceneRect().bottomRight();
-
-		// Check that the scene has a bigger limit in the top side
-		if (sceneRect().top() > widget_rect_in_scene.top())
-			m_topLeft.setY(widget_rect_in_scene.top());
-
-		// Check that the scene has a bigger limit in the bottom side
-		if (sceneRect().bottom() < widget_rect_in_scene.bottom())
-			m_bottomRight.setY(widget_rect_in_scene.bottom());
-
-		// Check that the scene has a bigger limit in the left side
-		if (sceneRect().left() > widget_rect_in_scene.left())
-			m_topLeft.setX(widget_rect_in_scene.left());
-
-		// Check that the scene has a bigger limit in the right side
-		if (sceneRect().right() < widget_rect_in_scene.right())
-			m_bottomRight.setX(widget_rect_in_scene.right());
-
-		// Set new scene size
-		setSceneRect(QRectF(m_topLeft, m_bottomRight));
-		showStatus( );
-	}
-
-	std::vector< QGraphicsPolygonItem * > m_vehiclesItems;
-	std::vector< QGraphicsPolygonItem * > m_trafficSignalItems;
+	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
 	std::unique_ptr< Simulation::Draw > m_draw;
 
 	Simulation::Road::roads_t m_roads;
 
-	static const uint c_vehicleRate = 35;
+	static const uint c_vehicleRate = 65; // 35;
 	std::unique_ptr< Simulation::VehicleGenerator > m_vehicleGenerator;
 
-	std::vector< std::unique_ptr< Simulation::Vehicle > > m_vehiclesObjects; // tmp
+	std::vector< std::unique_ptr< Simulation::Vehicle > > m_singleVehicleObject; // tmp
 	std::vector< Simulation::Vehicle > m_vehiclesObjects2;
-	uint n_vehicles_generated = 0;
-	uint n_vehicles_on_map = 0;
+	uint n_vehicles_generated = 0, n_vehicles_on_map = 0;
 
 	std::unique_ptr< Simulation::Road::TrafficSignal > m_trafficSignal;
 	std::chrono::seconds m_timeToReswitch{ 5 };
-	typedef std::chrono::steady_clock time_point_t;
 	time_point_t::time_point m_dtSwitchLast;
-	const time_point_t::time_point c_dtZero;
 
 	timer_t m_t = 0;
-	double m_speed = 3;
+	qreal m_speed = 3;
 	timer_t m_tSpeeded = 0;
 
 	void draw_vehicles() {
@@ -167,24 +83,28 @@ class MyQGraphicsView : public QGraphicsView {
 	void animation() {
 		//qDebug( ) << "animation";
 		auto scene = this ->scene( );
-		// ?QGraphicsScene::advance()
 
 		if ( !m_draw ) {
 			int zoom = 5;
 			m_draw = std::make_unique< Simulation::Draw >( width( ), height( ), zoom );
 
-			// Elements
+			// Scene static elements
 			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
 			QColor colorRed = QColor::fromRgb( 255, 0, 0 );
 			QBrush brush_( colorGrey, Qt::SolidPattern );
 			QPen pen_( brush_, 1 );
 			//pen_.setColor( colorRed );
 			auto polygons = Simulation::AllRoads::calc( width( ), height( ), zoom );
-			for ( auto const& polygon : polygons )
-				scene ->addPolygon( polygon, pen_, brush_ );
+			QRectF sceneRect;
+			for ( auto const& polygon : polygons ) {
+				auto *item = scene ->addPolygon( polygon, pen_, brush_ );
+				sceneRect = sceneRect.united( item ->boundingRect( ) );
+			}
+			this ->setSceneRect( sceneRect );
+
 			m_roads = Simulation::AllRoads::get( );
 
-			// tmp, aka vehicle generator
+			//// tmp, aka vehicle generator
 			//auto W_R_S = Simulation::AllRoads::W_R_S( );
 			//std::vector< uint > path;
 			////path.push_back( 0 );
@@ -193,8 +113,8 @@ class MyQGraphicsView : public QGraphicsView {
 			//path.push_back( 2 );
 			//path.push_back( 10 );
 			//path.push_back( 4 );
-			//m_vehiclesObjects.push_back( std::make_unique< Simulation::Vehicle >( path ) );
-			//auto &vehicle = m_vehiclesObjects[ 0 ];
+			//m_singleVehicleObject.push_back( std::make_unique< Simulation::Vehicle >( path ) );
+			//auto &vehicle = m_singleVehicleObject[ 0 ];
 			//int firstRoad = 0;
 			//auto roadIndex = vehicle ->path( )[ firstRoad ];
 			//m_roads[ roadIndex ].addVehicle( vehicle.get( ) );
@@ -208,7 +128,6 @@ class MyQGraphicsView : public QGraphicsView {
 				uint road_index = path.second[ 0 ];
 				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
 			}
-
 			m_vehicleGenerator = std::make_unique< Simulation::VehicleGenerator >( 
 				c_vehicleRate, allPaths, inboundRoads );
 
@@ -229,6 +148,7 @@ class MyQGraphicsView : public QGraphicsView {
 		timer_t dtSpeeded = dt * m_speed;
 		m_tSpeeded += dtSpeeded;
 		timer_t t = m_tSpeeded;
+		//timer_t t = m_t;
 
 		draw_vehicles( );
 
@@ -242,8 +162,9 @@ class MyQGraphicsView : public QGraphicsView {
 				vehicles_.begin( ), vehicles_. end( ) );
 			Simulation::IVehicle* lead = vehicles.front( );
 
+			//if ( false ) // tmp
 			if ( road.traffic_signal_state( ) ) {
-				//# If traffic signal is green (or doesn't exist), let vehicles pass
+				//# If traffic signal is green (or doesnt exist), let vehicles pass
 				lead ->unstop( t );
 				for ( auto & vehicle : vehicles ) 
 					vehicle ->unslow( );
@@ -275,12 +196,16 @@ class MyQGraphicsView : public QGraphicsView {
 		}
 		}
 
+		// vehicleGenerator update
+		//if ( false ) // tmp
+		{
 		auto road_index = m_vehicleGenerator ->update( t, &n_vehicles_generated );
 		if ( road_index ) {
 			++n_vehicles_generated;
 			++n_vehicles_on_map;
 			// TODO(alex): makeme
 			//self._non_empty_roads.add(road_index)
+		}
 		}
 
 		// self._check_out_of_bounds_vehicles()
@@ -292,33 +217,46 @@ class MyQGraphicsView : public QGraphicsView {
 			//# If first vehicle is out of road bounds
 			if ( lead ->x( ) < road.length( ) ) 
 				continue;
-			//# If vehicle has a next road
-			auto nextRoadIndex = ( lead ->currentRoadIndex( ) + 1 );
 			auto &path = lead ->path( );
-			if ( nextRoadIndex < path.size( ) ) {
+
+			// +TODO(alex): Throught all road segments
+			{
+				Simulation::Road * currentRoad = nullptr;
+				qreal carPosition = lead ->x( );
+				uint followingIdxRoadIndex = lead ->currentIdxRoadIndex( );
+				do {
+					currentRoad = &m_roads[ path[ followingIdxRoadIndex ] ];
+					qreal currentRoadLength = currentRoad ->length( );
+					if ( ( carPosition - currentRoadLength ) <= 0 )
+						break;
+					carPosition -= currentRoadLength;
+					++followingIdxRoadIndex;
+					if ( followingIdxRoadIndex >= path.size( ) )
+						break;
+				} while( true );
+				//# If vehicle hasnt a next road
+				if ( followingIdxRoadIndex >= path.size( ) ) {
+					//# Remove it from its road
+					road.popFrontVehicle( );
+					// TODO(alex): makeme //# Remove from non_empty_roads if it has no vehicles //if not road.vehicles: //new_empty_roads.add(road.index)
+					--n_vehicles_on_map;
+					//# Update the waiting times sum //self._waiting_times_sum += lead.get_wait_time(self.t)
+					continue;
+				}
 				// Remove it from its road
 				road.popFrontVehicle( );
 				// Reset the position relative to the road
-				lead ->resetPositionOnRoad( );
+				lead ->setPositionOnRoad( carPosition );
 				// Add it to the next road
-				lead ->incCurrentRoadIndex( );
-				auto next_road_index = path[ nextRoadIndex ];
-				// TODO(alex): makeme
-				//new_non_empty_roads.add(next_road_index);
-				m_roads[ next_road_index ].addVehicle( lead );
-			} else {
-				//# Remove it from its road
-				road.popFrontVehicle( );
-				// TODO(alex): makeme
-				//# Remove from non_empty_roads if it has no vehicles
-				//if not road.vehicles:
-				//    new_empty_roads.add(road.index)
-				--n_vehicles_on_map;
-				//# Update the waiting times sum
-				//self._waiting_times_sum += lead.get_wait_time(self.t)
+				lead ->setIdxRoadIndex( followingIdxRoadIndex );
+				Simulation::Road * inCarRoad = nullptr;
+				inCarRoad = &m_roads[ path[ followingIdxRoadIndex ] ];
+				inCarRoad ->addVehicle( lead );
+				continue;
 			}
 		}
 
+		// update signals
 		{
 #pragma region clear previous
 		{
@@ -387,20 +325,9 @@ class MyQGraphicsView : public QGraphicsView {
 	}
 
 public: 
-	int m_delta = 5;
-	static constexpr auto now = time_point_t::now;
-	time_point_t::time_point m_dtLast;
     MyQGraphicsView(QMainWindow *parent) : 
-		QGraphicsView( parent )
-		, m_parent( parent )
+		DraggableQGraphicsView( parent )
 	{
-		setScene( new QGraphicsScene( this ) );
-
-		setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-		setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-		auto connection0 = connect( scene(), &QGraphicsScene::changed, this, &MyQGraphicsView::autocomputeSceneSize);
-		//auto connection1 = connect( scene(), &QGraphicsScene::sceneRectChanged, this, &MyQGraphicsView::autocomputeSceneSize2);
-
 		m_dtLast = now( );
 		// @insp https://stackoverflow.com/questions/28728820/qgraphicsview-doesnt-always-update
 		QObject::connect( &m_timer, &QTimer::timeout
@@ -409,14 +336,8 @@ public:
 				}
 			);
 		m_timer.start( 50 );
-		// QGraphicsView::ViewportUpdateMode, default is QGraphicsView::MinimalViewportUpdate
-
-		setRenderHints( QPainter::Antialiasing );
 	}
-    MyQGraphicsView(const MyQGraphicsView&) = delete;
-    MyQGraphicsView& operator=(const MyQGraphicsView&) = delete;
 };
-W_OBJECT_IMPL( MyQGraphicsView ) //Q_OBJECT
 
 #include "uic/ui_mainwindow.h"
 class MainWindow : public QMainWindow {
@@ -445,3 +366,4 @@ struct viaQGraphicsView { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
+} // namespace syscross::QtRoadTrafficSimulation

@@ -1,5 +1,5 @@
 ﻿// src\Simulation\VehicleGenerator.h - rules of creating new vehicle on the road
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 class VehicleGenerator {
 	AllRoads::flatPathIndexes_t m_paths;
 	QRandomGenerator m_randomGenerator;
@@ -48,10 +48,10 @@ public:
 			bool isEmpty = roadVehicles.empty( );
 			//# If the road is empty, or there's sufficient space for the generated vehicle, add it
 			if ( isEmpty || roadVehicles.back( ) ->x( ) > ( vehicle.getSpace( ) + vehicle.length( ) ) ) {
-				if ( !isEmpty ) {
-					roadVehicles.back( ) ->x( );
-					vehicle.getSpace( ) + vehicle.length( );
-				}
+				//if ( !isEmpty ) {
+				//	roadVehicles.back( ) ->x( );
+				//	vehicle.getSpace( ) + vehicle.length( );
+				//}
 				vehicle.setVehicleIndex( *n_vehicles_generated );
 				uint nextVehicle = *n_vehicles_generated;
 				//m_generatedVehicles[ 0 ].isRemoved( );
@@ -64,4 +64,4 @@ public:
 		return { };
 	}
 };
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation

@@ -1,5 +1,5 @@
 ﻿// src\Simulation\IVehicle.h - vehicle iface
-namespace Simulation {
+namespace syscross::QtRoadTrafficSimulation::Simulation {
 class Road;
 struct IVehicle {
 	virtual ~IVehicle() {}
@@ -11,16 +11,18 @@ struct IVehicle {
     virtual uint length() const = 0;
     virtual uint width() const = 0;
 	virtual std::vector< uint > const& path() const = 0;
-    virtual uint currentRoadIndex() const = 0;
+    virtual uint currentIdxRoadIndex() const = 0;
 	virtual void resetPositionOnRoad() = 0;
-	virtual void incCurrentRoadIndex() = 0;
+	virtual void incCurrentIdxRoadIndex() = 0;
     virtual void setVehicleIndex(uint index) = 0;
 	virtual uint getVehicleIndex() const = 0;
 	virtual void setRemoved() = 0;
 	virtual bool isRemoved() const = 0;
+	virtual void setPositionOnRoad(qreal x) = 0;
+	virtual void setIdxRoadIndex(uint idxRoadIndex) = 0;
 
     virtual void slow(double traffic_light_slow_factor) = 0;
     virtual void unslow() = 0;
 };
 typedef std::deque< IVehicle * > vehicles_t;
-} // namespace Simulation 
+} // namespace syscross::QtRoadTrafficSimulation::Simulation
