@@ -23,6 +23,8 @@ Traffic modeling with three found ways to display graphics in Qt:
  - `QQuickItem + updatePaintNode` and rendering in separate thread;
  - `QQuickPaintedItem + QPainter` and rendering in separate thread;
 
+Cars and roads based on python solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
+
 ## Requirements
 Qt 5.15
 
@@ -35,7 +37,7 @@ Zoomable and movable canvas
 ## Tests
 
 ## Build
-Building the project and tests from the source code requires the presence of the __Microsoft Visual Studio 2019 Community__, and using *.sln and *.vcxproj project files.
+Building the project from the source code requires the presence of the __Microsoft Visual Studio 2019 Community__, and using *.sln and *.vcxproj project files.
 
 ## Contributing
 Can ask questions. PRs are accepted. No requirements for contributing.
