@@ -7,6 +7,7 @@ https://en.wikipedia.org/wiki/C++
 )
 
 Road traffic simulation using Qt 
+![QtRoadTrafficSimulation](https://github.com/Alex0vSky/QtRoadTrafficSimulation/assets/52796897/f26689eb-eb79-459b-86b8-198bb3f7aa7c)
 
 @todo
 - [x] roads in QGraphicsView, zoomable and movable
