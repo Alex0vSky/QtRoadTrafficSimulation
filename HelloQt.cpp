@@ -21,7 +21,7 @@ int WinMain(HINSTANCE, HINSTANCE, char*, int) { //int main(int argc, char* argv[
 	//::SetPriorityClass( ::GetCurrentProcess( ), HIGH_PRIORITY_CLASS );
 	//_CrtSetBreakAlloc( 5886 );
 	new char[]{ "Goodbye!" };
-	using namespace syscross::QtRoadTrafficSimulation;
+	using namespace syscross::TraffModel;
 	viaQGraphicsView::run( 0, nullptr );
 	//viaQml::run( 0, nullptr );
 	//viaQQuickPaintedItem::run( 0, nullptr );

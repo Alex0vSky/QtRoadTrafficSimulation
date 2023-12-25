@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Roads.h - 
-namespace syscross::QtRoadTrafficSimulation::Simulation {
+namespace syscross::TraffModel::Sim {
 // TrafficSimulator\Setups\two_way_intersection.py
 class AllRoads {
 	static const uint c_curveResolution = 15;
@@ -71,10 +71,10 @@ public:
 		Road EAST_STRAIGHT = { EAST_RIGHT, WEST_LEFT };
 		Road NORTH_STRAIGHT = { NORTH_RIGHT, SOUTH_LEFT };
 
-		auto turn_road = Simulation::Curve::turn_road;
-		auto TURN_RIGHT = Simulation::Curve::TURN_RIGHT;
-		auto TURN_LEFT = Simulation::Curve::TURN_LEFT;
-		//using namespace Simulation::Curve;
+		auto turn_road = Sim::Curve::turn_road;
+		auto TURN_RIGHT = Sim::Curve::TURN_RIGHT;
+		auto TURN_LEFT = Sim::Curve::TURN_LEFT;
+		//using namespace Sim::Curve;
 		std::vector< Road > WEST_RIGHT_TURN = turn_road( WEST_RIGHT, SOUTH_LEFT, TURN_RIGHT, c_curveResolution );
 		std::vector< Road > WEST_LEFT_TURN = turn_road( WEST_RIGHT, NORTH_LEFT, TURN_LEFT, c_curveResolution );
 
@@ -232,4 +232,4 @@ public:
 		return signalIdxRoads;
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation::Simulation
+} // namespace syscross::TraffModel::Sim

@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Vehicle.h - vehicle
-namespace syscross::QtRoadTrafficSimulation::Simulation {
+namespace syscross::TraffModel::Sim {
 class Vehicle : public IVehicle {
     uint m_index = 0;
     uint m_idxRoadIndex = 0;
@@ -123,4 +123,4 @@ public:
 		return m_isRemoved;
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation::Simulation
+} // namespace syscross::TraffModel::Sim

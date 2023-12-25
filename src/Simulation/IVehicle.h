@@ -1,5 +1,5 @@
 ﻿// src\Simulation\IVehicle.h - vehicle iface
-namespace syscross::QtRoadTrafficSimulation::Simulation {
+namespace syscross::TraffModel::Sim {
 class Road;
 struct IVehicle {
 	virtual ~IVehicle() {}
@@ -25,4 +25,4 @@ struct IVehicle {
     virtual void unslow() = 0;
 };
 typedef std::deque< IVehicle * > vehicles_t;
-} // namespace syscross::QtRoadTrafficSimulation::Simulation
+} // namespace syscross::TraffModel::Sim

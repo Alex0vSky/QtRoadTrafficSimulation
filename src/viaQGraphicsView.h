@@ -1,5 +1,5 @@
 ﻿// src\viaQGraphicsView.h - render via QGraphicsView, render in main thread
-namespace syscross::QtRoadTrafficSimulation {
+namespace syscross::TraffModel {
 class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 	QTimer m_timer;
 	typedef std::chrono::steady_clock time_point_t;
@@ -21,18 +21,18 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 	}
 
 	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
-	std::unique_ptr< Simulation::Draw > m_draw;
+	std::unique_ptr< Sim::Draw > m_draw;
 
-	Simulation::Road::roads_t m_roads;
+	Sim::Road::roads_t m_roads;
 
 	static const uint c_vehicleRate = 65; // 35;
-	std::unique_ptr< Simulation::VehicleGenerator > m_vehicleGenerator;
+	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
 
-	std::vector< std::unique_ptr< Simulation::Vehicle > > m_singleVehicleObject; // tmp
-	std::vector< Simulation::Vehicle > m_vehiclesObjects2;
+	std::vector< std::unique_ptr< Sim::Vehicle > > m_singleVehicleObject; // tmp
+	std::vector< Sim::Vehicle > m_vehiclesObjects2;
 	uint n_vehicles_generated = 0, n_vehicles_on_map = 0;
 
-	std::unique_ptr< Simulation::Road::TrafficSignal > m_trafficSignal;
+	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
 	std::chrono::seconds m_timeToReswitch{ 5 };
 	time_point_t::time_point m_dtSwitchLast;
 
@@ -53,7 +53,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 		QBrush brush( colorBlue, Qt::SolidPattern );
 		QPen pen( colorBlue );
 		for ( auto & road : m_roads ) {
-			Simulation::vehicles_t const& vehicles = road.getVehicles( );
+			Sim::vehicles_t const& vehicles = road.getVehicles( );
 			for ( auto & vehicle : vehicles ) {
 				qreal l = vehicle ->length( ), h = vehicle ->width( );
 				qreal sin = road.angle_sin( ), cos = road.angle_cos( );
@@ -86,7 +86,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 		if ( !m_draw ) {
 			int zoom = 5;
-			m_draw = std::make_unique< Simulation::Draw >( width( ), height( ), zoom );
+			m_draw = std::make_unique< Sim::Draw >( width( ), height( ), zoom );
 
 			// Scene static elements
 			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
@@ -94,7 +94,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			QBrush brush_( colorGrey, Qt::SolidPattern );
 			QPen pen_( brush_, 1 );
 			//pen_.setColor( colorRed );
-			auto polygons = Simulation::AllRoads::calc( width( ), height( ), zoom );
+			auto polygons = Sim::AllRoads::calc( width( ), height( ), zoom );
 			QRectF sceneRect;
 			for ( auto const& polygon : polygons ) {
 				auto *item = scene ->addPolygon( polygon, pen_, brush_ );
@@ -102,10 +102,10 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			}
 			this ->setSceneRect( sceneRect );
 
-			m_roads = Simulation::AllRoads::get( );
+			m_roads = Sim::AllRoads::get( );
 
 			//// tmp, aka vehicle generator
-			//auto W_R_S = Simulation::AllRoads::W_R_S( );
+			//auto W_R_S = Sim::AllRoads::W_R_S( );
 			//std::vector< uint > path;
 			////path.push_back( 0 );
 			////path.insert( path.end( ), W_R_S.begin( ), W_R_S.end( ) );
@@ -113,30 +113,30 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			//path.push_back( 2 );
 			//path.push_back( 10 );
 			//path.push_back( 4 );
-			//m_singleVehicleObject.push_back( std::make_unique< Simulation::Vehicle >( path ) );
+			//m_singleVehicleObject.push_back( std::make_unique< Sim::Vehicle >( path ) );
 			//auto &vehicle = m_singleVehicleObject[ 0 ];
 			//int firstRoad = 0;
 			//auto roadIndex = vehicle ->path( )[ firstRoad ];
 			//m_roads[ roadIndex ].addVehicle( vehicle.get( ) );
 
-			auto allPaths = Simulation::AllRoads::getAllPaths( );
+			auto allPaths = Sim::AllRoads::getAllPaths( );
 			// add_generator
-			Simulation::AllRoads::inboundRoads_t inboundRoads;
+			Sim::AllRoads::inboundRoads_t inboundRoads;
 			// @from https://www.codeconvert.ai/python-to-c++-converter
 			for ( auto &path : allPaths ) {
 				uint weight = path.first;
 				uint road_index = path.second[ 0 ];
 				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
 			}
-			m_vehicleGenerator = std::make_unique< Simulation::VehicleGenerator >( 
+			m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >( 
 				c_vehicleRate, allPaths, inboundRoads );
 
-			Simulation::Road::TrafficSignal::signalRoads_t signalRoads;
-			Simulation::AllRoads::signalIdxRoads_t signalIdxRoads = 
-				Simulation::AllRoads::getSignalIdxRoads( );
+			Sim::Road::TrafficSignal::signalRoads_t signalRoads;
+			Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
+				Sim::AllRoads::getSignalIdxRoads( );
 			for ( auto const& pair : signalIdxRoads ) 
 				signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
-			m_trafficSignal = std::make_unique< Simulation::Road::TrafficSignal >( 
+			m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
 				signalRoads );
 		}
 
@@ -155,12 +155,12 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 		//# Update every road // self.roads[i].update(self.dtSpeeded, self.t)
 		{
 		for ( auto & road : m_roads ) {
-			Simulation::vehicles_t vehicles_ = road.getVehicles( );
+			Sim::vehicles_t vehicles_ = road.getVehicles( );
 			if ( vehicles_.empty( ) )
 				continue;
-			std::vector< Simulation::IVehicle * > vehicles( 
+			std::vector< Sim::IVehicle * > vehicles( 
 				vehicles_.begin( ), vehicles_. end( ) );
-			Simulation::IVehicle* lead = vehicles.front( );
+			Sim::IVehicle* lead = vehicles.front( );
 
 			//if ( false ) // tmp
 			if ( road.traffic_signal_state( ) ) {
@@ -210,10 +210,10 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 		// self._check_out_of_bounds_vehicles()
 		for ( auto & road : m_roads ) {
-			Simulation::vehicles_t const& vehicles = road.getVehicles( );
+			Sim::vehicles_t const& vehicles = road.getVehicles( );
 			if ( vehicles.empty( ) ) 
 				continue;
-			Simulation::IVehicle* lead = vehicles[ 0 ];
+			Sim::IVehicle* lead = vehicles[ 0 ];
 			//# If first vehicle is out of road bounds
 			if ( lead ->x( ) < road.length( ) ) 
 				continue;
@@ -221,7 +221,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 			// +TODO(alex): Throught all road segments
 			{
-				Simulation::Road * currentRoad = nullptr;
+				Sim::Road * currentRoad = nullptr;
 				qreal carPosition = lead ->x( );
 				uint followingIdxRoadIndex = lead ->currentIdxRoadIndex( );
 				do {
@@ -249,7 +249,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 				lead ->setPositionOnRoad( carPosition );
 				// Add it to the next road
 				lead ->setIdxRoadIndex( followingIdxRoadIndex );
-				Simulation::Road * inCarRoad = nullptr;
+				Sim::Road * inCarRoad = nullptr;
 				inCarRoad = &m_roads[ path[ followingIdxRoadIndex ] ];
 				inCarRoad ->addVehicle( lead );
 				continue;
@@ -268,7 +268,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			m_trafficSignalItems.erase( it, m_trafficSignalItems.end( ) );
 		}
 #pragma endregion
-		Simulation::Road::TrafficSignal::signalRoads_t signalRoads = 
+		Sim::Road::TrafficSignal::signalRoads_t signalRoads = 
 			m_trafficSignal ->getRoads( );
 		for ( uint i = 0; i < signalRoads.size( ); ++i ) {
 			QColor color;
@@ -366,4 +366,4 @@ struct viaQGraphicsView { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation
+} // namespace syscross::TraffModel

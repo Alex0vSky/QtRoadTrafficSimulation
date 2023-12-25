@@ -1,5 +1,5 @@
 ﻿// src\Simulation\Road.h - road segment
-namespace syscross::QtRoadTrafficSimulation::Simulation {
+namespace syscross::TraffModel::Sim {
 class Road {
 	vehicles_t m_cars;
 	uint m_index;
@@ -118,4 +118,4 @@ public:
 	}
 
 };
-} // namespace syscross::QtRoadTrafficSimulation::Simulation
+} // namespace syscross::TraffModel::Sim

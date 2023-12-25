@@ -1,5 +1,5 @@
 ﻿// src\Via\GraphicsView\ZoomableQGraphicsView.h - add zoom
-namespace syscross::QtRoadTrafficSimulation::Via::GraphicsView {
+namespace syscross::TraffModel::Via::GraphicsView {
 class ZoomableQGraphicsView : public BaseQGraphicsView {
 	int m_delta = 5;
 	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
@@ -33,4 +33,4 @@ public:
 		return m_delta;
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation::Via::GraphicsView
+} // namespace syscross::TraffModel::Via::GraphicsView

@@ -1,5 +1,5 @@
 ﻿// src\viaQQuickPaintedItem.h - using QQuickView, QWidget::createWindowContainer, render in separate thread
-namespace syscross::QtRoadTrafficSimulation {
+namespace syscross::TraffModel {
 class MyQQuickPaintedItem : public QQuickPaintedItem {
 	W_OBJECT( MyQQuickPaintedItem ) //Q_OBJECT
 
@@ -23,7 +23,7 @@ class MyQQuickPaintedItem : public QQuickPaintedItem {
 		painter ->setBrush( brush );
 		painter ->setPen( pen );
 		//poly << QPointF(-10, 10) << QPointF(10, 50) << QPointF(30, 70 )<< QPointF(60, 50) << QPointF(50, 10);
-		auto polygons = Simulation::AllRoads::calc( width( ), height( ) );
+		auto polygons = Sim::AllRoads::calc( width( ), height( ) );
 		for ( auto polygon : polygons )
 			painter ->drawPolygon( polygon );
 	}
@@ -133,4 +133,4 @@ struct viaQQuickPaintedItem { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation
+} // namespace syscross::TraffModel

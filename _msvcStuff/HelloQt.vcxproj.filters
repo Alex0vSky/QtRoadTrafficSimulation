@@ -16,9 +16,6 @@
     <Filter Include="_pch">
       <UniqueIdentifier>{d908d6e3-dc21-4768-9872-f958f7f240b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Simulation">
-      <UniqueIdentifier>{4c7160e1-a0b1-47c6-8430-f5e804060eeb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\uic">
       <UniqueIdentifier>{3e218d88-6206-4f9e-8dd8-ab0f38709f7c}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Header Files\Via\GraphicsView">
       <UniqueIdentifier>{c0f10e66-03fc-46ac-9905-c87e41c99743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{4c7160e1-a0b1-47c6-8430-f5e804060eeb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

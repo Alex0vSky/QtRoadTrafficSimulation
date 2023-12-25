@@ -1,6 +1,6 @@
 ﻿// src\viaQml.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
 // TODO(alex): not QML, rename
-namespace syscross::QtRoadTrafficSimulation {
+namespace syscross::TraffModel {
 // @insp https://evileg.com/ru/post/296/
 class MyQQuickItem : public QQuickItem {
 	W_OBJECT( MyQQuickItem ) //Q_OBJECT
@@ -104,7 +104,7 @@ public:
 			//vertices[2].set( 30, 70 );
 			//vertices[3].set( 60, 50 );
 			//vertices[4].set( 50, 10 );
-			auto polygons = Simulation::AllRoads::calc( width( ), height( ) );
+			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
 			for ( QPolygonF const& polygon : polygons ) {
 				// lower 
 				addPolygon_( oldNode, polygon, QSGGeometry::DrawTriangleFan, colorGrey );
@@ -223,4 +223,4 @@ struct viaQml { static void run(int argc, char* argv[]) {
 		app.exec( );
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation
+} // namespace syscross::TraffModel

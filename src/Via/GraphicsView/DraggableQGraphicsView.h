@@ -1,5 +1,5 @@
 ﻿// src\Via\GraphicsView\DraggableQGraphicsView.h - add drag
-namespace syscross::QtRoadTrafficSimulation::Via::GraphicsView {
+namespace syscross::TraffModel::Via::GraphicsView {
 class DraggableQGraphicsView : public ZoomableQGraphicsView {
 	const QPoint m_viewportTopleft = { -20, -20 };
 	const QPoint m_viewportBottomRight = { 20, 20 };
@@ -60,4 +60,4 @@ public:
 		connect( scene( ), &QGraphicsScene::changed, this, &DraggableQGraphicsView::autocomputeSceneSize );
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation::Via::GraphicsView
+} // namespace syscross::TraffModel::Via::GraphicsView

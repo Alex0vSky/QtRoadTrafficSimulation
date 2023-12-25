@@ -1,5 +1,5 @@
 ﻿// src\Simulation\VehicleGenerator.h - rules of creating new vehicle on the road
-namespace syscross::QtRoadTrafficSimulation::Simulation {
+namespace syscross::TraffModel::Sim {
 class VehicleGenerator {
 	AllRoads::flatPathIndexes_t m_paths;
 	QRandomGenerator m_randomGenerator;
@@ -9,7 +9,7 @@ class VehicleGenerator {
 	// TODO(alex): refactorme to using `IVehicle::isRemoved( )`
 	static const uint c_maxVehicles = 4096;
 	// fixed memory for pointers
-	std::array< Simulation::Vehicle, c_maxVehicles > m_generatedVehicles;
+	std::array< Sim::Vehicle, c_maxVehicles > m_generatedVehicles;
 
 public:
 	VehicleGenerator(int vehicle_rate, AllRoads::flatPathIndexes_t paths, AllRoads::inboundRoads_t inboundRoads) :
@@ -64,4 +64,4 @@ public:
 		return { };
 	}
 };
-} // namespace syscross::QtRoadTrafficSimulation::Simulation
+} // namespace syscross::TraffModel::Sim

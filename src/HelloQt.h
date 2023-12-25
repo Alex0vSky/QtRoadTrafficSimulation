@@ -1,4 +1,4 @@
 ﻿// src\HelloQt.h - mix
-namespace syscross::QtRoadTrafficSimulation {
+namespace syscross::TraffModel {
 typedef double timer_t;
-} // namespace syscross::QtRoadTrafficSimulation
+} // namespace syscross::TraffModel
