@@ -2,23 +2,10 @@
 namespace syscross::TraffModel {
 class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 	QTimer m_timer;
-	typedef std::chrono::steady_clock time_point_t;
-	static constexpr auto now = time_point_t::now;
-	const time_point_t::time_point c_dtZero;
-	time_point_t::time_point m_dtLast;
-	void showStatus() {
-		//QString text = QString( "scale: %1, LT: %2/%3, BR: %4/%5" )
-		//		.arg( m_delta )
-		//		.arg( m_topLeft.x( ) )
-		//		.arg( m_topLeft.y( ) )
-		//		.arg( m_bottomRight.x( ) )
-		//		.arg( m_bottomRight.y( ) )
-		//	;
-		QString text = QString( "zoom scale: %1" )
-				.arg( getZoomDelta( ) )
-			;
-		m_parent ->statusBar( ) ->showMessage( text );
-	}
+	typedef std::chrono::steady_clock clock_t;
+	static constexpr auto now = clock_t::now;
+	const clock_t::time_point c_dtZero;
+	clock_t::time_point m_dtLast;
 
 	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
 	std::unique_ptr< Sim::Draw > m_draw;
@@ -34,46 +21,48 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
 	std::chrono::seconds m_timeToReswitch{ 5 };
-	time_point_t::time_point m_dtSwitchLast;
+	clock_t::time_point m_dtSwitchLast;
 
-	timer_t m_t = 0;
-	qreal m_speed = 3;
-	timer_t m_tSpeeded = 0;
 
 	void draw_vehicles() {
 #pragma region clear previous
-		auto it = std::remove_if( m_vehiclesItems.begin( ), m_vehiclesItems.end( )
+		auto it = std::remove_if( this ->m_vehiclesItems.begin( ), this ->m_vehiclesItems.end( )
 				, [this](QGraphicsPolygonItem *p) {
-					return scene( ) ->removeItem( p ), delete p, true;
+					return this ->scene( ) ->removeItem( p ), delete p, true;
 				}
 			);
-		m_vehiclesItems.erase( it, m_vehiclesItems.end( ) );
+		this ->m_vehiclesItems.erase( it, this ->m_vehiclesItems.end( ) );
 #pragma endregion
 		QColor colorBlue = QColor::fromRgb( 0, 0, 255 );
 		QBrush brush( colorBlue, Qt::SolidPattern );
 		QPen pen( colorBlue );
-		for ( auto & road : m_roads ) {
+		for ( auto & road : this ->m_roads ) {
 			Sim::vehicles_t const& vehicles = road.getVehicles( );
 			for ( auto & vehicle : vehicles ) {
 				qreal l = vehicle ->length( ), h = vehicle ->width( );
 				qreal sin = road.angle_sin( ), cos = road.angle_cos( );
 				qreal x = road.start( ).x( ) + cos * vehicle ->x( );
 				qreal y = road.start( ).y( ) + sin * vehicle ->x( );
-				auto points = m_draw ->rotated_box( { x, y }, { l, h }, cos, sin, true );
+				auto points = this ->m_draw ->rotated_box( { x, y }, { l, h }, cos, sin, true );
 				QPolygonF polygon;
 				for ( auto const& elem : points )
 					polygon << elem;
-				auto vehicleItem = scene( ) ->addPolygon( polygon, pen, brush );
-				m_vehiclesItems.push_back( vehicleItem );
+				auto vehicleItem = this ->scene( ) ->addPolygon( polygon, pen, brush );
+				this ->m_vehiclesItems.push_back( vehicleItem );
 			}
 		}
 	}
+	
+	// TODO(alex): to separate class `Timing`
+	timer_t m_t = 0;
+	qreal m_speed = 3;
+	timer_t m_tSpeeded = 0;
 	timer_t fixDeltaT() { 
 		auto timePoint = now( );
 		auto durationFrame = std::chrono::duration_cast
 			< std::chrono::microseconds >
-			( timePoint - m_dtLast );
-		m_dtLast = timePoint;
+			( timePoint - this ->m_dtLast );
+		this ->m_dtLast = timePoint;
 		auto xxxInSecond = std::chrono::duration_cast
 			< std::chrono::microseconds >
 			( std::chrono::seconds{ 1 } ).count( );
@@ -82,11 +71,10 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 	void animation() {
 		//qDebug( ) << "animation";
-		auto scene = this ->scene( );
+		//auto scene = this ->scene( );
 
 		if ( !m_draw ) {
-			int zoom = 5;
-			m_draw = std::make_unique< Sim::Draw >( width( ), height( ), zoom );
+			m_draw = std::make_unique< Sim::Draw >( width( ), height( ) );
 
 			// Scene static elements
 			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
@@ -94,10 +82,10 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			QBrush brush_( colorGrey, Qt::SolidPattern );
 			QPen pen_( brush_, 1 );
 			//pen_.setColor( colorRed );
-			auto polygons = Sim::AllRoads::calc( width( ), height( ), zoom );
+			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
 			QRectF sceneRect;
 			for ( auto const& polygon : polygons ) {
-				auto *item = scene ->addPolygon( polygon, pen_, brush_ );
+				auto *item = scene( ) ->addPolygon( polygon, pen_, brush_ );
 				sceneRect = sceneRect.united( item ->boundingRect( ) );
 			}
 			this ->setSceneRect( sceneRect );
@@ -152,6 +140,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 
 		draw_vehicles( );
 
+		// TODO(alex): to separate class `Updater`
 		//# Update every road // self.roads[i].update(self.dtSpeeded, self.t)
 		{
 		for ( auto & road : m_roads ) {
@@ -196,6 +185,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 		}
 		}
 
+		// TODO(alex): to separate class `Updater`
 		// vehicleGenerator update
 		//if ( false ) // tmp
 		{
@@ -208,6 +198,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 		}
 		}
 
+		// TODO(alex): to separate class `Updater`
 		// self._check_out_of_bounds_vehicles()
 		for ( auto & road : m_roads ) {
 			Sim::vehicles_t const& vehicles = road.getVehicles( );
@@ -256,13 +247,14 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			}
 		}
 
+		// TODO(alex): to separate class `Updater`
 		// update signals
 		{
 #pragma region clear previous
 		{
 			auto it = std::remove_if( m_trafficSignalItems.begin( ), m_trafficSignalItems.end( )
-					, [&scene](QGraphicsPolygonItem *p) {
-						return scene ->removeItem( p ), delete p, true;
+					, [this](QGraphicsPolygonItem *p) {
+						return scene( ) ->removeItem( p ), delete p, true;
 					}
 				);
 			m_trafficSignalItems.erase( it, m_trafficSignalItems.end( ) );
@@ -304,12 +296,13 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 					polygon << elem;
 				QPen pen( color );
 				QBrush brush( color, Qt::SolidPattern );
-				auto trafficSignalItem = scene ->addPolygon( polygon, pen, brush );
+				auto trafficSignalItem = scene( ) ->addPolygon( polygon, pen, brush );
 				m_trafficSignalItems.push_back( trafficSignalItem );
 			}
 		}
 		}
 
+		// TODO(alex): to separate class `Updater`
 		// _update_signals
 		if ( c_dtZero == m_dtSwitchLast ) {
 			m_dtSwitchLast = now( );
@@ -320,6 +313,7 @@ class MyQGraphicsView : public Via::GraphicsView::DraggableQGraphicsView {
 			}
 		}
 
+		// TODO(alex): to separate class `Timing`
         //# Increment time
 		m_t += dt;
 	}

@@ -1,9 +1,7 @@
-﻿// src\Via\GraphicsView\BaseQGraphicsView.h - render via QGraphicsView, render in main thread
+﻿// src\Via\GraphicsView\BaseQGraphicsView.h - something based
 namespace syscross::TraffModel::Via::GraphicsView {
 class BaseQGraphicsView : public QGraphicsView {
 	W_OBJECT( BaseQGraphicsView ) //Q_OBJECT
-
-protected:
 	QMainWindow *m_parent;
 
 public: 

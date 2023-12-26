@@ -128,9 +128,8 @@ public:
 		return ROADS;
 	}
 
-	// TODO(alex): makeme zoom
-	static auto calc(uint width, uint height, uint zoom = 5) {
-		Draw draw( width, height, zoom );
+	static auto calc(uint width, uint height) {
+		Draw draw( width, height );
 		float h = 3.7;
 		std::vector< QPolygonF > polygons;
 		Road::roads_t roads = get( );

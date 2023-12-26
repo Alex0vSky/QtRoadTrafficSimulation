@@ -7,7 +7,6 @@
 #include "Simulation/AllRoads.h"
 #include "Simulation/Vehicle.h"
 #include "Simulation/VehicleGenerator.h"
-#include "Info.h"
 #include "Via/GraphicsView/BaseQGraphicsView.h"
 #include "Via/GraphicsView/ZoomableQGraphicsView.h"
 #include "Via/GraphicsView/DraggableQGraphicsView.h"
