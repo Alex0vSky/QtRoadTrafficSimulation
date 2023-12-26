@@ -22,7 +22,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    MyQGraphicsView *graphicsView;
+    MainQGraphicsView *graphicsView;
     //QWidget *centralwidget;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -32,7 +32,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize( 1000, 630 );
-        graphicsView = new MyQGraphicsView(MainWindow);
+        graphicsView = new MainQGraphicsView(MainWindow);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
         MainWindow->setCentralWidget(graphicsView);
         //centralwidget = new QWidget(MainWindow);

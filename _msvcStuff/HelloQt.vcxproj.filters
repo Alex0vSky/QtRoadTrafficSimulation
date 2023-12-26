@@ -16,9 +16,6 @@
     <Filter Include="_pch">
       <UniqueIdentifier>{d908d6e3-dc21-4768-9872-f958f7f240b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\uic">
-      <UniqueIdentifier>{3e218d88-6206-4f9e-8dd8-ab0f38709f7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Via">
       <UniqueIdentifier>{686a3f7a-30af-4939-b743-06e8f2c0c1f5}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Header Files\Simulation">
       <UniqueIdentifier>{4c7160e1-a0b1-47c6-8430-f5e804060eeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Via\GraphicsView\uic">
+      <UniqueIdentifier>{3e218d88-6206-4f9e-8dd8-ab0f38709f7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +62,6 @@
     <ClInclude Include="..\src\Simulation\Curve.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\uic\ui_mainwindow.h">
-      <Filter>Header Files\uic</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Simulation\Draw.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
@@ -85,6 +82,18 @@
     </ClInclude>
     <ClInclude Include="..\src\Via\GraphicsView\DraggableQGraphicsView.h">
       <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\uic\ui_mainwindow.h">
+      <Filter>Header Files\Via\GraphicsView\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\MainWindow.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\MainQGraphicsView.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Timing.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

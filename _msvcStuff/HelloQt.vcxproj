@@ -159,12 +159,15 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgetsd.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="..\src\Simulation\Road.h" />
     <ClInclude Include="..\src\Simulation\Vehicle.h" />
     <ClInclude Include="..\src\Simulation\VehicleGenerator.h" />
-    <ClInclude Include="..\src\uic\ui_mainwindow.h" />
+    <ClInclude Include="..\src\Timing.h" />
     <ClInclude Include="..\src\viaQGraphicsView.h" />
     <ClInclude Include="..\src\viaQml.h" />
     <ClInclude Include="..\src\viaQQuickPaintedItem.h" />
     <ClInclude Include="..\src\Via\GraphicsView\BaseQGraphicsView.h" />
     <ClInclude Include="..\src\Via\GraphicsView\DraggableQGraphicsView.h" />
+    <ClInclude Include="..\src\Via\GraphicsView\MainQGraphicsView.h" />
+    <ClInclude Include="..\src\Via\GraphicsView\MainWindow.h" />
+    <ClInclude Include="..\src\Via\GraphicsView\uic\ui_mainwindow.h" />
     <ClInclude Include="..\src\Via\GraphicsView\ZoomableQGraphicsView.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
