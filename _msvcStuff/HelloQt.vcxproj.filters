@@ -47,7 +47,7 @@
     <ClInclude Include="..\src\viaQQuickPaintedItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\viaQml.h">
+    <ClInclude Include="..\src\viaQQuickItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\viaQGraphicsView.h">

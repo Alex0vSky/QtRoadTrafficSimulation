@@ -1,4 +1,4 @@
-﻿// src\Via\GraphicsView\MainQGraphicsView.h - main loop, render in main thread
+﻿// src\Via\GraphicsView\MainQGraphicsView.h - main loop in main thread
 namespace syscross::TraffModel::Via::GraphicsView {
 class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 	using LoopLauncherQGraphicsView::LoopLauncherQGraphicsView;

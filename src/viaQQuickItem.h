@@ -132,7 +132,7 @@ public:
 };
 W_OBJECT_IMPL( MyQQuickItem ) //Q_OBJECT
 
-struct viaQml { static void run(int argc, char* argv[]) { 
+struct viaQQuickItem { static void run(int argc, char* argv[]) { 
 		//qputenv( "QSG_RENDER_LOOP", "basic" ); // @from https://www.mimec.org/blog/render-loops-and-timers-in-qtquick
 		//qputenv( "QT_SCALE_FACTOR", QByteArray( "3" ) ); // @from https://stackoverflow.com/questions/77454174/drawing-qpolygonf-to-qsggeometry
 

@@ -17,7 +17,7 @@
 #include "Via/GraphicsView/MainQGraphicsView.h"
 #include "Via/GraphicsView/MainWindow.h"
 #include "viaQGraphicsView.h"
-#include "viaQml.h"
+#include "viaQQuickItem.h"
 #include "viaQQuickPaintedItem.h"
 
 #if defined( _WIN32 ) || defined( __CYGWIN__ ) 
@@ -30,8 +30,8 @@ int WinMain(HINSTANCE, HINSTANCE, char*, int) {
 int main(int argc, char* argv[]) {
 #endif
 	using namespace syscross::TraffModel;
-	viaQGraphicsView::run( 0, nullptr );
-	//viaQml::run( 0, nullptr );
+	//viaQGraphicsView::run( 0, nullptr );
+	viaQQuickItem::run( 0, nullptr );
 	//viaQQuickPaintedItem::run( 0, nullptr );
 	return 0;
 }
