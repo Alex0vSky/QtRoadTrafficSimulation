@@ -7,12 +7,14 @@ class MyQQuickItem : public QQuickItem {
 	// +TODO(alex): zoom to mouse pointer
 	QPoint m_point;
 	float m_delta = 1;
+	bool m_bDeltaChanged = false;
 	// @from viaQGraphicsView#Canvas
 	void wheelEvent(QWheelEvent *pQEvent) override {
 		QQuickItem::wheelEvent( pQEvent );
 		m_point = pQEvent ->position( ).toPoint( );
 		m_delta = 1.0f + pQEvent ->angleDelta( ).y( ) / 1200.0f;
-		this ->update( );
+		m_bDeltaChanged = true;
+		//this ->update( );
 	}
 	QCursor openHandCursor = Qt::CursorShape::OpenHandCursor;
 	QCursor closedHandCursor = Qt::CursorShape::ClosedHandCursor;
@@ -58,7 +60,7 @@ class MyQQuickItem : public QQuickItem {
 		geometry ->setDrawingMode( mode );
 		geometry ->setLineWidth( 1 );
 		QSGGeometry::Point2D *vertices = geometry ->vertexDataAsPoint2D( );
-		for( auto const& point : polygon ) 
+		for ( auto const& point : polygon ) 
 			(vertices++) ->set( point.x( ), point.y( ) );
 		QSGGeometryNode *n = new QSGGeometryNode( );
 //		qDebug( ) << "geometry" << geometry;
@@ -146,7 +148,6 @@ public:
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
 		auto [ t, dt ] = measurerScoped.get( );
 
-		// not removeAllChildNodes
 		while ( QSGNode* node = m_carsNode ->firstChild( ) ) 
 			delete node;
 		m_scener ->drawVehicles2( [this](QPolygonF const& polygons, QColor color) {
@@ -159,50 +160,23 @@ public:
 		}
 		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
 
-		int countLigths = m_ligthsNode ->childCount( );
-		static int s_counter = 0;
-//		if ( s_counter++ < 2 ) 
-		{
-			//////oldNode ->removeChildNode( m_ligthsNode );
-			//////countLigths = m_ligthsNode ->childCount( );
-			////std::deque< QSGNode *> deque;
-			////for ( int i = 0; i < countLigths; ++i ) {
-			////	deque.push_back( m_ligthsNode ->childAtIndex( i ) );
-			////	//QSGNode *node = m_ligthsNode ->childAtIndex( i );
-			////	//if ( node ) {
-			////	//	int count = node ->childCount( );
-			////	//	delete node;
-			////	//}
-			////	//else
-			////	//	__nop( );
-			////	////node ->removeAllChildNodes( );
-			////}
-			////for ( auto & node : deque ) {
-			////	qDebug( ) << "node" << node;
-			////	delete node;
-			////}
-			//while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) {
-			//	qDebug( ) << "node" << node;
-			//	delete node;
-			//}
-			//countLigths = m_ligthsNode ->childCount( );
-			//m_ligthsNode ->removeAllChildNodes( );
-			//countLigths = m_ligthsNode ->childCount( );
-			while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
-				delete node;
-			m_scener ->drawSignals2( [this, oldNode](QPolygonF const& polygons, QColor color) {
-					addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
-				} );
-		}
+		while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
+			delete node;
+		m_scener ->drawSignals2( [this, oldNode](QPolygonF const& polygons, QColor color) {
+				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+			} );
 		m_update ->trafficSignals( t );
 
 		QMatrix4x4 transformNodeMatrix = data ->transformNode ->matrix( );
 		if ( m_bDrag )
 			transformNodeMatrix.translate( m_xTransformNodeMatrix, m_yTransformNodeMatrix );
 		else {
-			transformNodeMatrix.translate( m_point.x( ), m_point.y( ) );
-			transformNodeMatrix.scale( m_delta );
-			transformNodeMatrix.translate( -m_point.x( ), -m_point.y( ) );
+			if ( m_bDeltaChanged ) {
+				m_bDeltaChanged = false;
+				transformNodeMatrix.translate( m_point.x( ), m_point.y( ) );
+				transformNodeMatrix.scale( m_delta );
+				transformNodeMatrix.translate( -m_point.x( ), -m_point.y( ) );
+			}
 		}
 		data ->transformNode ->setMatrix( transformNodeMatrix );
 
@@ -216,14 +190,12 @@ struct viaQQuickItem { static void run(int argc, char* argv[]) {
 		//qputenv( "QSG_RENDER_LOOP", "basic" ); // @from https://www.mimec.org/blog/render-loops-and-timers-in-qtquick
 		//qputenv( "QT_SCALE_FACTOR", QByteArray( "3" ) ); // @from https://stackoverflow.com/questions/77454174/drawing-qpolygonf-to-qsggeometry
 
-		QGuiApplication app( argc, argv );
-		//view.setResizeMode(QQuickView::SizeRootObjectToView);
-
-		//// antialiasing/multisampling @insp https://stackoverflow.com/questions/48895449/how-do-i-enable-antialiasing-on-qml-shapes or QML#antialiasing:true
-		//QSurfaceFormat format;
-		//format.setSamples( 8 );
-		//QSurfaceFormat::setDefaultFormat( format );
-		////QQuickWindow::setSceneGraphBackend( QSGRendererInterface::OpenGL );
+		QGuiApplication app( argc, argv ); //view.setResizeMode(QQuickView::SizeRootObjectToView);
+		// antialiasing/multisampling @insp https://stackoverflow.com/questions/48895449/how-do-i-enable-antialiasing-on-qml-shapes or QML#antialiasing:true
+		QSurfaceFormat format;
+		format.setSamples( 8 );
+		QSurfaceFormat::setDefaultFormat( format );
+		//QQuickWindow::setSceneGraphBackend( QSGRendererInterface::OpenGL );
 
 		QQmlApplicationEngine engine; 
 		qmlRegisterType<MyQQuickItem>( "MyQQuickItem", 1, 0, "MyQQuickItem" );

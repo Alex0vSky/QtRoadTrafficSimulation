@@ -113,7 +113,6 @@ C:\Prj\_L\Qt\lib\Qt5Widgetsd.lib
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/VERBOSE:INCR 
-
 C:\Prj\_L\Qt\lib\Qt5Widgetsd.lib
 C:\Prj\_L\Qt\lib\Qt5Cored.lib
 C:\Prj\_L\Qt\lib\Qt5Guid.lib
@@ -126,9 +125,9 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgetsd.lib %(AdditionalOptions)</AdditionalOptions>
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>..\_msvcStuff;$(A0S_path)src;$(A0S_path)ThirdParty;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>..\_msvcStuff;..\src;C:\Prj\_L\Qt\include;..\ThirdParty\verdigris\src;</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -136,9 +135,17 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgetsd.lib %(AdditionalOptions)</AdditionalOptions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalOptions>/VERBOSE:INCR 
+C:\Prj\_L\Qt\lib\Qt5Widgets.lib
+C:\Prj\_L\Qt\lib\Qt5Core.lib
+C:\Prj\_L\Qt\lib\Qt5Gui.lib
+C:\Prj\_L\Qt\lib\Qt5Quick.lib
+C:\Prj\_L\Qt\lib\Qt5Qml.lib
+C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
+		</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
