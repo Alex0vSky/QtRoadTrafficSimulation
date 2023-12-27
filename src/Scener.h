@@ -98,5 +98,64 @@ public:
 			}
 		}
 	}
+	
+	template<typename T>
+	void drawVehicles2(T callback) {
+		QColor colorBlue = QColor::fromRgb( 0, 0, 255 );
+		for ( auto & road : (*m_roads) ) {
+			Sim::IVehicle::vehicles_t const& vehicles = road.getVehicles( );
+			for ( auto & vehicle : vehicles ) {
+				qreal l = vehicle ->length( ), h = vehicle ->width( );
+				qreal sin = road.angle_sin( ), cos = road.angle_cos( );
+				qreal x = road.start( ).x( ) + cos * vehicle ->x( );
+				qreal y = road.start( ).y( ) + sin * vehicle ->x( );
+				auto points = m_draw.rotated_box( { x, y }, { l, h }, cos, sin, true );
+				QPolygonF polygons;
+				for ( auto const& elem : points )
+					polygons << elem;
+				callback( polygons, colorBlue );
+			}
+		}
+	}
+	template<typename T>
+	void drawSignals2(T callback) {
+		Sim::Road::TrafficSignal::signalRoads_t signalRoads = 
+			m_trafficSignal ->getRoads( );
+		for ( uint i = 0; i < signalRoads.size( ); ++i ) {
+			QColor color;
+			QColor red = QColor::fromRgb( 255, 0, 0 );
+			QColor green = QColor::fromRgb( 0, 255, 0 );
+			auto currentCycle = m_trafficSignal ->getCurrentCycle( );
+			const std::array<bool, 2> stat{ false, false };
+			bool b = ( currentCycle == stat );
+			if ( b ) {
+				QColor yellow = QColor::fromRgb( 255, 255, 0 );
+				uint currentCycleIndex = m_trafficSignal ->currentCycleIndex( );
+				auto cycle = m_trafficSignal ->cycle( );
+				if ( cycle[ currentCycleIndex - 1 ][ i ] )
+					color = yellow;
+				else 
+					color = red;
+			} else {
+				if ( currentCycle[ i ] )
+					color = green;
+				else
+					color = red;
+			}
+            for ( auto &road : m_trafficSignal ->getRoads( )[i] ) {
+                qreal a = 0;
+                QPointF position {
+						(1 - a) * road ->end( ).x( ) + a * road ->start( ).x( )
+						, (1 - a) * road ->end( ).y( ) + a * road ->start( ).y( )
+					};
+				auto points = m_draw.rotated_box( position, { 1, 3 },
+                                    road ->angle_cos( ), road ->angle_sin( ), true );
+				QPolygonF polygons;
+				for ( auto const& elem : points )
+					polygons << elem;
+				callback( polygons, color );
+			}
+		}
+	}
 };
 } // namespace syscross::TraffModel

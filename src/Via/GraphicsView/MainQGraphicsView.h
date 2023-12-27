@@ -63,8 +63,10 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 				signalRoads );
 
 			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
+			uint width_ = static_cast<uint>( width( ) );
+			uint height_ = static_cast<uint>( height( ) );
 			m_scener = std::make_unique< Scener >( 
-				scene( ), width( ), height( ), &m_roads, m_trafficSignal.get( ) );
+				scene( ), width_, height_, &m_roads, m_trafficSignal.get( ) );
 		}
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );

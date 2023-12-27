@@ -1,32 +1,27 @@
-﻿// src\viaQml.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
-// TODO(alex): not yet QML, rename
+﻿// src\viaQQuickItem.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
 namespace syscross::TraffModel {
 // @insp https://evileg.com/ru/post/296/
 class MyQQuickItem : public QQuickItem {
 	W_OBJECT( MyQQuickItem ) //Q_OBJECT
 
+	// +TODO(alex): zoom to mouse pointer
+	QPoint m_point;
 	float m_delta = 1;
 	// @from viaQGraphicsView#Canvas
 	void wheelEvent(QWheelEvent *pQEvent) override {
 		QQuickItem::wheelEvent( pQEvent );
-        qDebug() << "wheelEvent: " << pQEvent ->angleDelta( );
-		m_delta = 1.0f + pQEvent->angleDelta().y() / 1200.0f;
+		m_point = pQEvent ->position( ).toPoint( );
+		m_delta = 1.0f + pQEvent ->angleDelta( ).y( ) / 1200.0f;
 		this ->update( );
 	}
 	QCursor openHandCursor = Qt::CursorShape::OpenHandCursor;
 	QCursor closedHandCursor = Qt::CursorShape::ClosedHandCursor;
-	float m_xTransformNodeMatrix = 0;
-	float m_yTransformNodeMatrix = 0;
-	int m_xMouse = 0;
-	int m_yMouse = 0;
+	float m_xTransformNodeMatrix = 0, m_yTransformNodeMatrix = 0;
+	int m_xMouse = 0, m_yMouse = 0;
 	bool m_bDrag = false;
 	// Between mousePressEvent and mouseReleaseEvent
 	void mouseMoveEvent(QMouseEvent* event) override { // -
 		QQuickItem::mouseMoveEvent( event );
-        qDebug() << "mouseMoveEvent: " << event ->pos( );
-		//if (event->buttons() & Qt::LeftButton)
-		//	// If we are moveing with the left button down, update the scene to trigger autocompute
-		//	scene()->update(mapToScene(rect()).boundingRect());
 		m_xTransformNodeMatrix = event ->x( ) - m_xMouse;
 		m_yTransformNodeMatrix = event ->y( ) - m_yMouse;
 		m_xMouse = event ->x( );
@@ -35,7 +30,6 @@ class MyQQuickItem : public QQuickItem {
 	}
 	// Dont call base method @insp https://stackoverflow.com/questions/18864420/handling-mouse-events-on-a-qquickitem
     void mousePressEvent(QMouseEvent* event) override {
-        qDebug() << "mousePressEvent: " << event ->pos( );
 		this ->setCursor( closedHandCursor );
 		m_xMouse = event ->x( );
 		m_yMouse = event ->y( );
@@ -43,17 +37,22 @@ class MyQQuickItem : public QQuickItem {
     }
     void mouseReleaseEvent(QMouseEvent* event) override {
         QQuickItem::mouseReleaseEvent( event );
-        qDebug() << "mouseReleaseEvent: " << event ->pos( );
 		this ->setCursor( openHandCursor );
 		m_bDrag = false;
 	}
-	// @insp https://stackoverflow.com/questions/30281955/catch-mousemoveevent-on-qt5s-qquickitem
-    void hoverMoveEvent(QHoverEvent* event) override {
-        QQuickItem::hoverMoveEvent(event);
-        qDebug() << "hoverMoveEvent: " << event ->pos( );
-    }
 
-	void addPolygon_(QSGNode* node, QPolygonF const& polygon, unsigned int mode, QColor color) {
+	Sim::Road::roads_t m_roads;
+	static const uint c_vehicleRate = 15; // 35;
+	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
+	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
+	uint m_vehiclesOnMap = 0;
+	Timing m_timing;
+	std::unique_ptr< Updater > m_update;
+	std::unique_ptr< Scener > m_scener;
+
+	QSGNode *m_carsNode = nullptr, *m_ligthsNode = nullptr, *m_roadsNode = nullptr;
+
+	void addPolygon_(QSGNode* node, QPolygonF const& polygon, uint mode, QColor color) {
 		const QSGGeometry::AttributeSet &attribs = QSGGeometry::defaultAttributes_Point2D( );
 		QSGGeometry *geometry = new QSGGeometry( attribs, polygon.size( ) );
 		geometry ->setDrawingMode( mode );
@@ -61,17 +60,16 @@ class MyQQuickItem : public QQuickItem {
 		QSGGeometry::Point2D *vertices = geometry ->vertexDataAsPoint2D( );
 		for( auto const& point : polygon ) 
 			(vertices++) ->set( point.x( ), point.y( ) );
-		//(vertices++) ->set( polygon[ 0 ].x( ), polygon[ 0 ].y( ) );
-		//(vertices++) ->set( polygon[ 1 ].x( ), polygon[ 1 ].y( ) );
-		//(vertices++) ->set( polygon[ 2 ].x( ), polygon[ 2 ].y( ) );
-		//(vertices++) ->set( polygon[ 3 ].x( ), polygon[ 3 ].y( ) );
 		QSGGeometryNode *n = new QSGGeometryNode( );
+//		qDebug( ) << "geometry" << geometry;
 		n ->setGeometry( geometry );
 		n ->setFlag( QSGNode::OwnsGeometry);
 		QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
 		material->setColor( color );
+//		qDebug( ) << "material" << material;
 		n ->setMaterial( material );
 		n ->setFlag( QSGNode::OwnsMaterial);
+//		qDebug( ) << "n" << n;
 		node ->appendChildNode( n );
 	}
 
@@ -79,12 +77,9 @@ public:
     explicit MyQQuickItem(QQuickItem *parent = 0) : 
 		QQuickItem( parent )
 	{
-		setFlag(QQuickItem::ItemHasContents, true);
-		// ??? this ->mapToScene( { 100, 100 } );
+		setFlag( QQuickItem::ItemHasContents, true );
 		setAcceptedMouseButtons( Qt::AllButtons );
-		setAcceptHoverEvents( true );
-		setFlag(ItemAcceptsInputMethod, true);
-		//setMouseTracking( true );
+		setFlag( QQuickItem::ItemAcceptsInputMethod, true );
 		this ->setCursor( openHandCursor );
 
 		//// TODO(alex): resizeable @insp https://www.qcustomplot.com/index.php/support/forum/172
@@ -93,25 +88,53 @@ public:
 	}
 	// Внимание: Крайне важно, чтобы графические операции и взаимодействие с графом сцены происходили исключительно в потоке рендеринга, в первую очередь во времяupdatePaintNode() вызов. Лучшее практическое правило — использовать только классы с префиксом «QSG» внутриQQuickItem::updatePaintNode() функция.
 	// Примечание. Все классы с префиксом QSG следует использовать исключительно в потоке рендеринга графа сцены. ВидетьScene Graph and RenderingЧтобы получить больше информации.
-    virtual QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) override {
+    QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) override {
 		if ( !oldNode ) {
 			oldNode = new QSGNode( );
 			QColor colorRed = QColor::fromRgb( 255, 0, 0 );
 			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
-//static const int countPoints = 5; poly << QPointF(-10, 10) << QPointF(10, 50) << QPointF(30, 70 )<< QPointF(60, 50) << QPointF(50, 10);
-			//vertices[0].set( -10, 10 );
-			//vertices[1].set( 10, 50 );
-			//vertices[2].set( 30, 70 );
-			//vertices[3].set( 60, 50 );
-			//vertices[4].set( 50, 10 );
+//static const int countPoints = 5; vertices[0].set( -10, 10 ), vertices[1].set( 10, 50 ), vertices[2].set( 30, 70 ), vertices[3].set( 60, 50 ), vertices[4].set( 50, 10 );
+			m_roadsNode = new QSGNode( );
+			oldNode ->appendChildNode( m_roadsNode );
 			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
 			for ( QPolygonF const& polygon : polygons ) {
 				// lower 
-				addPolygon_( oldNode, polygon, QSGGeometry::DrawTriangleFan, colorGrey );
-				// upper
-				addPolygon_( oldNode, polygon, QSGGeometry::DrawLineLoop, colorRed );
-				//qDebug( ) << polygon; //// QPolygonF(QPointF(190,334.25)QPointF(190,315.75)QPointF(440,315.75)QPointF(440,334.25))
+				addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawTriangleFan, colorGrey );
+				//// upper
+				//addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawLineLoop, colorRed );
 			}
+
+			m_roads = Sim::AllRoads::get( );
+			// TODO(alex): to separate class `Xxx`
+			auto allPaths = Sim::AllRoads::getAllPaths( );
+			// add_generator
+			Sim::AllRoads::inboundRoads_t inboundRoads;
+			// @from https://www.codeconvert.ai/python-to-c++-converter
+			for ( auto &path : allPaths ) {
+				uint road_index = path.second[ 0 ];
+				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
+			}
+			m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >( 
+				c_vehicleRate, allPaths, inboundRoads );
+
+			// add_traffic_signal
+			Sim::Road::TrafficSignal::signalRoads_t signalRoads;
+			Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
+				Sim::AllRoads::getSignalIdxRoads( );
+			for ( auto const& pair : signalIdxRoads ) 
+				signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
+			m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
+				signalRoads );
+
+			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
+			QGraphicsScene *scene = nullptr;
+			uint width_ = static_cast<uint>( width( ) );
+			uint height_ = static_cast<uint>( height( ) );
+			m_scener = std::make_unique< Scener >( 
+				scene, width_, height_, &m_roads, m_trafficSignal.get( ) );
+
+			oldNode ->appendChildNode( m_carsNode = new QSGNode( ) );
+			oldNode ->appendChildNode( m_ligthsNode = new QSGNode( ) );
 //			QRectF bounds = boundingRect( );
 //			m_xTransformNodeMatrix = ( bounds.width( ) / 2 );
 //			m_yTransformNodeMatrix = ( bounds.height( ) / 2 );
@@ -120,13 +143,70 @@ public:
 //			data ->transformNode ->setMatrix( initMatrix );
 		}
 
+		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
+		auto [ t, dt ] = measurerScoped.get( );
+
+		// not removeAllChildNodes
+		while ( QSGNode* node = m_carsNode ->firstChild( ) ) 
+			delete node;
+		m_scener ->drawVehicles2( [this](QPolygonF const& polygons, QColor color) {
+				addPolygon_( m_carsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+			} );
+		m_update ->roads( t, dt );
+		auto road_index = m_vehicleGenerator ->update( t );
+		if ( road_index ) {
+			++m_vehiclesOnMap;
+		}
+		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
+
+		int countLigths = m_ligthsNode ->childCount( );
+		static int s_counter = 0;
+//		if ( s_counter++ < 2 ) 
+		{
+			//////oldNode ->removeChildNode( m_ligthsNode );
+			//////countLigths = m_ligthsNode ->childCount( );
+			////std::deque< QSGNode *> deque;
+			////for ( int i = 0; i < countLigths; ++i ) {
+			////	deque.push_back( m_ligthsNode ->childAtIndex( i ) );
+			////	//QSGNode *node = m_ligthsNode ->childAtIndex( i );
+			////	//if ( node ) {
+			////	//	int count = node ->childCount( );
+			////	//	delete node;
+			////	//}
+			////	//else
+			////	//	__nop( );
+			////	////node ->removeAllChildNodes( );
+			////}
+			////for ( auto & node : deque ) {
+			////	qDebug( ) << "node" << node;
+			////	delete node;
+			////}
+			//while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) {
+			//	qDebug( ) << "node" << node;
+			//	delete node;
+			//}
+			//countLigths = m_ligthsNode ->childCount( );
+			//m_ligthsNode ->removeAllChildNodes( );
+			//countLigths = m_ligthsNode ->childCount( );
+			while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
+				delete node;
+			m_scener ->drawSignals2( [this, oldNode](QPolygonF const& polygons, QColor color) {
+					addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+				} );
+		}
+		m_update ->trafficSignals( t );
+
 		QMatrix4x4 transformNodeMatrix = data ->transformNode ->matrix( );
 		if ( m_bDrag )
 			transformNodeMatrix.translate( m_xTransformNodeMatrix, m_yTransformNodeMatrix );
-		else
+		else {
+			transformNodeMatrix.translate( m_point.x( ), m_point.y( ) );
 			transformNodeMatrix.scale( m_delta );
+			transformNodeMatrix.translate( -m_point.x( ), -m_point.y( ) );
+		}
 		data ->transformNode ->setMatrix( transformNodeMatrix );
 
+		update( );
 		return oldNode;
 	} 
 };
@@ -204,7 +284,7 @@ struct viaQQuickItem { static void run(int argc, char* argv[]) {
 		const auto qQuickWindow = qobject_cast<QQuickWindow*>( engine.rootObjects( ).front( ) );
 		if ( !qQuickWindow ) 
 			return;
-		qQuickWindow ->resize( 1000, 630 );
+		//qQuickWindow ->resize( 1000, 630 );
 		//// logging
 		//qQuickWindow->connect(qQuickWindow, &QQuickWindow::beforeRendering, qQuickWindow, [] {
 		//    qDebug() << "before rendering";
@@ -212,9 +292,10 @@ struct viaQQuickItem { static void run(int argc, char* argv[]) {
 		//qQuickWindow->connect(qQuickWindow, &QQuickWindow::afterRendering, qQuickWindow, [] {
 		//    qDebug() << "after rendering";
 		//}, Qt::DirectConnection);
-		//// @insp https://stackoverflow.com/questions/20800850/how-to-access-a-nested-qml-object-from-c
+
 		//// force update 
-		//MyQQuickItem *childObject = qQuickWindow ->findChild<MyQQuickItem*>( "SomeNumberText" );
+		//// @insp https://stackoverflow.com/questions/20800850/how-to-access-a-nested-qml-object-from-c
+		//MyQQuickItem *childObject = qQuickWindow ->findChild<MyQQuickItem*>( "TraffModelQQuickItem" );
 		//// @insp https://stackoverflow.com/questions/19455518/periodically-redraw-qquickitem
 		//qQuickWindow->connect(qQuickWindow, &QQuickWindow::frameSwapped, qQuickWindow, [&] {
 		//		childObject ->update( );

@@ -1,7 +1,7 @@
 ﻿// src\Simulation\Draw.h - drawing tools
 namespace syscross::TraffModel::Sim {
 class Draw {
-	const int m_width, m_height;
+	const uint m_width, m_height;
 	const int c_zoom = 5;
 	const QPoint c_offsetScreen{ 0, 0 };
 	QPointF convert_(QPointF const& point) const {
@@ -12,7 +12,7 @@ class Draw {
 	}
 
 public:
-	Draw(int width, int height) :
+	Draw(uint width, uint height) :
 		m_width( width )
 		, m_height( height )
 	{}

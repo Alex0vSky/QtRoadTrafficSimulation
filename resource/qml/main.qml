@@ -10,6 +10,7 @@ ApplicationWindow {
 	title: "Qt Quick Controls 2, zoomable and moveable"
 
 	MyQQuickItem {
+		objectName: "TraffModelQQuickItem"
 		anchors.fill: parent
 	}		
 }

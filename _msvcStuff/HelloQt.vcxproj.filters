@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Via\GraphicsView\uic">
       <UniqueIdentifier>{3e218d88-6206-4f9e-8dd8-ab0f38709f7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\qml">
+      <UniqueIdentifier>{2dafd33e-dcd1-457b-958f-9d270f93ecef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -104,5 +107,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="..\resource\qml\main.qml">
+      <Filter>Resource Files\qml</Filter>
+    </None>
+    <None Include="..\resource\qml\paint.qml">
+      <Filter>Resource Files\qml</Filter>
+    </None>
   </ItemGroup>
 </Project>
