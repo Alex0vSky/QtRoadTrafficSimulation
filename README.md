@@ -14,8 +14,9 @@ Road traffic simulation using Qt
 - [x] roads in QQuickItem, zoomable and movable
 - [x] roads in QQuickPaintedItem, zoomable and movable
 - [x] car animation in QGraphicsView
-- [ ] car animation in QQuickItem
-- [ ] car animation in QQuickPaintedItem
+- [x] car animation in QQuickItem
+- [x] car animation in QQuickPaintedItem
+- [ ] code cleaning
 
 ## Features
 Traffic modeling with three found ways to display graphics in Qt:
