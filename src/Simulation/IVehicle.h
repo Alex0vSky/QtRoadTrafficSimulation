@@ -23,6 +23,6 @@ struct IVehicle {
 
     virtual void slow(double traffic_light_slow_factor) = 0;
     virtual void unslow() = 0;
+	typedef std::deque< IVehicle * > vehicles_t;
 };
-typedef std::deque< IVehicle * > vehicles_t;
 } // namespace syscross::TraffModel::Sim

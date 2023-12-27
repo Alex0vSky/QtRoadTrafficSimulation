@@ -152,6 +152,7 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgetsd.lib %(AdditionalOptions)</AdditionalOptions>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\HelloQt.h" />
+    <ClInclude Include="..\src\Scener.h" />
     <ClInclude Include="..\src\Simulation\AllRoads.h" />
     <ClInclude Include="..\src\Simulation\Curve.h" />
     <ClInclude Include="..\src\Simulation\Draw.h" />
@@ -165,6 +166,7 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgetsd.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="..\src\viaQQuickPaintedItem.h" />
     <ClInclude Include="..\src\Via\GraphicsView\BaseQGraphicsView.h" />
     <ClInclude Include="..\src\Via\GraphicsView\DraggableQGraphicsView.h" />
+    <ClInclude Include="..\src\Via\GraphicsView\LoopLauncherQGraphicsView.h" />
     <ClInclude Include="..\src\Via\GraphicsView\MainQGraphicsView.h" />
     <ClInclude Include="..\src\Via\GraphicsView\MainWindow.h" />
     <ClInclude Include="..\src\Via\GraphicsView\uic\ui_mainwindow.h" />

@@ -1,6 +1,5 @@
 ﻿// src\HelloQt.h - mix
 namespace syscross::TraffModel {
-typedef double timer_t;
 // just do it @insp https://github.com/huangqinjin/CMakeQt/blob/master/main.cpp
 struct QtInfo {
 	static void to_qDebug() {

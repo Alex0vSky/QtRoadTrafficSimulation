@@ -3,9 +3,10 @@ namespace syscross::TraffModel::Sim {
 class VehicleGenerator {
 	AllRoads::flatPathIndexes_t m_paths;
 	QRandomGenerator m_randomGenerator;
-    int m_vehicle_rate;
-    timer_t m_prev_gen_time;
+    int m_vehicleRate;
+    Timing::timer_t m_previousGenTime;
 	AllRoads::inboundRoads_t m_inboundRoads;
+	uint m_generated = 0;
 	// TODO(alex): refactorme to using `IVehicle::isRemoved( )`
 	static const uint c_maxVehicles = 4096;
 	// fixed memory for pointers
@@ -15,8 +16,8 @@ public:
 	VehicleGenerator(int vehicle_rate, AllRoads::flatPathIndexes_t paths, AllRoads::inboundRoads_t inboundRoads) :
 		m_paths( paths )
 		, m_randomGenerator( QRandomGenerator::securelySeeded( ) )
-        , m_vehicle_rate( vehicle_rate )
-        , m_prev_gen_time( 0 )
+        , m_vehicleRate( vehicle_rate )
+        , m_previousGenTime( 0 )
         , m_inboundRoads( inboundRoads )
 	{}
 	Vehicle generateVehicle() {
@@ -34,13 +35,13 @@ public:
 		}
 		return Vehicle( randElem.second );
 	}
-	std::optional< uint > update(timer_t curr_t, uint *n_vehicles_generated) {
+	std::optional< uint > update(Timing::timer_t curr_t) {
 		//bool time_elapsed = (curr_t - this->_prev_gen_time) >= (60 / this->_vehicle_rate);
 
-		bool time_elapsed = curr_t - m_prev_gen_time >= timer_t{ 60 } / m_vehicle_rate;
+		bool time_elapsed = curr_t - m_previousGenTime >= Timing::timer_t{ 60 } / m_vehicleRate;
 		//# If there's no vehicles on the map, or if the time elapsed after last
 		//# generation is greater than the vehicle rate, generate a vehicle
-		if ( !*n_vehicles_generated || time_elapsed ) {
+		if ( !m_generated || time_elapsed ) {
 			Vehicle vehicle = generateVehicle( );
 			uint firstRoadIdx = vehicle.path( )[ 0 ];
 			Road *road = m_inboundRoads[ firstRoadIdx ];
@@ -52,12 +53,13 @@ public:
 				//	roadVehicles.back( ) ->x( );
 				//	vehicle.getSpace( ) + vehicle.length( );
 				//}
-				vehicle.setVehicleIndex( *n_vehicles_generated );
-				uint nextVehicle = *n_vehicles_generated;
+				vehicle.setVehicleIndex( m_generated );
+				uint nextVehicle = m_generated;
 				//m_generatedVehicles[ 0 ].isRemoved( );
 				m_generatedVehicles[ nextVehicle ] = vehicle;
 				road ->addVehicle( &m_generatedVehicles[ nextVehicle ] );
-				m_prev_gen_time = curr_t;
+				m_previousGenTime = curr_t;
+				++m_generated;
 				return road ->getIndex( );
 			}
 		}

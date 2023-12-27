@@ -1,7 +1,7 @@
 ﻿// src\Simulation\Road.h - road segment
 namespace syscross::TraffModel::Sim {
 class Road {
-	vehicles_t m_cars;
+	IVehicle::vehicles_t m_cars;
 	uint m_index;
 	qreal m_distance;
 	QPointF m_start, m_end;
@@ -27,17 +27,16 @@ public:
 	private:
 		signalRoads_t m_signalRoads;
 	public:
+		// TODO(alex): semantic isnt about traffic signal
 		double const c_slowDistance = 50, c_slowFactor = 0.4, c_stopDistance = 15;
 		TrafficSignal(signalRoads_t const& signalRoads) :
 			m_signalRoads( signalRoads )
 		{
-			for ( uint i = 0; i < signalRoads.size( ); ++i ) {
-				for ( auto road : signalRoads[ i ] ) {
+			for ( uint i = 0; i < signalRoads.size( ); ++i ) 
+				for ( auto road : signalRoads[ i ] ) 
 					road ->setTrafficSignal( this, i );
-				}
-			}
 		}
-		void update() {
+		void update(Timing::timer_t t) {
 			m_currentCycleIndex = ( m_currentCycleIndex + 1 ) % m_cycle.size( );
 		}
 		std::array<bool, 2> getCurrentCycle() const {
@@ -101,7 +100,7 @@ public:
 //		qDebug( ) << "road" << m_index << "addVehicle" << p << p ->getVehicleIndex( );
 		m_cars.push_back( p );
 	}
-	vehicles_t getVehicles() { 
+	IVehicle::vehicles_t getVehicles() { 
 		return m_cars;
 	}
 	void popFrontVehicle() {

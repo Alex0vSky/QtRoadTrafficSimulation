@@ -95,6 +95,12 @@
     <ClInclude Include="..\src\Timing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Via\GraphicsView\LoopLauncherQGraphicsView.h">
+      <Filter>Header Files\Via\GraphicsView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Scener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
