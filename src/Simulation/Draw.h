@@ -1,21 +1,16 @@
 ﻿// src\Simulation\Draw.h - drawing tools
 namespace syscross::TraffModel::Sim {
 class Draw {
-	const uint m_width, m_height;
-	const int c_zoom = 5;
+	const uint c_width = 1000, c_height = 630, c_zoom = 5;
 	const QPoint c_offsetScreen{ 0, 0 };
 	QPointF convert_(QPointF const& point) const {
 		return QPointF( 
-				m_width / 2 + ( point.x( ) + c_offsetScreen.x( ) ) * c_zoom
-				, m_height / 2 + ( point.y( ) + c_offsetScreen.y( ) ) * c_zoom
+				c_width / 2 + ( point.x( ) + c_offsetScreen.x( ) ) * c_zoom
+				, c_height / 2 + ( point.y( ) + c_offsetScreen.y( ) ) * c_zoom
 			);
 	}
 
 public:
-	Draw(uint width, uint height) :
-		m_width( width )
-		, m_height( height )
-	{}
 	auto rotated_box(QPointF pos, QPointF size, qreal cos, qreal sin, bool centered) {
         qreal x = pos.x( ), y = pos.y( );
         qreal l = size.x( ), h = size.y( );

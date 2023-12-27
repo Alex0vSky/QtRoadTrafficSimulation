@@ -18,7 +18,7 @@ private:
 
 	clock_t::time_point m_lastClockTimePoint = { };
 	timer_t m_t = 0, m_lastDeltaTime = 0;
-	qreal m_speed = 3;
+	qreal m_speed = 3; //24;
 
 	void incrementTime_() { 
 		m_t += m_lastDeltaTime;

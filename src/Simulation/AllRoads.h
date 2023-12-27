@@ -128,8 +128,8 @@ public:
 		return ROADS;
 	}
 
-	static auto calc(uint width, uint height) {
-		Draw draw( width, height );
+	static auto calc() {
+		Draw draw;
 		float h = 3.7;
 		std::vector< QPolygonF > polygons;
 		Road::roads_t roads = get( );

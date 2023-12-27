@@ -7,7 +7,7 @@ ApplicationWindow {
 	width: 1000
 	height: 630
 	visible: true
-	title: "Qt Quick Controls 2, zoomable and moveable"
+	title: "TraffModel via QQuickItem, zoomable and moveable"
 
 	MyQQuickItem {
 		objectName: "TraffModelQQuickItem"

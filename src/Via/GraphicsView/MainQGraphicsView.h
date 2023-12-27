@@ -11,20 +11,29 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 	Timing m_timing;
 	std::unique_ptr< Updater > m_update;
 	std::unique_ptr< Scener > m_scener;
+	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
 	//std::vector< std::unique_ptr< Sim::Vehicle > > m_singleVehicleObject; // tmp
+
+	// clear previous
+	void sceneItemsErase_(std::vector< QGraphicsPolygonItem * > *items) {
+		if ( items ->empty( ) )
+			return;
+		auto it = std::remove_if( 
+				items ->begin( ), items ->end( )
+				, [this](QGraphicsPolygonItem *p) {
+					return scene( ) ->removeItem( p ), delete p, true;
+				}
+			);
+		items ->erase( it, items ->end( ) );
+	}
 
 	void loop() override {
 		if ( !m_vehicleGenerator ) {
 			// Scene static elements
-			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
-			QColor colorRed = QColor::fromRgb( 255, 0, 0 );
-			QBrush brush( colorGrey, Qt::SolidPattern );
-			QPen pen( brush, 1 );
-			//pen.setColor( colorRed );
-			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
+			auto polygons = Sim::AllRoads::calc( );
 			QRectF sceneRect;
 			for ( auto const& polygon : polygons ) {
-				auto *item = scene( ) ->addPolygon( polygon, pen, brush );
+				auto *item = scene( ) ->addPolygon( polygon, { Qt::gray }, Qt::gray );
 				sceneRect = sceneRect.united( item ->boundingRect( ) );
 			}
 			this ->setSceneRect( sceneRect );
@@ -46,7 +55,7 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 			// add_generator
 			Sim::AllRoads::inboundRoads_t inboundRoads;
 			// @from https://www.codeconvert.ai/python-to-c++-converter
-			for ( auto &path : allPaths ) {
+			for ( auto const& path : allPaths ) {
 				uint road_index = path.second[ 0 ];
 				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
 			}
@@ -63,22 +72,30 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 				signalRoads );
 
 			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
-			uint width_ = static_cast<uint>( width( ) );
-			uint height_ = static_cast<uint>( height( ) );
-			m_scener = std::make_unique< Scener >( 
-				scene( ), width_, height_, &m_roads, m_trafficSignal.get( ) );
+			m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
 		}
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
 		auto [ t, dt ] = measurerScoped.get( );
-		m_scener ->drawVehicles( );
+
+		sceneItemsErase_( &m_vehiclesItems );
+		m_vehiclesItems = m_scener ->drawVehicles( 
+			[this](QPolygonF const& polygons) {
+				return scene( ) ->addPolygon( polygons, { Qt::blue }, Qt::blue );
+			} );
+
 		m_update ->roads( t, dt );
 		auto road_index = m_vehicleGenerator ->update( t );
 		if ( road_index ) {
 			++m_vehiclesOnMap;
 		}
 		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
-		m_scener ->drawSignals( );
+
+		sceneItemsErase_( &m_trafficSignalItems );
+		m_trafficSignalItems = m_scener ->drawSignals( 
+			[this](QPolygonF const& polygons, QColor color) {
+				return scene( ) ->addPolygon( polygons, color, color );
+			} );
 		m_update ->trafficSignals( t );
 	}
 };

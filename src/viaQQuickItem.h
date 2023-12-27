@@ -14,7 +14,6 @@ class MyQQuickItem : public QQuickItem {
 		m_point = pQEvent ->position( ).toPoint( );
 		m_delta = 1.0f + pQEvent ->angleDelta( ).y( ) / 1200.0f;
 		m_bDeltaChanged = true;
-		//this ->update( );
 	}
 	QCursor openHandCursor = Qt::CursorShape::OpenHandCursor;
 	QCursor closedHandCursor = Qt::CursorShape::ClosedHandCursor;
@@ -28,7 +27,6 @@ class MyQQuickItem : public QQuickItem {
 		m_yTransformNodeMatrix = event ->y( ) - m_yMouse;
 		m_xMouse = event ->x( );
 		m_yMouse = event ->y( );
-		this ->update( );
 	}
 	// Dont call base method @insp https://stackoverflow.com/questions/18864420/handling-mouse-events-on-a-qquickitem
     void mousePressEvent(QMouseEvent* event) override {
@@ -98,7 +96,7 @@ public:
 //static const int countPoints = 5; vertices[0].set( -10, 10 ), vertices[1].set( 10, 50 ), vertices[2].set( 30, 70 ), vertices[3].set( 60, 50 ), vertices[4].set( 50, 10 );
 			m_roadsNode = new QSGNode( );
 			oldNode ->appendChildNode( m_roadsNode );
-			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
+			auto polygons = Sim::AllRoads::calc( );
 			for ( QPolygonF const& polygon : polygons ) {
 				// lower 
 				addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawTriangleFan, colorGrey );
@@ -129,11 +127,7 @@ public:
 				signalRoads );
 
 			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
-			QGraphicsScene *scene = nullptr;
-			uint width_ = static_cast<uint>( width( ) );
-			uint height_ = static_cast<uint>( height( ) );
-			m_scener = std::make_unique< Scener >( 
-				scene, width_, height_, &m_roads, m_trafficSignal.get( ) );
+			m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
 
 			oldNode ->appendChildNode( m_carsNode = new QSGNode( ) );
 			oldNode ->appendChildNode( m_ligthsNode = new QSGNode( ) );
@@ -150,8 +144,10 @@ public:
 
 		while ( QSGNode* node = m_carsNode ->firstChild( ) ) 
 			delete node;
-		m_scener ->drawVehicles2( [this](QPolygonF const& polygons, QColor color) {
+		QColor color = Qt::blue;
+		m_scener ->drawVehicles( [this, &color](QPolygonF const& polygons) {
 				addPolygon_( m_carsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+				return nullptr;
 			} );
 		m_update ->roads( t, dt );
 		auto road_index = m_vehicleGenerator ->update( t );
@@ -162,8 +158,9 @@ public:
 
 		while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
 			delete node;
-		m_scener ->drawSignals2( [this, oldNode](QPolygonF const& polygons, QColor color) {
+		m_scener ->drawSignals( [this, oldNode](QPolygonF const& polygons, QColor color) {
 				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+				return nullptr;
 			} );
 		m_update ->trafficSignals( t );
 

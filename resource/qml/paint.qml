@@ -7,7 +7,7 @@ ApplicationWindow {
 	width: 1000
 	height: 630
 	visible: true
-	title: "Qt Quick Controls 2 via QQuickPaintedItem"
+	title: "TraffModel via QQuickPaintedItem, zoomable and moveable"
 
 	MyQQuickPaintedItem {
 		anchors.fill: parent
