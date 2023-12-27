@@ -1,7 +1,6 @@
 ﻿// src\Updater.h - update all model entities
 namespace syscross::TraffModel {
 class Updater { 
-	// +TODO(alex): move `Sim::vehicles_t` inside `IVehicle`
 	using Road = Sim::Road;
 	Road::roads_t *m_roads;
 	Road::TrafficSignal *m_trafficSignal;
@@ -68,41 +67,36 @@ public:
 				continue;
 			auto &path = lead ->path( );
 
-			// +TODO(alex): Throught all road segments
-			{
-				Sim::Road * currentRoad = nullptr;
-				qreal carPosition = lead ->x( );
-				uint followingIdxRoadIndex = lead ->currentIdxRoadIndex( );
-				do {
-					currentRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
-					qreal currentRoadLength = currentRoad ->length( );
-					if ( ( carPosition - currentRoadLength ) <= 0 )
-						break;
-					carPosition -= currentRoadLength;
-					++followingIdxRoadIndex;
-					if ( followingIdxRoadIndex >= path.size( ) )
-						break;
-				} while( true );
-				//# If vehicle hasnt a next road
-				if ( followingIdxRoadIndex >= path.size( ) ) {
-					//# Remove it from its road
-					road.popFrontVehicle( );
-					// TODO(alex): makeme //# Remove from non_empty_roads if it has no vehicles //if not road.vehicles: //new_empty_roads.add(road.index)
-					--(*pVehiclesOnMap);
-					//# Update the waiting times sum //self._waiting_times_sum += lead.get_wait_time(self.t)
-					continue;
-				}
-				// Remove it from its road
+			Sim::Road * currentRoad = nullptr;
+			qreal carPosition = lead ->x( );
+			uint followingIdxRoadIndex = lead ->currentIdxRoadIndex( );
+			do {
+				currentRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
+				qreal currentRoadLength = currentRoad ->length( );
+				if ( ( carPosition - currentRoadLength ) <= 0 )
+					break;
+				carPosition -= currentRoadLength;
+				++followingIdxRoadIndex;
+				if ( followingIdxRoadIndex >= path.size( ) )
+					break;
+			} while( true );
+			//# If vehicle hasnt a next road
+			if ( followingIdxRoadIndex >= path.size( ) ) {
+				//# Remove it from its road
 				road.popFrontVehicle( );
-				// Reset the position relative to the road
-				lead ->setPositionOnRoad( carPosition );
-				// Add it to the next road
-				lead ->setIdxRoadIndex( followingIdxRoadIndex );
-				Sim::Road * inCarRoad = nullptr;
-				inCarRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
-				inCarRoad ->addVehicle( lead );
+				--(*pVehiclesOnMap);
+				//# Update the waiting times sum //self._waiting_times_sum += lead.get_wait_time(self.t)
 				continue;
 			}
+			// Remove it from its road
+			road.popFrontVehicle( );
+			// Reset the position relative to the road
+			lead ->setPositionOnRoad( carPosition );
+			// Add it to the next road
+			lead ->setIdxRoadIndex( followingIdxRoadIndex );
+			Sim::Road * inCarRoad = nullptr;
+			inCarRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
+			inCarRoad ->addVehicle( lead );
 		}
 	}
 	// _update_signals

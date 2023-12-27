@@ -1,40 +1,35 @@
 ﻿// src\Via\GraphicsView\MainQGraphicsView.h - main loop, render in main thread
 namespace syscross::TraffModel::Via::GraphicsView {
-class MainQGraphicsView : public LoopLauncherQGraphicsView {
+class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 	using LoopLauncherQGraphicsView::LoopLauncherQGraphicsView;
 
 	Sim::Road::roads_t m_roads;
-	static const uint c_vehicleRate = 25; // 35;
+	static const uint c_vehicleRate = 15; // 35;
 	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
 	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
-	//std::vector< std::unique_ptr< Sim::Vehicle > > m_singleVehicleObject; // tmp
 	uint m_vehiclesOnMap = 0;
-
 	Timing m_timing;
-	// +TODO(alex): inplace `Updater update` to members
 	std::unique_ptr< Updater > m_update;
-
-	// +TODO(alex): to separate class `Xxx`... Scener?
 	std::unique_ptr< Scener > m_scener;
+	//std::vector< std::unique_ptr< Sim::Vehicle > > m_singleVehicleObject; // tmp
 
 	void loop() override {
 		if ( !m_vehicleGenerator ) {
 			// Scene static elements
 			QColor colorGrey = QColor::fromRgb( 180, 180, 220 );
 			QColor colorRed = QColor::fromRgb( 255, 0, 0 );
-			QBrush brush_( colorGrey, Qt::SolidPattern );
-			QPen pen_( brush_, 1 );
-			//pen_.setColor( colorRed );
+			QBrush brush( colorGrey, Qt::SolidPattern );
+			QPen pen( brush, 1 );
+			//pen.setColor( colorRed );
 			auto polygons = Sim::AllRoads::calc( width( ), height( ) );
 			QRectF sceneRect;
 			for ( auto const& polygon : polygons ) {
-				auto *item = scene( ) ->addPolygon( polygon, pen_, brush_ );
+				auto *item = scene( ) ->addPolygon( polygon, pen, brush );
 				sceneRect = sceneRect.united( item ->boundingRect( ) );
 			}
 			this ->setSceneRect( sceneRect );
 
 			m_roads = Sim::AllRoads::get( );
-
 			//// tmp, aka single-vehicle generator
 			//auto W_R_S = Sim::AllRoads::W_R_S( );
 			//std::vector< uint > path;
@@ -52,7 +47,6 @@ class MainQGraphicsView : public LoopLauncherQGraphicsView {
 			Sim::AllRoads::inboundRoads_t inboundRoads;
 			// @from https://www.codeconvert.ai/python-to-c++-converter
 			for ( auto &path : allPaths ) {
-				uint weight = path.first;
 				uint road_index = path.second[ 0 ];
 				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
 			}
@@ -75,19 +69,14 @@ class MainQGraphicsView : public LoopLauncherQGraphicsView {
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
 		auto [ t, dt ] = measurerScoped.get( );
-
 		m_scener ->drawVehicles( );
-		// +TODO(alex): to separate class `Updater`
 		m_update ->roads( t, dt );
-		// -TODO(alex): to separate class `Updater`
 		auto road_index = m_vehicleGenerator ->update( t );
 		if ( road_index ) {
 			++m_vehiclesOnMap;
 		}
-		// +TODO(alex): to separate class `Updater`
 		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
 		m_scener ->drawSignals( );
-		// +TODO(alex): to separate class `Updater`
 		m_update ->trafficSignals( t );
 	}
 };

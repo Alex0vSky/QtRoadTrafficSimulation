@@ -1,5 +1,5 @@
 ﻿// src\viaQml.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
-// TODO(alex): not QML, rename
+// TODO(alex): not yet QML, rename
 namespace syscross::TraffModel {
 // @insp https://evileg.com/ru/post/296/
 class MyQQuickItem : public QQuickItem {

@@ -4,6 +4,7 @@ namespace syscross::TraffModel {
 struct QtInfo {
 	static void to_qDebug() {
 #if QT_VERSION_MAJOR < 6
+#	pragma push_macro( "path" )
 #	define path location
 #endif
 		qDebug( ) << "QLibraryInfo::PrefixPath            " << QLibraryInfo::path( QLibraryInfo::PrefixPath );
@@ -27,6 +28,7 @@ struct QtInfo {
 		qDebug( ) << "QLibraryInfo::SettingsPath          " << QLibraryInfo::path( QLibraryInfo::SettingsPath );
 #if QT_VERSION_MAJOR < 6
 #	undef path
+#	pragma pop_macro( "path" )
 #endif
 	}
 };

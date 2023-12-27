@@ -36,8 +36,6 @@ public:
 		return Vehicle( randElem.second );
 	}
 	std::optional< uint > update(Timing::timer_t curr_t) {
-		//bool time_elapsed = (curr_t - this->_prev_gen_time) >= (60 / this->_vehicle_rate);
-
 		bool time_elapsed = curr_t - m_previousGenTime >= Timing::timer_t{ 60 } / m_vehicleRate;
 		//# If there's no vehicles on the map, or if the time elapsed after last
 		//# generation is greater than the vehicle rate, generate a vehicle
@@ -49,10 +47,6 @@ public:
 			bool isEmpty = roadVehicles.empty( );
 			//# If the road is empty, or there's sufficient space for the generated vehicle, add it
 			if ( isEmpty || roadVehicles.back( ) ->x( ) > ( vehicle.getSpace( ) + vehicle.length( ) ) ) {
-				//if ( !isEmpty ) {
-				//	roadVehicles.back( ) ->x( );
-				//	vehicle.getSpace( ) + vehicle.length( );
-				//}
 				vehicle.setVehicleIndex( m_generated );
 				uint nextVehicle = m_generated;
 				//m_generatedVehicles[ 0 ].isRemoved( );

@@ -27,7 +27,7 @@ public:
 	private:
 		signalRoads_t m_signalRoads;
 	public:
-		// TODO(alex): semantic isnt about traffic signal
+		// TODO(alex): semantics this consts isnt about traffic signal
 		double const c_slowDistance = 50, c_slowFactor = 0.4, c_stopDistance = 15;
 		TrafficSignal(signalRoads_t const& signalRoads) :
 			m_signalRoads( signalRoads )

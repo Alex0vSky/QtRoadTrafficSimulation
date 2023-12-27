@@ -15,7 +15,6 @@ private:
 	static constexpr auto c_xxxInSecond = std::chrono::duration_cast
 		< pythonModelTimeResolution_t >
 		( std::chrono::seconds{ 1 } ).count( );
-	const timer_t c_fixedDeltaTime = 0.08;
 
 	clock_t::time_point m_lastClockTimePoint = { };
 	timer_t m_t = 0, m_lastDeltaTime = 0;
