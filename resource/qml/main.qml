@@ -1,6 +1,6 @@
 ﻿import QtQuick 2.6
 import QtQuick.Controls 2.1
-import MyQQuickItem 1.0
+import MainQQuickItem 1.0
 
 ApplicationWindow {
 	id: window
@@ -9,8 +9,8 @@ ApplicationWindow {
 	visible: true
 	title: "TraffModel via QQuickItem, zoomable and moveable"
 
-	MyQQuickItem {
-		objectName: "TraffModelQQuickItem"
+	MainQQuickItem {
+		objectName: "MainQQuickItem"
 		anchors.fill: parent
 	}		
 }

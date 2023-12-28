@@ -159,6 +159,7 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\HelloQt.h" />
+    <ClInclude Include="..\src\QrcLocatorReplacement.h" />
     <ClInclude Include="..\src\Scener.h" />
     <ClInclude Include="..\src\Simulation\AllRoads.h" />
     <ClInclude Include="..\src\Simulation\Curve.h" />
@@ -178,6 +179,11 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
     <ClInclude Include="..\src\Via\GraphicsView\MainWindow.h" />
     <ClInclude Include="..\src\Via\GraphicsView\uic\ui_mainwindow.h" />
     <ClInclude Include="..\src\Via\GraphicsView\ZoomableQGraphicsView.h" />
+    <ClInclude Include="..\src\Via\QuickItem\BaseQQuickItem.h" />
+    <ClInclude Include="..\src\Via\QuickItem\DraggableQQuickItem.h" />
+    <ClInclude Include="..\src\Via\QuickItem\LoopLauncherQQuickItem.h" />
+    <ClInclude Include="..\src\Via\QuickItem\MainQQuickItem.h" />
+    <ClInclude Include="..\src\Via\QuickItem\ZoomableQQuickItem.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

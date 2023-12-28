@@ -1,6 +1,7 @@
 ﻿// src\Via\GraphicsView\MainQGraphicsView.h - main loop in main thread
 namespace syscross::TraffModel::Via::GraphicsView {
 class MainQGraphicsView final : public LoopLauncherQGraphicsView {
+	W_OBJECT( MainQGraphicsView ) //Q_OBJECT
 	using LoopLauncherQGraphicsView::LoopLauncherQGraphicsView;
 
 	Sim::Road::roads_t m_roads;
@@ -29,6 +30,8 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 
 	void loop() override {
 		if ( !m_vehicleGenerator ) {
+			//qDebug( ) << this ->metaObject( ) ->className( );
+
 			// Scene static elements
 			auto polygons = Sim::AllRoads::calc( );
 			QRectF sceneRect;
@@ -99,4 +102,5 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 		m_update ->trafficSignals( t );
 	}
 };
+W_OBJECT_IMPL( MainQGraphicsView ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::GraphicsView

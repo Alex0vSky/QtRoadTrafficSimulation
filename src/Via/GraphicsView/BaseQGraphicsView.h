@@ -5,7 +5,7 @@ class BaseQGraphicsView : public QGraphicsView {
 	QMainWindow *m_parent;
 
 public: 
-    BaseQGraphicsView(QMainWindow *parent) : 
+    explicit BaseQGraphicsView(QMainWindow *parent) : 
 		QGraphicsView( parent )
 		, m_parent( parent )
 	{

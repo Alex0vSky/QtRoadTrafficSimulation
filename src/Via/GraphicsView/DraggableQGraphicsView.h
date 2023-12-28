@@ -1,6 +1,7 @@
 ﻿// src\Via\GraphicsView\DraggableQGraphicsView.h - add drag
 namespace syscross::TraffModel::Via::GraphicsView {
 class DraggableQGraphicsView : public ZoomableQGraphicsView {
+	W_OBJECT( DraggableQGraphicsView ) //Q_OBJECT
 	const QPoint m_viewportTopleft = { -20, -20 };
 	const QPoint m_viewportBottomRight = { 20, 20 };
 	QPointF m_topLeft, m_bottomRight;
@@ -56,10 +57,11 @@ class DraggableQGraphicsView : public ZoomableQGraphicsView {
 	}
 
 public: 
-    DraggableQGraphicsView(QMainWindow *parent) : 
+    explicit DraggableQGraphicsView(QMainWindow *parent) : 
 		ZoomableQGraphicsView( parent )
 	{
 		connect( scene( ), &QGraphicsScene::changed, this, &DraggableQGraphicsView::autocomputeSceneSize );
 	}
 };
+W_OBJECT_IMPL( DraggableQGraphicsView ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::GraphicsView

@@ -31,6 +31,9 @@
     <Filter Include="Resource Files\qml">
       <UniqueIdentifier>{2dafd33e-dcd1-457b-958f-9d270f93ecef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Via\QuickItem">
+      <UniqueIdentifier>{6a88d955-0c61-4890-bad1-26ae25b36ac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -102,6 +105,24 @@
       <Filter>Header Files\Via\GraphicsView</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Scener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickItem\BaseQQuickItem.h">
+      <Filter>Header Files\Via\QuickItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickItem\ZoomableQQuickItem.h">
+      <Filter>Header Files\Via\QuickItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickItem\DraggableQQuickItem.h">
+      <Filter>Header Files\Via\QuickItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickItem\LoopLauncherQQuickItem.h">
+      <Filter>Header Files\Via\QuickItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickItem\MainQQuickItem.h">
+      <Filter>Header Files\Via\QuickItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\QrcLocatorReplacement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

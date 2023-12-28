@@ -52,12 +52,9 @@ class MyQQuickPaintedItem : public QQuickPaintedItem {
 		//painter ->scale( 2, 2 );
 
 		// Static objects
-		QBrush brush( Qt::gray, Qt::SolidPattern );
-		QPen pen( brush, 1 );
-		//pen.setColor( Qt::red );
 		painter ->setRenderHint( QPainter::Antialiasing, true );
-		painter ->setBrush( brush );
-		painter ->setPen( pen );
+		painter ->setBrush( { Qt::gray, Qt::SolidPattern } );
+		painter ->setPen( Qt::gray );
 		auto polygons = Sim::AllRoads::calc( );
 		for ( auto const& polygon : polygons )
 			painter ->drawPolygon( polygon );
@@ -99,6 +96,9 @@ public:
 				}
 			);
 		m_timer.start( 50 );
+		//// TODO(alex): resizeable @insp https://www.qcustomplot.com/index.php/support/forum/172
+		//connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
+		//connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
 	}
 };
 W_OBJECT_IMPL( MyQQuickPaintedItem ) //Q_OBJECT
@@ -108,43 +108,8 @@ struct viaQQuickPaintedItem { static void run(int argc, char* argv[]) {
 
 		QQmlApplicationEngine engine; 
 		qmlRegisterType< MyQQuickPaintedItem >( "MyQQuickPaintedItem", 1, 0, "MyQQuickPaintedItem" );
-		// TODO(alex): to separate class QrcLocatorReplacement
-		// qrc locator replacement
-#pragma region
-		auto currentSystemPath = QDir::currentPath( );
-		auto currentBinaryPath = qApp ->applicationDirPath( );
-		static const QString prefix{ "qrc" };
-		QStringList searchPaths{ 
-				currentSystemPath + "/../resource/qml"
-				, currentBinaryPath + "/../../../resource/qml"
-			};
-		QDir::setSearchPaths( prefix, searchPaths );
-		// engine.setBaseUrl not working or use Q_INIT_RESOURCE
-		// @insp https://www.kdab.com/fun-with-paths-urls-in-qml/
-		// @insp https://stackoverflow.com/questions/39701903/difference-between-foo-qrc-foo-and-qrc-foo-paths-in-qt
-		auto urlInterceptorFirmware = engine.urlInterceptor( );
-		class UrlInterceptor : public QQmlAbstractUrlInterceptor {
-			QQmlAbstractUrlInterceptor *m_parent;
-			QUrl intercept(const QUrl& path, QQmlAbstractUrlInterceptor::DataType type) override {
-				do {
-					if ( QQmlAbstractUrlInterceptor::QmlFile != type )
-						break;
-					if ( path.scheme() != "qrc" )
-						break;
-					QFileInfo fileInfo( prefix + ":" + path.path( ) );
-					if ( !fileInfo.exists( ) )
-						break;
-					return QUrl::fromLocalFile( fileInfo.filePath( ) );
-				} while ( false );
-				return m_parent ->intercept( path, type );
-			};
-		public:
-			UrlInterceptor(QQmlAbstractUrlInterceptor *parent) :
-				m_parent( parent )
-			{}
-		} urlInterceptor( urlInterceptorFirmware );
-		engine.setUrlInterceptor( &urlInterceptor );
-#pragma endregion
+		// +TODO(alex): to separate class QrcLocatorReplacement
+		QrcLocatorReplacement replacement( &engine );
 		QUrl url( "qrc:/paint.qml" );
 		QObject::connect(
 				&engine
