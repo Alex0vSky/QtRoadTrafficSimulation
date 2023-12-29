@@ -2,7 +2,6 @@
 namespace syscross::TraffModel::Via::GraphicsView {
 class ZoomableQGraphicsView : public BaseQGraphicsView {
 	W_OBJECT( ZoomableQGraphicsView ) //Q_OBJECT
-	int m_delta = 5;
 	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
     void wheelEvent(QWheelEvent *pQEvent) override {
 		// pos() -> virtual canvas
@@ -10,7 +9,6 @@ class ZoomableQGraphicsView : public BaseQGraphicsView {
 		QPointF pos = mapToScene( point.toPoint( ) );
 		// scale from wheel angle
 		float delta = 1.0f + pQEvent->angleDelta().y() / 1200.0f;
-		m_delta += pQEvent->angleDelta().y();
 		// modify transform matrix
 		QTransform xform = transform();
 		xform.translate(pos.x(), pos.y()); // origin to spot
@@ -19,7 +17,6 @@ class ZoomableQGraphicsView : public BaseQGraphicsView {
 		setTransform(xform);
 		// force update
 		update( );
-		pQEvent->accept( );
 	}
 
 public: 
@@ -28,9 +25,6 @@ public:
 	{
 		setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 		setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-	}
-	auto getZoomDelta() {
-		return m_delta;
 	}
 };
 W_OBJECT_IMPL( ZoomableQGraphicsView ) //Q_OBJECT

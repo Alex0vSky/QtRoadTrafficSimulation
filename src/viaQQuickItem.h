@@ -1,6 +1,6 @@
 ﻿// src\viaQQuickItem.h - render via OpenGL, using QGuiApplication+Qml+QQuickItem, without qrc, render in separate thread
 namespace syscross::TraffModel {
-struct viaQQuickItem { static void run(int argc, char* argv[]) { 
+struct viaQQuickItem { static void run(int argc = 0, char* argv[] = nullptr) { 
 		//qputenv( "QSG_RENDER_LOOP", "basic" ); // @from https://www.mimec.org/blog/render-loops-and-timers-in-qtquick
 		//qputenv( "QT_SCALE_FACTOR", QByteArray( "3" ) ); // @from https://stackoverflow.com/questions/77454174/drawing-qpolygonf-to-qsggeometry
 		QGuiApplication app( argc, argv );
@@ -12,24 +12,8 @@ struct viaQQuickItem { static void run(int argc, char* argv[]) {
 
 		QQmlApplicationEngine engine; 
 		using namespace Via::QuickItem;
-		qmlRegisterType<MainQQuickItem>( "MainQQuickItem", 1, 0, "MainQQuickItem" );
-
-		QrcLocatorReplacement replacement( &engine );
-		QUrl url( "qrc:/main.qml" );
-		QObject::connect(
-				&engine
-				, &QQmlApplicationEngine::objectCreated
-				, &app
-				, [url](QObject *obj, QUrl const& objUrl) {
-					if ( !obj && url == objUrl )
-						QCoreApplication::exit( -1 );
-				}
-				, Qt::QueuedConnection
-			);
-		engine.load( url );
-		if ( engine.rootObjects( ).isEmpty( ) )
-			return;
-
+		RegistratorLoader< MainQQuickItem > foo( 
+			&engine, &app, "MainQQuickItem", "qrc:/main.qml" );
 		//// force update 
 		//// @insp https://github.com/huangqinjin/CMakeQt/blob/master/main.cpp
 		//const auto qQuickWindow = qobject_cast<QQuickWindow*>( engine.rootObjects( ).front( ) );

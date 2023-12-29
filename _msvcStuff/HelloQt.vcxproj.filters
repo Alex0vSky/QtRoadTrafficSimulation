@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Via\QuickItem">
       <UniqueIdentifier>{6a88d955-0c61-4890-bad1-26ae25b36ac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Via\QuickPaintedItem">
+      <UniqueIdentifier>{b41582a8-0e8b-45b1-9524-17343bca0155}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +129,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickPaintedItem\BaseQQuickPaintedItem.h">
+      <Filter>Header Files\Via\QuickPaintedItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickPaintedItem\ZoomableQQuickPaintedItem.h">
+      <Filter>Header Files\Via\QuickPaintedItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickPaintedItem\DraggableQQuickPaintedItem.h">
+      <Filter>Header Files\Via\QuickPaintedItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickPaintedItem\LoopLauncherQQuickPaintedItem.h">
+      <Filter>Header Files\Via\QuickPaintedItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Via\QuickPaintedItem\MainQQuickPaintedItem.h">
+      <Filter>Header Files\Via\QuickPaintedItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RegistratorLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,11 @@
 ﻿// src\Via\QuickItem\MainQQuickItem.h - main loop in separate thread
+#include "Via/QuickItem/BaseQQuickItem.h"
+#include "Via/QuickItem/ZoomableQQuickItem.h"
+#include "Via/QuickItem/DraggableQQuickItem.h"
+#include "Via/QuickItem/LoopLauncherQQuickItem.h"
 namespace syscross::TraffModel::Via::QuickItem {
 class MainQQuickItem : public LoopLauncherQQuickItem {
 	W_OBJECT( MainQQuickItem ) //Q_OBJECT
-
 	QSGNode *m_carsNode = nullptr, *m_ligthsNode = nullptr, *m_roadsNode = nullptr;
 
 	void addPolygon_(QSGNode* node, QPolygonF const& polygon, uint mode, QColor color) {
@@ -23,8 +26,8 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 	}
     QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) override {
 		if ( !oldNode ) {
-			oldNode = new QSGNode( );
-			oldNode ->appendChildNode( m_roadsNode = new QSGNode( ) );
+			oldNode = new QSGNode;
+			oldNode ->appendChildNode( m_roadsNode = new QSGNode );
 			auto polygons = Sim::AllRoads::calc( );
 			for ( QPolygonF const& polygon : polygons ) {
 				// lower // QColor::fromRgb( 180, 180, 220 );
@@ -32,11 +35,9 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 				//// upper
 				//addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawLineLoop, Qt::red );
 			}
-
 			Common::init( );
-
-			oldNode ->appendChildNode( m_carsNode = new QSGNode( ) );
-			oldNode ->appendChildNode( m_ligthsNode = new QSGNode( ) );
+			oldNode ->appendChildNode( m_carsNode = new QSGNode );
+			oldNode ->appendChildNode( m_ligthsNode = new QSGNode );
 		}
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
@@ -57,17 +58,18 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 
 		while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
 			delete node;
-		m_scener ->drawSignals( [this, oldNode](QPolygonF const& polygons, QColor color) {
+		m_scener ->drawSignals( [this](QPolygonF const& polygons, QColor color) {
 				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
 				return nullptr;
 			} );
 		m_update ->trafficSignals( t );
 
-		QMatrix4x4 matrix = data ->transformNode ->matrix( );
-		bool isDrag = DraggableQQuickItem::handleDrag( &matrix );
-		bool isZoom = ZoomableQQuickItem::handleZoom( &matrix );
-		if ( isDrag || isZoom )
-			data ->transformNode ->setMatrix( matrix );
+		// Empty matrix, or wrong zoom will be soon
+		QMatrix4x4 m_matrix;
+		DraggableQQuickItem::handleDrag( &m_matrix, getZoom( ) );
+		ZoomableQQuickItem::handleZoom( &m_matrix );
+		data ->transformNode ->setMatrix( m_matrix );
+		// Smooth animation
 //		update( );
 		return oldNode;
 	} 

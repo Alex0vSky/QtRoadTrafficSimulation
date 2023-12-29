@@ -12,22 +12,10 @@
 #include "Scener.h"
 #include "Common.h"
 #include "QrcLocatorReplacement.h"
-
-#include "Via/GraphicsView/BaseQGraphicsView.h"
-#include "Via/GraphicsView/ZoomableQGraphicsView.h"
-#include "Via/GraphicsView/DraggableQGraphicsView.h"
-#include "Via/GraphicsView/LoopLauncherQGraphicsView.h"
-#include "Via/GraphicsView/MainQGraphicsView.h"
+#include "RegistratorLoader.h"
 #include "Via/GraphicsView/MainWindow.h"
-
-#include "Via/QuickItem/BaseQQuickItem.h"
-#include "Via/QuickItem/ZoomableQQuickItem.h"
-#include "Via/QuickItem/DraggableQQuickItem.h"
-#include "Via/QuickItem/LoopLauncherQQuickItem.h"
 #include "Via/QuickItem/MainQQuickItem.h"
-//	W_OBJECT( Xxx ) //Q_OBJECT
-//W_OBJECT_IMPL( Xxx ) //Q_OBJECT
-
+#include "Via/QuickPaintedItem/MainQQuickPaintedItem.h"
 #include "viaQGraphicsView.h"
 #include "viaQQuickItem.h"
 #include "viaQQuickPaintedItem.h"
@@ -42,8 +30,8 @@ int WinMain(HINSTANCE, HINSTANCE, char*, int) {
 int main(int argc, char* argv[]) {
 #endif
 	using namespace syscross::TraffModel;
-	//viaQGraphicsView::run( 0, nullptr );
-	//viaQQuickItem::run( 0, nullptr );
-	viaQQuickPaintedItem::run( 0, nullptr );
+	//viaQGraphicsView::run( );
+	viaQQuickItem::run( );
+	//viaQQuickPaintedItem::run( );
 	return 0;
 }

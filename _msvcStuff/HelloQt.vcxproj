@@ -161,6 +161,7 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
     <ClInclude Include="..\src\Common.h" />
     <ClInclude Include="..\src\HelloQt.h" />
     <ClInclude Include="..\src\QrcLocatorReplacement.h" />
+    <ClInclude Include="..\src\RegistratorLoader.h" />
     <ClInclude Include="..\src\Scener.h" />
     <ClInclude Include="..\src\Simulation\AllRoads.h" />
     <ClInclude Include="..\src\Simulation\Curve.h" />
@@ -185,6 +186,11 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
     <ClInclude Include="..\src\Via\QuickItem\LoopLauncherQQuickItem.h" />
     <ClInclude Include="..\src\Via\QuickItem\MainQQuickItem.h" />
     <ClInclude Include="..\src\Via\QuickItem\ZoomableQQuickItem.h" />
+    <ClInclude Include="..\src\Via\QuickPaintedItem\BaseQQuickPaintedItem.h" />
+    <ClInclude Include="..\src\Via\QuickPaintedItem\DraggableQQuickPaintedItem.h" />
+    <ClInclude Include="..\src\Via\QuickPaintedItem\LoopLauncherQQuickPaintedItem.h" />
+    <ClInclude Include="..\src\Via\QuickPaintedItem\MainQQuickPaintedItem.h" />
+    <ClInclude Include="..\src\Via\QuickPaintedItem\ZoomableQQuickPaintedItem.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

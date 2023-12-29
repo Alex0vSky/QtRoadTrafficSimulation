@@ -33,17 +33,17 @@ protected:
 		}
 		m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >( 
 			c_vehicleRate, allPaths, inboundRoads );
-			// add_traffic_signal
-			Sim::Road::TrafficSignal::signalRoads_t signalRoads;
-			Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
-				Sim::AllRoads::getSignalIdxRoads( );
-			for ( auto const& pair : signalIdxRoads ) 
-				signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
-			m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
-				signalRoads );
+		// add_traffic_signal
+		Sim::Road::TrafficSignal::signalRoads_t signalRoads;
+		Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
+			Sim::AllRoads::getSignalIdxRoads( );
+		for ( auto const& pair : signalIdxRoads ) 
+			signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
+		m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
+			signalRoads );
 
-			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
-			m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
+		m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
+		m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
 	}
 };
 } // namespace syscross::TraffModel

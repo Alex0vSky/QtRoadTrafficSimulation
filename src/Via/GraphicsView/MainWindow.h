@@ -1,4 +1,9 @@
 ﻿// src\Via\GraphicsView\MainWindow.h - main window
+#include "Via/GraphicsView/BaseQGraphicsView.h"
+#include "Via/GraphicsView/ZoomableQGraphicsView.h"
+#include "Via/GraphicsView/DraggableQGraphicsView.h"
+#include "Via/GraphicsView/LoopLauncherQGraphicsView.h"
+#include "Via/GraphicsView/MainQGraphicsView.h"
 namespace syscross::TraffModel::Via::GraphicsView {
 #include "uic/ui_mainwindow.h"
 class MainWindow : public QMainWindow {
