@@ -1,13 +1,11 @@
 ﻿// src\Via\GraphicsView\BaseQGraphicsView.h - something based
 namespace syscross::TraffModel::Via::GraphicsView {
-class BaseQGraphicsView : public QGraphicsView {
+class BaseQGraphicsView : public QGraphicsView, public Common {
 	W_OBJECT( BaseQGraphicsView ) //Q_OBJECT
-	QMainWindow *m_parent;
 
 public: 
     explicit BaseQGraphicsView(QMainWindow *parent) : 
 		QGraphicsView( parent )
-		, m_parent( parent )
 	{
 		setScene( new QGraphicsScene( this ) );
 		setRenderHints( QPainter::Antialiasing );

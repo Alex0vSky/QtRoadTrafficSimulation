@@ -10,6 +10,7 @@
 #include "Simulation/VehicleGenerator.h"
 #include "Updater.h"
 #include "Scener.h"
+#include "Common.h"
 #include "QrcLocatorReplacement.h"
 
 #include "Via/GraphicsView/BaseQGraphicsView.h"

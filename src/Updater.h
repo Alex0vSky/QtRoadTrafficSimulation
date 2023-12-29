@@ -13,7 +13,7 @@ public:
 		m_roads( roads )
 		, m_trafficSignal( trafficSignal ) 
 	{}
-	//# Update every road // self.roads[i].update(self.dt, self.t)
+	//# Update every road
 	void roads(Timing::timer_t t, Timing::timer_t dt) { 
 		for ( auto & road : (*m_roads) ) {
 			Sim::IVehicle::vehicles_t vehicles_ = road.getVehicles( );
@@ -94,8 +94,7 @@ public:
 			lead ->setPositionOnRoad( carPosition );
 			// Add it to the next road
 			lead ->setIdxRoadIndex( followingIdxRoadIndex );
-			Sim::Road * inCarRoad = nullptr;
-			inCarRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
+			Sim::Road * inCarRoad = &(*m_roads)[ path[ followingIdxRoadIndex ] ];
 			inCarRoad ->addVehicle( lead );
 		}
 	}

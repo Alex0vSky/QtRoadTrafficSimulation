@@ -1,16 +1,7 @@
 ﻿// src\viaQQuickPaintedItem.h - using QQuickView, QWidget::createWindowContainer, render in separate thread
 namespace syscross::TraffModel {
-class MyQQuickPaintedItem : public QQuickPaintedItem {
+class MyQQuickPaintedItem : public QQuickPaintedItem, public Common {
 	W_OBJECT( MyQQuickPaintedItem ) //Q_OBJECT
-
-	Sim::Road::roads_t m_roads;
-	static const uint c_vehicleRate = 15; // 35;
-	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
-	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
-	uint m_vehiclesOnMap = 0;
-	Timing m_timing;
-	std::unique_ptr< Updater > m_update;
-	std::unique_ptr< Scener > m_scener;
 
 	// TODO(alex): makeme
 	bool m_bDirty = true;
@@ -19,32 +10,8 @@ class MyQQuickPaintedItem : public QQuickPaintedItem {
 		// QPainter::save() + QPainter::restore()
 		if ( !m_bDirty )
 			return;
-		if ( !m_vehicleGenerator ) {
-			m_roads = Sim::AllRoads::get( );			
-			// TODO(alex): to separate class `Xxx`
-			auto allPaths = Sim::AllRoads::getAllPaths( );
-			// add_generator
-			Sim::AllRoads::inboundRoads_t inboundRoads;
-			// @from https://www.codeconvert.ai/python-to-c++-converter
-			for ( auto &path : allPaths ) {
-				uint road_index = path.second[ 0 ];
-				inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
-			}
-			m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >( 
-				c_vehicleRate, allPaths, inboundRoads );
-
-			// add_traffic_signal
-			Sim::Road::TrafficSignal::signalRoads_t signalRoads;
-			Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
-				Sim::AllRoads::getSignalIdxRoads( );
-			for ( auto const& pair : signalIdxRoads ) 
-				signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
-			m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
-				signalRoads );
-
-			m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
-			m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
-		}
+		if ( !m_vehicleGenerator ) 
+			Common::init( );
 
 		//// scroll @insp https://stackoverflow.com/questions/27233446/transform-coordinates-in-a-qquickpainteditem
 		//painter ->translate( QPoint{ 50, 50 } );
@@ -62,10 +29,9 @@ class MyQQuickPaintedItem : public QQuickPaintedItem {
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
 		auto [ t, dt ] = measurerScoped.get( );
 
-		QColor color = Qt::blue;
-		painter ->setBrush( color );
-		painter ->setPen( color );
-		m_scener ->drawVehicles( [this, &color, painter](QPolygonF const& polygons) {
+		painter ->setBrush( Qt::blue );
+		painter ->setPen( Qt::blue );
+		m_scener ->drawVehicles( [this, painter](QPolygonF const& polygons) {
 				painter ->drawPolygon( polygons );
 				return nullptr;
 			} );
