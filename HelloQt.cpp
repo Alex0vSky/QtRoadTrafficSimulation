@@ -13,6 +13,7 @@
 #include "Common.h"
 #include "QrcLocatorReplacement.h"
 #include "RegistratorLoader.h"
+#include "FpsCounter.h"
 #include "Via/GraphicsView/MainWindow.h"
 #include "Via/QuickItem/MainQQuickItem.h"
 #include "Via/QuickPaintedItem/MainQQuickPaintedItem.h"
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 #endif
 	using namespace syscross::TraffModel;
 	//viaQGraphicsView::run( );
-	viaQQuickItem::run( );
-	//viaQQuickPaintedItem::run( );
+	//viaQQuickItem::run( );
+	viaQQuickPaintedItem::run( );
 	return 0;
 }

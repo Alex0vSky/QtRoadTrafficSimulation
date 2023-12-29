@@ -24,7 +24,7 @@ public:
 		setAcceptedMouseButtons( Qt::AllButtons );
 		setCursor( Qt::CursorShape::OpenHandCursor );
 	}
-    void handleDrag(QMatrix4x4 *transformNodeMatrix, float zoom) {
+    void handleDrag(QMatrix4x4 *transformNodeMatrix) {
 		transformNodeMatrix ->translate( m_mouseDiff.x( ), m_mouseDiff.y( ) );
 	}
 };

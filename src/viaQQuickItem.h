@@ -20,7 +20,7 @@ struct viaQQuickItem { static void run(int argc = 0, char* argv[] = nullptr) {
 		//if ( !qQuickWindow ) 
 		//	return;
 		//// @insp https://stackoverflow.com/questions/20800850/how-to-access-a-nested-qml-object-from-c
-		//MyQQuickItem *childObject = qQuickWindow ->findChild<MyQQuickItem*>( "TraffModelQQuickItem" );
+		//MainQQuickItem *childObject = qQuickWindow ->findChild<MainQQuickItem*>( "TraffModelQQuickItem" );
 		//// @insp https://stackoverflow.com/questions/19455518/periodically-redraw-qquickitem
 		//qQuickWindow->connect(qQuickWindow, &QQuickWindow::frameSwapped, qQuickWindow, [&] {
 		//		childObject ->update( );

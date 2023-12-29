@@ -12,5 +12,9 @@ ApplicationWindow {
 	MainQQuickItem {
 		objectName: "MainQQuickItem"
 		anchors.fill: parent
-	}		
+		Text {
+			text: "FPS"
+			objectName: "FPS"
+		}
+	}
 }

@@ -8,6 +8,9 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 	W_OBJECT( MainQQuickItem ) //Q_OBJECT
 	QSGNode *m_carsNode = nullptr, *m_ligthsNode = nullptr, *m_roadsNode = nullptr;
 
+	QObject *m_textFps = nullptr;
+	FpsCounter m_fps;
+
 	void addPolygon_(QSGNode* node, QPolygonF const& polygon, uint mode, QColor color) {
 		QSGGeometry *geometry = new QSGGeometry( QSGGeometry::defaultAttributes_Point2D( ), polygon.size( ) );
 		geometry ->setDrawingMode( mode );
@@ -38,6 +41,8 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 			Common::init( );
 			oldNode ->appendChildNode( m_carsNode = new QSGNode );
 			oldNode ->appendChildNode( m_ligthsNode = new QSGNode );
+			m_textFps = findChild< QObject* >( "FPS" );
+			m_fps.reset( );
 		}
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
@@ -66,15 +71,19 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 
 		// Empty matrix, or wrong zoom will be soon
 		QMatrix4x4 m_matrix;
-		DraggableQQuickItem::handleDrag( &m_matrix, getZoom( ) );
+		DraggableQQuickItem::handleDrag( &m_matrix );
 		ZoomableQQuickItem::handleZoom( &m_matrix );
 		data ->transformNode ->setMatrix( m_matrix );
+
+		if ( auto fps = m_fps.incrementFrame( ) )
+			m_textFps ->setProperty( "text", fps ->c_str( ) );
+
 		// Smooth animation
-//		update( );
+		update( );
 		return oldNode;
 	} 
 	void loop() override {
-		update( );
+//		update( );
 	}
 
 public:

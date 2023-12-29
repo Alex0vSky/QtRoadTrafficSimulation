@@ -6,11 +6,16 @@
 namespace syscross::TraffModel::Via::QuickPaintedItem {
 class MainQQuickPaintedItem : public LoopLauncherQQuickPaintedItem {
 	W_OBJECT( MainQQuickPaintedItem ) //Q_OBJECT
+	FpsCounter m_fps;
+	std::string m_stringFps;
 
 	// override blocks call to updatePaintNode()
     void paint(QPainter *painter) override {
-		if ( !m_vehicleGenerator ) 
+		if ( !m_vehicleGenerator ) {
 			Common::init( );
+			m_stringFps = "FPS";
+			m_fps.reset( );
+		}
 		painter ->setRenderHint( QPainter::Antialiasing, true );
 
 		DraggableQQuickPaintedItem::handleDrag( painter );
@@ -45,9 +50,17 @@ class MainQQuickPaintedItem : public LoopLauncherQQuickPaintedItem {
 				return nullptr;
 			} );
 		m_update ->trafficSignals( t );
+
+		if ( auto fps = m_fps.incrementFrame( ) )
+			m_stringFps = fps.value( );
+		painter ->setPen( Qt::black );
+		painter ->drawText( QPoint{ 10, 10 }, m_stringFps.c_str( ) );
+
+		// Smooth animation
+		update( );
 	}
 	void loop() override {
-		update( );
+//		update( );
 	}
 };
 W_OBJECT_IMPL( MainQQuickPaintedItem ) //Q_OBJECT

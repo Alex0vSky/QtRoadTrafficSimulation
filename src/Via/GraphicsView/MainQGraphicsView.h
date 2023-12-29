@@ -6,6 +6,8 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 
 	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
 	//std::vector< std::unique_ptr< Sim::Vehicle > > m_singleVehicleObject; // tmp
+	QGraphicsSimpleTextItem * m_simpleTextItem = nullptr;
+	FpsCounter m_fps;
 
 	// clear previous
 	void sceneItemsErase_(std::vector< QGraphicsPolygonItem * > *items) {
@@ -33,8 +35,9 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 			}
 			this ->setSceneRect( sceneRect );
 
-			// +TODO(alex): to separate class `Xxx`
 			Common::init( );
+			m_simpleTextItem = scene( ) ->addSimpleText( "FPS" );
+			m_fps.reset( );
 		}
 
 		auto measurerScoped = m_timing.createAutoMeasurerScoped( );
@@ -59,6 +62,9 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 				return scene( ) ->addPolygon( polygons, color, color );
 			} );
 		m_update ->trafficSignals( t );
+
+		if ( auto fps = m_fps.incrementFrame( ) )
+			m_simpleTextItem ->setText( fps ->c_str( ) );
 	}
 };
 W_OBJECT_IMPL( MainQGraphicsView ) //Q_OBJECT
