@@ -16,7 +16,7 @@ Road traffic simulation using Qt
 - [x] car animation in QGraphicsView
 - [x] car animation in QQuickItem
 - [x] car animation in QQuickPaintedItem
-- [ ] code cleaning
+- [x] code cleaning
 
 ## Features
 Traffic modeling with three found ways to display graphics in Qt:
@@ -24,7 +24,7 @@ Traffic modeling with three found ways to display graphics in Qt:
  - `QQuickItem + updatePaintNode` and rendering in separate thread;
  - `QQuickPaintedItem + QPainter` and rendering in separate thread;
 
-Cars and roads based on python solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
+Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
 
 ## Requirements
 Qt 5.15
@@ -45,8 +45,11 @@ Can ask questions. PRs are accepted. No requirements for contributing.
 
 ## Thanks
 [Qt](https://www.qt.io/)
+
 [BilHim/trafficSimulator](https://github.com/BilHim/trafficSimulator)
+
 [yossidoctor/AI-Traffic-Lights-Controller](https://github.com/yossidoctor/AI-Traffic-Lights-Controller)
+
 [woboq/verdigris](https://github.com/woboq/verdigris)
 
 ## License
