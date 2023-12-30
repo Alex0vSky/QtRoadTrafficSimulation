@@ -2,6 +2,7 @@
 namespace syscross::TraffModel::Via::QuickItem {
 class ZoomableQQuickItem : public BaseQQuickItem {
 	W_OBJECT( ZoomableQQuickItem ) //Q_OBJECT
+	using BaseQQuickItem::BaseQQuickItem;
 	float m_zoom = 1.0f;
 	QPoint m_point = { };
 	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
@@ -13,9 +14,6 @@ class ZoomableQQuickItem : public BaseQQuickItem {
 	}
 
 public: 
-    explicit ZoomableQQuickItem(QQuickItem *parent) : 
-		BaseQQuickItem( parent )
-	{}
 	void handleZoom(QMatrix4x4 *transformNodeMatrix) {
 		transformNodeMatrix ->translate( m_point.x( ), m_point.y( ) );
 		transformNodeMatrix ->scale( m_zoom );

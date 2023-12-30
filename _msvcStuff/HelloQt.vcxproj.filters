@@ -119,9 +119,6 @@
     <ClInclude Include="..\src\Via\QuickItem\DraggableQQuickItem.h">
       <Filter>Header Files\Via\QuickItem</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Via\QuickItem\LoopLauncherQQuickItem.h">
-      <Filter>Header Files\Via\QuickItem</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Via\QuickItem\MainQQuickItem.h">
       <Filter>Header Files\Via\QuickItem</Filter>
     </ClInclude>
@@ -140,13 +137,13 @@
     <ClInclude Include="..\src\Via\QuickPaintedItem\DraggableQQuickPaintedItem.h">
       <Filter>Header Files\Via\QuickPaintedItem</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Via\QuickPaintedItem\LoopLauncherQQuickPaintedItem.h">
-      <Filter>Header Files\Via\QuickPaintedItem</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Via\QuickPaintedItem\MainQQuickPaintedItem.h">
       <Filter>Header Files\Via\QuickPaintedItem</Filter>
     </ClInclude>
     <ClInclude Include="..\src\RegistratorLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Updater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

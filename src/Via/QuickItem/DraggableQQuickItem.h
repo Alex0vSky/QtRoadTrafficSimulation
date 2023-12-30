@@ -18,7 +18,7 @@ class DraggableQQuickItem : public ZoomableQQuickItem {
 	}
 
 public: 
-    explicit DraggableQQuickItem(QQuickItem *parent) : 
+    explicit DraggableQQuickItem(QQuickItem *parent = nullptr) : 
 		ZoomableQQuickItem( parent )
 	{
 		setAcceptedMouseButtons( Qt::AllButtons );

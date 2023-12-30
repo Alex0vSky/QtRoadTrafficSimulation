@@ -2,9 +2,8 @@
 #include "Via/QuickItem/BaseQQuickItem.h"
 #include "Via/QuickItem/ZoomableQQuickItem.h"
 #include "Via/QuickItem/DraggableQQuickItem.h"
-#include "Via/QuickItem/LoopLauncherQQuickItem.h"
 namespace syscross::TraffModel::Via::QuickItem {
-class MainQQuickItem : public LoopLauncherQQuickItem {
+class MainQQuickItem : public DraggableQQuickItem {
 	W_OBJECT( MainQQuickItem ) //Q_OBJECT
 	QSGNode *m_carsNode = nullptr, *m_ligthsNode = nullptr, *m_roadsNode = nullptr;
 
@@ -82,14 +81,6 @@ class MainQQuickItem : public LoopLauncherQQuickItem {
 		update( );
 		return oldNode;
 	} 
-	void loop() override {
-//		update( );
-	}
-
-public:
-	explicit MainQQuickItem(QQuickItem *parent = 0) : 
-		LoopLauncherQQuickItem( parent )
-	{}
 };
 W_OBJECT_IMPL( MainQQuickItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickItem

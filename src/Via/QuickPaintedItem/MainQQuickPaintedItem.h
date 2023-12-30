@@ -2,9 +2,8 @@
 #include "Via/QuickPaintedItem/BaseQQuickPaintedItem.h"
 #include "Via/QuickPaintedItem/ZoomableQQuickPaintedItem.h"
 #include "Via/QuickPaintedItem/DraggableQQuickPaintedItem.h"
-#include "Via/QuickPaintedItem/LoopLauncherQQuickPaintedItem.h"
 namespace syscross::TraffModel::Via::QuickPaintedItem {
-class MainQQuickPaintedItem : public LoopLauncherQQuickPaintedItem {
+class MainQQuickPaintedItem : public DraggableQQuickPaintedItem {
 	W_OBJECT( MainQQuickPaintedItem ) //Q_OBJECT
 	FpsCounter m_fps;
 	std::string m_stringFps;
@@ -58,9 +57,6 @@ class MainQQuickPaintedItem : public LoopLauncherQQuickPaintedItem {
 
 		// Smooth animation
 		update( );
-	}
-	void loop() override {
-//		update( );
 	}
 };
 W_OBJECT_IMPL( MainQQuickPaintedItem ) //Q_OBJECT

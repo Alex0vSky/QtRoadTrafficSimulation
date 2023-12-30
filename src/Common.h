@@ -3,7 +3,7 @@ namespace syscross::TraffModel {
 struct Common { 
 protected:
 	Sim::Road::roads_t m_roads;
-	static const uint c_vehicleRate = 15; // 35;
+	static const uint c_vehicleRate = 35;
 	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
 	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
 	uint m_vehiclesOnMap = 0;
@@ -21,7 +21,7 @@ protected:
 		//auto &vehicle = m_singleVehicleObject[ 0 ];
 		//int firstRoad = 0;
 		//auto roadIndex = vehicle ->path( )[ firstRoad ];
-		//m_roads[ roadIndex ].addVehicle( vehicle.get( ) );
+		//m_roads[ roadIndex ].addVehicle(vehicle.get( ) );
 
 		auto allPaths = Sim::AllRoads::getAllPaths( );
 		// add_generator
@@ -42,7 +42,7 @@ protected:
 		m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
 			signalRoads );
 
-		m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ) );
+		m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ), m_vehicleGenerator.get( ) );
 		m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
 	}
 };

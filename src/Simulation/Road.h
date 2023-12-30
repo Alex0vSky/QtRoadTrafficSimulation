@@ -1,4 +1,4 @@
-﻿// src\Simulation\Road.h - road segment
+﻿// src\Simulation\Road.h - indeed
 namespace syscross::TraffModel::Sim {
 class Road {
 	IVehicle::vehicles_t m_cars;
@@ -13,7 +13,6 @@ class Road {
 
 public:
 	typedef std::vector< Road > roads_t;
-
 	class TrafficSignal {
 		std::vector< std::array<bool, 2> > m_cycle { 
 				{ false, true }
@@ -95,26 +94,22 @@ public:
 	QPointF end() const { 
 		return m_end;
 	}
-
-	void addVehicle(IVehicle *p) { 
-//		qDebug( ) << "road" << m_index << "addVehicle" << p << p ->getVehicleIndex( );
-		m_cars.push_back( p );
-	}
-	IVehicle::vehicles_t getVehicles() { 
-		return m_cars;
-	}
-	void popFrontVehicle() {
-//		auto p = m_cars.front( ); qDebug( ) << "road" << m_index << "popFrontVehicle" << p << p ->getVehicleIndex( );
-		m_cars.erase( m_cars.begin( ) );
-	}
-	void removeFrontVehicle() {
-		m_cars.front( ) ->setRemoved( );
-		m_cars.erase( m_cars.begin( ) );
-	}
-
 	uint getIndex() const {
 		return m_index;
 	}
 
+	IVehicle::vehicles_t getVehicles() { 
+		return m_cars;
+	}
+	void addVehicle(IVehicle *p) { 
+//		qDebug( ) << "road" << m_index << "addVehicle" << p << p ->getVehicleIndex( );
+		m_cars.push_back( p );
+	}
+	IVehicle *popFrontVehicle() {
+		IVehicle *p = m_cars.front( ); 
+//		qDebug( ) << "road" << m_index << "popFrontVehicle" << p << p ->getVehicleIndex( );
+		m_cars.erase( m_cars.begin( ) );
+		return p;
+	}
 };
 } // namespace syscross::TraffModel::Sim

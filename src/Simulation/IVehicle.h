@@ -16,8 +16,6 @@ struct IVehicle {
 	virtual void incCurrentIdxRoadIndex() = 0;
     virtual void setVehicleIndex(uint index) = 0;
 	virtual uint getVehicleIndex() const = 0;
-	virtual void setRemoved() = 0;
-	virtual bool isRemoved() const = 0;
 	virtual void setPositionOnRoad(qreal x) = 0;
 	virtual void setIdxRoadIndex(uint idxRoadIndex) = 0;
 

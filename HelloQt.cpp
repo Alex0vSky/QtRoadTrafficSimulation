@@ -15,11 +15,11 @@
 #include "RegistratorLoader.h"
 #include "FpsCounter.h"
 #include "Via/GraphicsView/MainWindow.h"
-#include "Via/QuickItem/MainQQuickItem.h"
 #include "Via/QuickPaintedItem/MainQQuickPaintedItem.h"
+#include "Via/QuickItem/MainQQuickItem.h"
 #include "viaQGraphicsView.h"
-#include "viaQQuickItem.h"
 #include "viaQQuickPaintedItem.h"
+#include "viaQQuickItem.h"
 
 #if defined( _WIN32 ) || defined( __CYGWIN__ ) 
 int WinMain(HINSTANCE, HINSTANCE, char*, int) { 
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 #endif
 	using namespace syscross::TraffModel;
 	//viaQGraphicsView::run( );
-	//viaQQuickItem::run( );
-	viaQQuickPaintedItem::run( );
+	//viaQQuickPaintedItem::run( );
+	viaQQuickItem::run( );
 	return 0;
 }

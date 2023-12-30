@@ -4,14 +4,16 @@ class Updater {
 	using Road = Sim::Road;
 	Road::roads_t *m_roads;
 	Road::TrafficSignal *m_trafficSignal;
+	Sim::VehicleGenerator *m_vehicleGenerator;
 	// TODO(alex): magic until `Timing::timer_t` is floatPointNumber
 	Timing::timer_t m_magicTimeToSwitch = 25;
 	Timing::timer_t m_nextSwitch = 0;
 
 public:
-	Updater(Road::roads_t *roads, Road::TrafficSignal *trafficSignal) : 
-		m_roads( roads )
-		, m_trafficSignal( trafficSignal ) 
+	Updater(Road::roads_t *r, Road::TrafficSignal *s, Sim::VehicleGenerator *g) : 
+		m_roads( r )
+		, m_trafficSignal( s ) 
+		, m_vehicleGenerator( g ) 
 	{}
 	//# Update every road
 	void roads(Timing::timer_t t, Timing::timer_t dt) { 
@@ -80,16 +82,15 @@ public:
 				if ( followingIdxRoadIndex >= path.size( ) )
 					break;
 			} while( true );
+			//# Remove it from its road
+			Sim::IVehicle *front = road.popFrontVehicle( );
 			//# If vehicle hasnt a next road
 			if ( followingIdxRoadIndex >= path.size( ) ) {
-				//# Remove it from its road
-				road.popFrontVehicle( );
+				m_vehicleGenerator ->removeVehicle( front );
 				--(*pVehiclesOnMap);
 				//# Update the waiting times sum //self._waiting_times_sum += lead.get_wait_time(self.t)
 				continue;
 			}
-			// Remove it from its road
-			road.popFrontVehicle( );
 			// Reset the position relative to the road
 			lead ->setPositionOnRoad( carPosition );
 			// Add it to the next road

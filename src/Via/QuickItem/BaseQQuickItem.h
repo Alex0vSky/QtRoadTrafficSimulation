@@ -4,7 +4,7 @@ class BaseQQuickItem : public QQuickItem, public Common {
 	W_OBJECT( BaseQQuickItem ) //Q_OBJECT
 
 public: 
-    explicit BaseQQuickItem(QQuickItem *parent) : 
+    explicit BaseQQuickItem(QQuickItem *parent = nullptr) : 
 		QQuickItem( parent )
 	{
 		setFlag( QQuickItem::ItemHasContents, true );
