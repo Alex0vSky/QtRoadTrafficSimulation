@@ -26,7 +26,7 @@ int WinMain(HINSTANCE, HINSTANCE, char*, int) {
 	HeapSetInformation( NULL, HeapEnableTerminationOnCorruption, NULL, NULL );
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc( 45198 );
-	new char[]{ "Goodbye!" };
+	new char[9]{ "Goodbye!" };
 #else
 int main(int argc, char* argv[]) {
 #endif
