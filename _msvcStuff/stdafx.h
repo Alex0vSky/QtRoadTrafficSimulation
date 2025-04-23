@@ -77,8 +77,13 @@
 ////#include <QtDeclarative/QDeclarativeView>
 ////#include <QtDeclarative/QDeclarativeItem>
 
+#ifndef A0S_QT_PRO
 // For header-only in woboq/verdigris
-#include <wobjectdefs.h>
-#include <wobjectimpl.h>
+#	include <wobjectdefs.h>
+#	include <wobjectimpl.h>
+#else
+#	define W_OBJECT(none) Q_OBJECT
+#	define W_OBJECT_IMPL(none)
+#endif // A0S_QT_PRO
 
 #pragma warning( pop )
