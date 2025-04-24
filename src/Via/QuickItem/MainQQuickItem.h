@@ -10,12 +10,14 @@ class MainQQuickItem : public DraggableQQuickItem {
 	FpsCounter m_fps;
 
 	void addPolygon_(QSGNode* node, QPolygonF const& polygon, uint mode, QColor color) {
-		QSGGeometry *geometry = new QSGGeometry( QSGGeometry::defaultAttributes_Point2D( ), polygon.size( ) );
+		const auto first = polygon.at( 0 );
+		QSGGeometry *geometry = new QSGGeometry( QSGGeometry::defaultAttributes_Point2D( ), polygon.size( ) + 1 );
 		geometry ->setDrawingMode( mode );
 		geometry ->setLineWidth( 1 );
 		QSGGeometry::Point2D *vertices = geometry ->vertexDataAsPoint2D( );
 		for ( auto const& point : polygon ) 
 			(vertices++) ->set( point.x( ), point.y( ) );
+		(vertices++) ->set( first.x( ), first.y( ) );
 		QSGGeometryNode *n = new QSGGeometryNode;
 		n ->setGeometry( geometry );
 		n ->setFlag( QSGNode::OwnsGeometry);
@@ -31,10 +33,11 @@ class MainQQuickItem : public DraggableQQuickItem {
 			oldNode ->appendChildNode( m_roadsNode = new QSGNode );
 			auto polygons = Sim::AllRoads::calc( );
 			for ( QPolygonF const& polygon : polygons ) {
-				// lower // QColor::fromRgb( 180, 180, 220 );
-				addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawTriangleFan, Qt::gray );
+				// lower
+				addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawTriangleStrip, Qt::gray );
+				// TODO(alex): write comment
 				//// upper
-				//addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawLineLoop, Qt::red );
+				//addPolygon_( m_roadsNode, polygon, QSGGeometry::DrawLineStrip, Qt::red );
 			}
 			Common::init( );
 			oldNode ->appendChildNode( m_carsNode = new QSGNode );
@@ -49,7 +52,7 @@ class MainQQuickItem : public DraggableQQuickItem {
 		while ( QSGNode* node = m_carsNode ->firstChild( ) ) 
 			delete node;
 		m_scener ->drawVehicles( [this](QPolygonF const& polygons) {
-				addPolygon_( m_carsNode, polygons, QSGGeometry::DrawTriangleFan, Qt::blue );
+				addPolygon_( m_carsNode, polygons, QSGGeometry::DrawTriangleStrip, Qt::blue );
 				return nullptr;
 			} );
 		m_update ->roads( t, dt );
@@ -62,7 +65,7 @@ class MainQQuickItem : public DraggableQQuickItem {
 		while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
 			delete node;
 		m_scener ->drawSignals( [this](QPolygonF const& polygons, QColor color) {
-				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleFan, color );
+				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleStrip, color );
 				return nullptr;
 			} );
 		m_update ->trafficSignals( t );
