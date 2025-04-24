@@ -1,4 +1,4 @@
-﻿// src\Updater.h - update all model entities
+﻿#pragma once // src\Updater.h - update all model entities
 namespace syscross::TraffModel {
 class Updater { 
 	using Road = Sim::Road;

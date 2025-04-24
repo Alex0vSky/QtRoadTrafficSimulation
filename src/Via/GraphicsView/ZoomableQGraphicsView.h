@@ -1,7 +1,6 @@
 ﻿// src\Via\GraphicsView\ZoomableQGraphicsView.h - add zoom
 namespace syscross::TraffModel::Via::GraphicsView {
 class ZoomableQGraphicsView : public BaseQGraphicsView {
-	W_OBJECT( ZoomableQGraphicsView ) //Q_OBJECT
 	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
     void wheelEvent(QWheelEvent *pQEvent) override {
 		// pos() -> virtual canvas
@@ -27,5 +26,4 @@ public:
 		setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 	}
 };
-W_OBJECT_IMPL( ZoomableQGraphicsView ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::GraphicsView

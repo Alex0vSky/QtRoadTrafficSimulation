@@ -1,4 +1,4 @@
-﻿// src\FpsCounter.h - indeed
+﻿#pragma once // src\FpsCounter.h - indeed
 namespace syscross::TraffModel {
 class FpsCounter {
 	typedef std::chrono::steady_clock clock_t;

@@ -11,6 +11,8 @@ PRECOMPILED_HEADER  = _msvcStuff/stdafx.h
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+CONFIG += warn_off
+
 DEFINES += \
 	A0S_QT_PRO=1
 
@@ -21,7 +23,6 @@ SOURCES += \
     HelloQt.cpp
 
 HEADERS += \
-	src/HelloQt.h \
     src/Common.h \
     src/HelloQt.h \
     src/QrcLocatorReplacement.h \
@@ -54,7 +55,7 @@ HEADERS += \
     src/Via/QuickPaintedItem/DraggableQQuickPaintedItem.h \
     src/Via/QuickPaintedItem/MainQQuickPaintedItem.h \
     src/Via/QuickPaintedItem/ZoomableQQuickPaintedItem.h \
-    _msvcStuff/stdafx.h
+	src/HelloQt.h
 
 FORMS += \
     resource/mainwindow.ui

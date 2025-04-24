@@ -1,4 +1,4 @@
-﻿// src\Scener.h - scene working
+﻿#pragma once // src\Scener.h - scene working
 namespace syscross::TraffModel {
 class Scener { 
 	using Road = Sim::Road;

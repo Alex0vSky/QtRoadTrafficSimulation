@@ -1,4 +1,4 @@
-﻿// src\Via\GraphicsView\MainWindow.h - main window
+﻿#pragma once // src\Via\GraphicsView\MainWindow.h - main window
 #include "Via/GraphicsView/BaseQGraphicsView.h"
 #include "Via/GraphicsView/ZoomableQGraphicsView.h"
 #include "Via/GraphicsView/DraggableQGraphicsView.h"
@@ -7,7 +7,7 @@
 namespace syscross::TraffModel::Via::GraphicsView {
 #include "uic/ui_mainwindow.h"
 class MainWindow : public QMainWindow {
-	W_OBJECT( MainWindow ) //Q_OBJECT
+	Q_OBJECT
 	Ui::MainWindow *ui = nullptr;
 
 public:
@@ -17,6 +17,11 @@ public:
 	{
 		// Got from QtCreator/uic
 		ui ->setupUi( this );
+
+        auto graphicsView = new MainQGraphicsView( this );
+        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
+        this ->setCentralWidget(graphicsView);
+
 	}
 	~MainWindow() {
 		delete ui;

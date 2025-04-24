@@ -1,4 +1,6 @@
-﻿// src\Simulation\VehicleGenerator.h - rules of creating new vehicle on the road
+﻿#pragma once // src\Simulation\VehicleGenerator.h - rules of creating new vehicle on the road
+#include "Simulation/AllRoads.h"
+#include "Simulation/Vehicle.h"
 namespace syscross::TraffModel::Sim {
 class VehicleGenerator {
 	AllRoads::flatPathIndexes_t m_paths;

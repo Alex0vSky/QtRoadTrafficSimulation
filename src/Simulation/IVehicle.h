@@ -1,4 +1,4 @@
-﻿// src\Simulation\IVehicle.h - vehicle iface
+﻿#pragma once // src\Simulation\IVehicle.h - vehicle iface
 namespace syscross::TraffModel::Sim {
 class Road;
 struct IVehicle {

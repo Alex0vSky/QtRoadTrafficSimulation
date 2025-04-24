@@ -1,4 +1,6 @@
-﻿// src\Simulation\Roads.h - 
+﻿#pragma once // src\Simulation\Roads.h - 
+#include "Simulation/Draw.h"
+#include "Simulation/Curve.h"
 namespace syscross::TraffModel::Sim {
 // TrafficSimulator\Setups\two_way_intersection.py
 class AllRoads {

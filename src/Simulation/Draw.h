@@ -1,4 +1,4 @@
-﻿// src\Simulation\Draw.h - drawing tools
+﻿#pragma once // src\Simulation\Draw.h - drawing tools
 namespace syscross::TraffModel::Sim {
 class Draw {
 	const uint c_width = 1000, c_height = 630, c_zoom = 5;

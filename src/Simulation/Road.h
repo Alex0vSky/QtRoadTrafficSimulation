@@ -1,4 +1,6 @@
-﻿// src\Simulation\Road.h - indeed
+﻿#pragma once // src\Simulation\Road.h - indeed
+#include "Timing.h"
+#include "Simulation/IVehicle.h"
 namespace syscross::TraffModel::Sim {
 class Road {
 	IVehicle::vehicles_t m_cars;
@@ -35,7 +37,7 @@ public:
 				for ( auto road : signalRoads[ i ] ) 
 					road ->setTrafficSignal( this, i );
 		}
-		void update(Timing::timer_t t) {
+		void update(Timing::timer_t) {
 			m_currentCycleIndex = ( m_currentCycleIndex + 1 ) % m_cycle.size( );
 		}
 		std::array<bool, 2> getCurrentCycle() const {

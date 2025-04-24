@@ -1,7 +1,7 @@
-﻿// src\Via\GraphicsView\MainQGraphicsView.h - main loop in main thread
+﻿#pragma once // src\Via\GraphicsView\MainQGraphicsView.h - main loop in main thread
+#include "FpsCounter.h"
 namespace syscross::TraffModel::Via::GraphicsView {
 class MainQGraphicsView final : public LoopLauncherQGraphicsView {
-	W_OBJECT( MainQGraphicsView ) //Q_OBJECT
 	using LoopLauncherQGraphicsView::LoopLauncherQGraphicsView;
 
 	std::vector< QGraphicsPolygonItem * > m_vehiclesItems, m_trafficSignalItems;
@@ -67,5 +67,4 @@ class MainQGraphicsView final : public LoopLauncherQGraphicsView {
 			m_simpleTextItem ->setText( fps ->c_str( ) );
 	}
 };
-W_OBJECT_IMPL( MainQGraphicsView ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::GraphicsView

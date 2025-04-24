@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 6.2.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,19 +11,15 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
 {
 public:
-    MainQGraphicsView *graphicsView;
-    //QWidget *centralwidget;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -31,13 +27,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize( 1000, 630 );
-        graphicsView = new MainQGraphicsView(MainWindow);
-        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        MainWindow->setCentralWidget(graphicsView);
-        //centralwidget = new QWidget(MainWindow);
-        //centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        //MainWindow->setCentralWidget(centralwidget);
+        MainWindow->resize(1000, 630);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 15));

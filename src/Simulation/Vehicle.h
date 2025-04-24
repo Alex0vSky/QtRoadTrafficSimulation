@@ -1,4 +1,4 @@
-﻿// src\Simulation\Vehicle.h - vehicle
+﻿#pragma once // src\Simulation\Vehicle.h - vehicle
 namespace syscross::TraffModel::Sim {
 class Vehicle : public IVehicle {
     uint m_index = 0;

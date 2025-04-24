@@ -1,4 +1,8 @@
-﻿// src\Common.h - common members for child class
+﻿#pragma once // src\Common.h - common members for child class
+#include "Simulation/Road.h"
+#include "Simulation/VehicleGenerator.h"
+#include "Updater.h"
+#include "Scener.h"
 namespace syscross::TraffModel {
 struct Common { 
 protected:

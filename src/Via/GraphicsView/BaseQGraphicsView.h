@@ -1,8 +1,7 @@
-﻿// src\Via\GraphicsView\BaseQGraphicsView.h - something based
+﻿#pragma once // src\Via\GraphicsView\BaseQGraphicsView.h - something based
+#include "Common.h"
 namespace syscross::TraffModel::Via::GraphicsView {
 class BaseQGraphicsView : public QGraphicsView, public Common {
-	W_OBJECT( BaseQGraphicsView ) //Q_OBJECT
-
 public: 
     explicit BaseQGraphicsView(QMainWindow *parent) : 
 		QGraphicsView( parent )
@@ -13,5 +12,4 @@ public:
     BaseQGraphicsView(const BaseQGraphicsView&) = delete;
     BaseQGraphicsView& operator=(const BaseQGraphicsView&) = delete;
 };
-W_OBJECT_IMPL( BaseQGraphicsView ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::GraphicsView

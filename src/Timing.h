@@ -1,4 +1,4 @@
-﻿// src\Timing.h - solve timing task
+﻿#pragma once // src\Timing.h - solve timing task
 namespace syscross::TraffModel {
 class Timing { 
 	typedef std::chrono::steady_clock clock_t;

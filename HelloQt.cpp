@@ -19,6 +19,7 @@
 #include "QrcLocatorReplacement.h"
 #include "RegistratorLoader.h"
 #include "FpsCounter.h"
+#include "Via/GraphicsView/BaseQGraphicsView.h"
 #include "Via/GraphicsView/MainWindow.h"
 #include "Via/QuickPaintedItem/MainQQuickPaintedItem.h"
 #include "Via/QuickItem/MainQQuickItem.h"

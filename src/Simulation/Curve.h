@@ -1,4 +1,4 @@
-﻿// src\Simulation\Curve.h - 
+﻿#pragma once // src\Simulation\Curve.h - 
 namespace syscross::TraffModel::Sim {
 struct Curve {
 	// @from https://www.codeconvert.ai/python-to-c++-converter
