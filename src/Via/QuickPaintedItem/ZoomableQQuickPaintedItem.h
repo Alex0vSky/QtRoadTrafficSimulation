@@ -1,7 +1,6 @@
 ﻿// src\Via\QuickPaintedItem\ZoomableQQuickPaintedItem.h - add zoom
 namespace syscross::TraffModel::Via::QuickPaintedItem {
 class ZoomableQQuickPaintedItem : public BaseQQuickPaintedItem {
-	W_OBJECT( ZoomableQQuickPaintedItem ) //Q_OBJECT
 	using BaseQQuickPaintedItem::BaseQQuickPaintedItem;
 	static constexpr float c_deltaMinimal{ 0.1f };
 	float m_delta = 1;
@@ -23,5 +22,4 @@ public:
 		painter ->translate( -m_point.x( ), -m_point.y( ) );
 	}
 };
-W_OBJECT_IMPL( ZoomableQQuickPaintedItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickPaintedItem

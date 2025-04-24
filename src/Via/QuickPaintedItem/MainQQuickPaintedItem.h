@@ -4,7 +4,6 @@
 #include "Via/QuickPaintedItem/DraggableQQuickPaintedItem.h"
 namespace syscross::TraffModel::Via::QuickPaintedItem {
 class MainQQuickPaintedItem : public DraggableQQuickPaintedItem {
-	W_OBJECT( MainQQuickPaintedItem ) //Q_OBJECT
 	FpsCounter m_fps;
 	std::string m_stringFps;
 
@@ -59,5 +58,4 @@ class MainQQuickPaintedItem : public DraggableQQuickPaintedItem {
 		update( );
 	}
 };
-W_OBJECT_IMPL( MainQQuickPaintedItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickPaintedItem

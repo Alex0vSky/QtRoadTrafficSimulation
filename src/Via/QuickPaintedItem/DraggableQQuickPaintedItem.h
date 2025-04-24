@@ -1,7 +1,6 @@
 ﻿// src\Via\QuickPaintedItem\DraggableQQuickPaintedItem.h - add drag
 namespace syscross::TraffModel::Via::QuickPaintedItem {
 class DraggableQQuickPaintedItem : public ZoomableQQuickPaintedItem {
-	W_OBJECT( DraggableQQuickPaintedItem ) //Q_OBJECT
 	QPoint m_mouseCur = { }, m_mouseDiff = { };
 
 	// Between mousePressEvent and mouseReleaseEvent
@@ -29,5 +28,4 @@ public:
 		painter ->translate( m_mouseDiff );
 	}
 };
-W_OBJECT_IMPL( DraggableQQuickPaintedItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickPaintedItem
