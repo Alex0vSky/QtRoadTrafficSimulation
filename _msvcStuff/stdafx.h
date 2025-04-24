@@ -9,7 +9,7 @@
 // For header-only in woboq/verdigris
 #	include <wobjectdefs.h>
 #	include <wobjectimpl.h>
-#else
+#else // A0S_QT_PRO
 #	define W_OBJECT(none)
 #	define W_OBJECT_IMPL(none)
 #endif // A0S_QT_PRO
