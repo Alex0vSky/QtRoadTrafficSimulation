@@ -4,7 +4,6 @@
 #include "Via/QuickItem/DraggableQQuickItem.h"
 namespace syscross::TraffModel::Via::QuickItem {
 class MainQQuickItem : public DraggableQQuickItem {
-	W_OBJECT( MainQQuickItem ) //Q_OBJECT
 	QSGNode *m_carsNode = nullptr, *m_ligthsNode = nullptr, *m_roadsNode = nullptr;
 
 	QObject *m_textFps = nullptr;
@@ -82,5 +81,4 @@ class MainQQuickItem : public DraggableQQuickItem {
 		return oldNode;
 	} 
 };
-W_OBJECT_IMPL( MainQQuickItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickItem

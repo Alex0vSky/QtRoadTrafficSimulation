@@ -1,7 +1,6 @@
 ﻿// src\Via\QuickItem\ZoomableQQuickItem.h - add zoom
 namespace syscross::TraffModel::Via::QuickItem {
 class ZoomableQQuickItem : public BaseQQuickItem {
-	W_OBJECT( ZoomableQQuickItem ) //Q_OBJECT
 	using BaseQQuickItem::BaseQQuickItem;
 	float m_zoom = 1.0f;
 	QPoint m_point = { };
@@ -20,5 +19,4 @@ public:
 		transformNodeMatrix ->translate( -m_point.x( ), -m_point.y( ) );
 	}
 };
-W_OBJECT_IMPL( ZoomableQQuickItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickItem

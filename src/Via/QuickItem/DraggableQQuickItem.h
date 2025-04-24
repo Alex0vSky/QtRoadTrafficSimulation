@@ -1,7 +1,6 @@
 ﻿// src\Via\QuickItem\DraggableQQuickItem.h - add drag
 namespace syscross::TraffModel::Via::QuickItem {
 class DraggableQQuickItem : public ZoomableQQuickItem {
-	W_OBJECT( DraggableQQuickItem ) //Q_OBJECT
 	QPoint m_mouseCur = { }, m_mouseDiff = { };
 
 	// Between mousePressEvent and mouseReleaseEvent
@@ -28,5 +27,4 @@ public:
 		transformNodeMatrix ->translate( m_mouseDiff.x( ), m_mouseDiff.y( ) );
 	}
 };
-W_OBJECT_IMPL( DraggableQQuickItem ) //Q_OBJECT
 } // namespace syscross::TraffModel::Via::QuickItem
