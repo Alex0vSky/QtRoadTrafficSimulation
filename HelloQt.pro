@@ -15,6 +15,7 @@ DEFINES += \
 	A0S_QT_PRO=1
 
 INCLUDEPATH += \
+	_msvcStuff \
 	src
 
 SOURCES += \

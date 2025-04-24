@@ -1,9 +1,7 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 // Copyright 2025 Alex0vSky (https://github.com/Alex0vSky)
-#ifndef A0S_QT_PRO
-#	include "stdafx.h"
-#endif // A0S_QT_PRO
+#include "stdafx.h"
 #include "HelloQt.h"
 #include "Timing.h"
 #include "Simulation/IVehicle.h"
@@ -36,8 +34,8 @@ int WinMain(HINSTANCE, HINSTANCE, char*, int) {
 int main(int argc, char* argv[]) {
 #endif
 	using namespace syscross::TraffModel;
-	viaQGraphicsView::run( );
+	//viaQGraphicsView::run( );
 	//viaQQuickPaintedItem::run( );
-	//viaQQuickItem::run( );
+	viaQQuickItem::run( );
 	return 0;
 }

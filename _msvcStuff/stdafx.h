@@ -28,8 +28,10 @@
 // C RunTime Header Files
 #include <sstream>
 #include <vector>
+#include <array>
 #include <deque>
 #include <chrono>
+#include <optional>
 
 #include <QtWidgets/QtWidgets>
 
@@ -38,7 +40,6 @@
 
 #include <QtQuick/QtQuick>
 #include <QtQuickWidgets/QQuickWidget>
-
 
 #endif // __cplusplus
 

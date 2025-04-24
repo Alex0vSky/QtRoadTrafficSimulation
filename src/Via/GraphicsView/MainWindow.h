@@ -7,7 +7,11 @@
 namespace syscross::TraffModel::Via::GraphicsView {
 #include "uic/ui_mainwindow.h"
 class MainWindow : public QMainWindow {
+#ifndef A0S_QT_PRO
+	W_OBJECT( MainWindow )
+#else // A0S_QT_PRO
 	Q_OBJECT
+#endif // A0S_QT_PRO
 	Ui::MainWindow *ui = nullptr;
 
 public:
