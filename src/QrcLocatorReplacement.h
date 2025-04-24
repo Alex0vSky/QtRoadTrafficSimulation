@@ -15,6 +15,8 @@ class QrcLocatorReplacement {
 					break;
 				return QUrl::fromLocalFile( fileInfo.filePath( ) );
 			} while ( false );
+			if ( !m_parent )
+				return path;
 			return m_parent ->intercept( path, type );
 		};
 	public:
@@ -37,13 +39,16 @@ public:
 		QStringList searchPaths{ 
 				currentSystemPath + "/../resource/qml"
 				, currentBinaryPath + "/../../../resource/qml"
+				, currentBinaryPath + "/../resource/qml"
 			};
 		QString prefix = "qrc";
 		QDir::setSearchPaths( prefix, searchPaths );
 		// engine.setBaseUrl not working or use Q_INIT_RESOURCE
 		// @insp https://www.kdab.com/fun-with-paths-urls-in-qml/
 		// @insp https://stackoverflow.com/questions/39701903/difference-between-foo-qrc-foo-and-qrc-foo-paths-in-qt
+#ifndef A0S_QT_PRO
 		m_interceptorPrev = m_engine ->urlInterceptor( );
+#endif // A0S_QT_PRO
 		m_urlInterceptor = std::make_unique< Interceptor > ( m_interceptorPrev, prefix );
 		m_engine ->setUrlInterceptor( m_urlInterceptor.get( ) );
 	}
