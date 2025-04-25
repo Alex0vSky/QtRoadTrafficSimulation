@@ -101,9 +101,11 @@ public:
 	}
 	// _update_signals
 	void trafficSignals(Timing::timer_t t) { 
-		if ( !m_nextSwitch )
+		if ( qFuzzyIsNull( m_nextSwitch ) )
 			return m_nextSwitch = t + m_magicTimeToSwitch, (void)0;
-		if ( t < m_nextSwitch )
+		// insurance
+	    constexpr qreal epsilon = 1e-6;
+		if ( t < m_nextSwitch - epsilon )
 			return;
 		m_nextSwitch = t + m_magicTimeToSwitch;
 		m_trafficSignal ->update( t );
