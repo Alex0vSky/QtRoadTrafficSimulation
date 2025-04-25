@@ -6,15 +6,18 @@ class FpsCounter {
 	static constexpr auto m_duration = std::chrono::seconds{ 1 };
 	clock_t::time_point m_nextFpsTime;
 	size_t m_frame = 0;
+	QMutex m_mutex;
 
 public:
 	FpsCounter() {
 		reset( );
 	}
 	void reset() {
+		QMutexLocker locker( &m_mutex );
 		m_nextFpsTime = now( ) + m_duration;
 	}
 	std::optional< std::string> incrementFrame() {
+		QMutexLocker locker( &m_mutex );
 		++m_frame;
 		if ( now( ) < m_nextFpsTime )
 			return { };
