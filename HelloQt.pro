@@ -19,7 +19,7 @@ INCLUDEPATH += \
 	src
 
 SOURCES += \
-    HelloQt.cpp
+    src/HelloQt.cpp
 
 HEADERS += \
     src/Common.h \

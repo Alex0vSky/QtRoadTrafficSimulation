@@ -42,7 +42,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>_pch</Filter>
     </ClCompile>
-    <ClCompile Include="..\HelloQt.cpp">
+    <ClCompile Include="..\src\HelloQt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
