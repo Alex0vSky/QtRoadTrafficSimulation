@@ -14,6 +14,7 @@ public:
 	{
 		setFlag( QQuickItem::ItemHasContents, true );
 	}
+
 	// Disable copying and moving
     BaseQQuickItem(const BaseQQuickItem&) = delete;
     BaseQQuickItem& operator=(const BaseQQuickItem&) = delete;

@@ -34,10 +34,10 @@ class DraggableQQuickItem : public ZoomableQQuickItem {
 	 *
 	 * @param event Mouse event data
 	 */
-    void mousePressEvent(QMouseEvent *event) override {
+	void mousePressEvent(QMouseEvent *event) override {
 		setCursor( Qt::CursorShape::ClosedHandCursor );
 		m_mouseCur = event ->pos( ) - m_mouseDiff;
-    }
+	}
 
 	/**
 	 * @brief Handles mouse release events
@@ -47,7 +47,7 @@ class DraggableQQuickItem : public ZoomableQQuickItem {
 	 *
 	 * @param event Mouse event data
 	 */
-    void mouseReleaseEvent(QMouseEvent *event) override {
+	void mouseReleaseEvent(QMouseEvent *event) override {
 		setCursor( Qt::CursorShape::OpenHandCursor );
 	}
 
@@ -56,7 +56,7 @@ public:
 	 * @brief Constructs draggable item
 	 * @param parent Optional parent QQuickItem
 	 */
-    explicit DraggableQQuickItem(QQuickItem *parent = nullptr) :
+	explicit DraggableQQuickItem(QQuickItem *parent = nullptr) :
 		ZoomableQQuickItem( parent )
 	{
 		setAcceptedMouseButtons( Qt::AllButtons );
@@ -71,7 +71,7 @@ public:
 	 *
 	 * @param transformNodeMatrix Matrix to modify
 	 */
-    void handleDrag(QMatrix4x4 *transformNodeMatrix) {
+	void handleDrag(QMatrix4x4 *transformNodeMatrix) {
 		transformNodeMatrix ->translate( m_mouseDiff.x( ), m_mouseDiff.y( ) );
 	}
 };
