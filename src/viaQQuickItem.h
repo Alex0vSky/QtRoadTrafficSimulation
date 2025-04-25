@@ -2,9 +2,9 @@
 namespace syscross::TraffModel {
 struct viaQQuickItem { static void run(int argc = 0, char* argv[] = nullptr) { 
 		//qputenv( "QSG_RENDER_LOOP", "basic" ); // @from https://www.mimec.org/blog/render-loops-and-timers-in-qtquick
-		//qputenv( "QT_SCALE_FACTOR", QByteArray( "3" ) ); // @from https://stackoverflow.com/questions/77454174/drawing-qpolygonf-to-qsggeometry
+		//qputenv( "QT_SCALE_FACTOR", QByteArray( "3" ) ); // @from SO/drawing-qpolygonf-to-qsggeometry
 		QGuiApplication app( argc, argv );
-		// antialiasing/multisampling @insp https://stackoverflow.com/questions/48895449/how-do-i-enable-antialiasing-on-qml-shapes or QML#antialiasing:true
+		// antialiasing/multisampling @insp SO/how-do-i-enable-antialiasing-on-qml-shapes or QML#antialiasing:true
 		QSurfaceFormat format;
 		format.setSamples( 8 );
 		QSurfaceFormat::setDefaultFormat( format );
@@ -19,9 +19,9 @@ struct viaQQuickItem { static void run(int argc = 0, char* argv[] = nullptr) {
 		//const auto qQuickWindow = qobject_cast<QQuickWindow*>( engine.rootObjects( ).front( ) );
 		//if ( !qQuickWindow ) 
 		//	return;
-		//// @insp https://stackoverflow.com/questions/20800850/how-to-access-a-nested-qml-object-from-c
+		//// @insp SO/how-to-access-a-nested-qml-object-from-c
 		//MainQQuickItem *childObject = qQuickWindow ->findChild<MainQQuickItem*>( "TraffModelQQuickItem" );
-		//// @insp https://stackoverflow.com/questions/19455518/periodically-redraw-qquickitem
+		//// @insp SO/periodically-redraw-qquickitem
 		//qQuickWindow->connect(qQuickWindow, &QQuickWindow::frameSwapped, qQuickWindow, [&] {
 		//		childObject ->update( );
 		//	});
