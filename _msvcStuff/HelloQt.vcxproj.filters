@@ -146,6 +146,9 @@
     <ClInclude Include="..\src\Updater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\FpsCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

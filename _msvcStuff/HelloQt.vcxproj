@@ -161,6 +161,7 @@ C:\Prj\_L\Qt\lib\Qt5QuickWidgets.lib %(AdditionalOptions)
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Common.h" />
+    <ClInclude Include="..\src\FpsCounter.h" />
     <ClInclude Include="..\src\HelloQt.h" />
     <ClInclude Include="..\src\QrcLocatorReplacement.h" />
     <ClInclude Include="..\src\RegistratorLoader.h" />
