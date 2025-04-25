@@ -42,7 +42,6 @@ class MainQQuickItem : public DraggableQQuickItem {
 			Common::init( );
 			oldNode ->appendChildNode( m_carsNode = new QSGNode );
 			oldNode ->appendChildNode( m_ligthsNode = new QSGNode );
-			m_textFps = findChild< QObject* >( "FPS" );
 			m_fps.reset( );
 		}
 
@@ -82,6 +81,13 @@ class MainQQuickItem : public DraggableQQuickItem {
 		// Smooth animation
 		update( );
 		return oldNode;
-	} 
+	}
+
+protected:  
+    void componentComplete() override {
+        QQuickItem::componentComplete( );
+        m_textFps = findChild< QObject *>( "FPS" );
+        Q_ASSERT_X( m_textFps, "Init", "FPS label must exist in QML" );
+    }
 };
 } // namespace syscross::TraffModel::Via::QuickItem
