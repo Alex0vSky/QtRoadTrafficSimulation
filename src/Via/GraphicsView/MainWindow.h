@@ -12,12 +12,12 @@ class MainWindow : public QMainWindow {
 #else // A0S_QT_PRO
 	Q_OBJECT
 #endif // A0S_QT_PRO
-	Ui::MainWindow *ui = nullptr;
+	std::unique_ptr< Ui::MainWindow > ui;
 
 public:
     explicit MainWindow(QWidget *p = nullptr) : 
 		QMainWindow( p )
-		, ui( new Ui::MainWindow )
+		, ui( std::make_unique< Ui::MainWindow >( ) )
 	{
 		// Got from QtCreator/uic
 		ui ->setupUi( this );
@@ -26,9 +26,6 @@ public:
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
         this ->setCentralWidget(graphicsView);
 
-	}
-	~MainWindow() {
-		delete ui;
 	}
 };
 W_OBJECT_IMPL( MainWindow ) //Q_OBJECT
