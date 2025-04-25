@@ -12,7 +12,7 @@ protected:
 	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
 	uint m_vehiclesOnMap = 0;
 	Timing m_timing;
-	std::unique_ptr< Updater > m_update;
+	std::unique_ptr< Updater > m_updater;
 	std::unique_ptr< Scener > m_scener;
 	void init() {
 		m_roads = Sim::AllRoads::get( );
@@ -46,7 +46,7 @@ protected:
 		m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
 			signalRoads );
 
-		m_update = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ), m_vehicleGenerator.get( ) );
+		m_updater = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ), m_vehicleGenerator.get( ) );
 		m_scener = std::make_unique< Scener >( &m_roads, m_trafficSignal.get( ) );
 	}
 };

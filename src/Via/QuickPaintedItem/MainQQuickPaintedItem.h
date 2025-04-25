@@ -35,19 +35,19 @@ class MainQQuickPaintedItem : public DraggableQQuickPaintedItem {
 				painter ->drawPolygon( polygons );
 				return nullptr;
 			} );
-		m_update ->roads( t, dt );
+		m_updater ->roads( t, dt );
 		auto road_index = m_vehicleGenerator ->update( t );
 		if ( road_index ) {
 			++m_vehiclesOnMap;
 		}
-		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
+		m_updater ->outOfBoundsVehicles( &m_vehiclesOnMap );
 		m_scener ->drawSignals( [this, &painter](QPolygonF const& polygons, QColor color) {
 				painter ->setBrush( color );
 				painter ->setPen( color );
 				painter ->drawPolygon( polygons );
 				return nullptr;
 			} );
-		m_update ->trafficSignals( t );
+		m_updater ->trafficSignals( t );
 
 		if ( auto fps = m_fps.incrementFrame( ) )
 			m_stringFps = fps.value( );

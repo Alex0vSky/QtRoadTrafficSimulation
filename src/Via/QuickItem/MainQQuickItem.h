@@ -54,12 +54,12 @@ class MainQQuickItem : public DraggableQQuickItem {
 				addPolygon_( m_carsNode, polygons, QSGGeometry::DrawTriangleStrip, Qt::blue );
 				return nullptr;
 			} );
-		m_update ->roads( t, dt );
+		m_updater ->roads( t, dt );
 		auto road_index = m_vehicleGenerator ->update( t );
 		if ( road_index ) {
 			++m_vehiclesOnMap;
 		}
-		m_update ->outOfBoundsVehicles( &m_vehiclesOnMap );
+		m_updater ->outOfBoundsVehicles( &m_vehiclesOnMap );
 
 		while ( QSGNode* node = m_ligthsNode ->firstChild( ) ) 
 			delete node;
@@ -67,7 +67,7 @@ class MainQQuickItem : public DraggableQQuickItem {
 				addPolygon_( m_ligthsNode, polygons, QSGGeometry::DrawTriangleStrip, color );
 				return nullptr;
 			} );
-		m_update ->trafficSignals( t );
+		m_updater ->trafficSignals( t );
 
 		// Empty matrix, or wrong zoom will be soon
 		QMatrix4x4 m_matrix;
