@@ -1,10 +1,15 @@
-﻿#pragma once // src\Simulation\Roads.h - 
+﻿#pragma once // src\Simulation\Roads.h -
 #include "Simulation/Draw.h"
 #include "Simulation/Curve.h"
 namespace syscross::TraffModel::Sim {
-// TrafficSimulator\Setups\two_way_intersection.py
+/**
+ * Static road network configuration and pathfinding
+ * Origin: TrafficSimulator\Setups\two_way_intersection.py
+ */
 class AllRoads {
+	/// Resolution parameter for curve generation
 	static const uint c_curveResolution = 15;
+
 	static auto turn(uint i) {
 		std::vector< uint > turnIndexes;
 		for ( auto _{ c_curveResolution }; _--; )
@@ -13,24 +18,52 @@ class AllRoads {
 	}
 
 public:
+	/// Weighted path index type
+	typedef uint weight_t;
+
+	/// Road index type
+	typedef uint roadIdx_t;
+
+	/// Path element type weight + road indexes
+	typedef std::pair< weight_t, std::vector< roadIdx_t > > flatElem_t;
+
+	/// Collection of possible paths
+	typedef std::vector< flatElem_t > flatPathIndexes_t;
+
+	/// Inbound roads mapping type
+	typedef std::map< uint, Road* > inboundRoads_t;
+
+	/// Traffic signal roads type
+	typedef std::vector< std::array< roadIdx_t, 2 > > signalIdxRoads_t;
+
 	// tmp
 	static auto W_R_S() {
 		return turn( 12 );
 	}
 
-    static Road::roads_t get() {
+	/**
+	 * @brief Generates complete road network
+	 *
+	 * Creates predefined intersection with:
+	 * - 4 incoming/outgoing roads
+	 * - Straight and turning paths
+	 * - Traffic signal points
+	 *
+	 * @return Configured road segments
+	 */
+	static Road::roads_t get() {
 		// Returns the sine of the angle v in radians.
 		auto radianSin = qSin( 1.0 ), radianCos = qCos( 1.0 );
 		auto degreesSin = qRadiansToDegrees( radianSin );
 
 		// Short offset from (0, 0)
-		int a = 2; 
+		int a = 2;
 		// Long offset from (0, 0)
-		int b = 12; 
+		int b = 12;
 		// Road length
-		int length = 50; 
+		int length = 50;
 		// Intersection offset from the center
-		int offset = 25; 
+		int offset = 25;
 
 		// Nodes
 		QPoint WEST_RIGHT_START = { -b - length, a };
@@ -130,6 +163,15 @@ public:
 		return ROADS;
 	}
 
+	/**
+	 * @brief Calculates visual polygons for all roads
+	 *
+	 * Converts road geometry to drawable polygons:
+	 * - Handles lane widths
+	 * - Applies rendering transforms
+	 *
+	 * @return Collection of road polygons
+	 */
 	static auto calc() {
 		Draw draw;
 		float h = 3.7;
@@ -139,9 +181,9 @@ public:
 			qreal l = road.length( );
 			double angle_cos = road.angle_cos( );
 			double angle_sin = road.angle_sin( );
-			auto points = draw.rotated_box( 
+			auto points = draw.rotated_box(
 					road.start( )
-					, { road.length( ), h } 
+					, { road.length( ), h }
 					, road.angle_cos( )
 					, road.angle_sin( )
 					, false
@@ -154,20 +196,25 @@ public:
 		return polygons;
 	}
 
-	typedef uint weight_t;
-	typedef uint roadIdx_t;
-	typedef std::pair< weight_t, std::vector< roadIdx_t > > flatElem_t;
-	typedef std::vector< flatElem_t > flatPathIndexes_t;
-
+	/**
+	 * @brief Provides all possible vehicle paths
+	 *
+	 * Returns weighted path configurations:
+	 * - Straight routes
+	 * - Right/left turns
+	 * - Collision-free combinations
+	 *
+	 * @return Predefined path collection
+	 */
 	static flatPathIndexes_t getAllPaths() {
 		typedef std::vector< roadIdx_t > roadIdxOrTurnSegment_t;
 		std::vector
-			< 
+			<
 				std::pair
-					< 
-						weight_t, std::tuple< roadIdx_t, roadIdxOrTurnSegment_t, roadIdx_t > 
+					<
+						weight_t, std::tuple< roadIdx_t, roadIdxOrTurnSegment_t, roadIdx_t >
 					>
-			> 
+			>
 			pathIndexes {
 				// WEST STRAIGHT EAST
 				{ 3, { 0, { 8 }, 6 } }
@@ -189,7 +236,7 @@ public:
 				, { 1, { 2, turn( 72 ), 7 } }
 				// EAST LEFT SOUTH
 //				, { 1, { 2, turn( 87 ), 5 } } // collision
-	
+
 				// NORTH STRAIGHT SOUTH
 				, { 3, { 3, { 11 }, 5 } }
 				// NORTH RIGHT WEST
@@ -198,8 +245,8 @@ public:
 //				, { 1, { 3, turn( 117 ), 6 } } // collision
 			};
 		typedef std::pair
-					< 
-						weight_t, std::vector< roadIdx_t > 
+					<
+						weight_t, std::vector< roadIdx_t >
 					>
 			flatElem_t;
 		std::vector< flatElem_t > flatPathIndexes;
@@ -219,9 +266,15 @@ public:
 		return flatPathIndexes;
 	}
 
-	typedef std::map< uint, Road* > inboundRoads_t;
-
-	typedef std::vector< std::array< roadIdx_t, 2 > > signalIdxRoads_t;
+	/**
+	 * @brief Gets roads with traffic signals
+	 *
+	 * Returns pairs of road indexes that share signals:
+	 * - West-East axis
+	 * - South-North axis
+	 *
+	 * @return Signal controller road pairs
+	 */
 	static auto getSignalIdxRoads() {
 		// its road::m_index
 		const signalIdxRoads_t signalIdxRoads = {

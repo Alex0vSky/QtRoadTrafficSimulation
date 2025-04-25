@@ -4,16 +4,44 @@
 #include "Updater.h"
 #include "Scener.h"
 namespace syscross::TraffModel {
-struct Common { 
+/**
+ * Shared simulation components and state
+ */
+struct Common {
 protected:
+	/// Collection of all road segments
 	Sim::Road::roads_t m_roads;
+
+	/// Vehicle generation frequency (vehicles/minute)
 	static const uint c_vehicleRate = 35;
+
+	/// Vehicle generator instance
 	std::unique_ptr< Sim::VehicleGenerator > m_vehicleGenerator;
+
+	/// Traffic light controller
 	std::unique_ptr< Sim::Road::TrafficSignal > m_trafficSignal;
+
+	/// Current active vehicle count
 	uint m_vehiclesOnMap = 0;
+
+	/// Time management utilities
 	Timing m_timing;
+
+	/// Simulation state updater
 	std::unique_ptr< Updater > m_updater;
+
+	/// Visualization handler
 	std::unique_ptr< Scener > m_scener;
+
+	/**
+	 * @brief Initializes simulation components
+	 *
+	 * Sets up:
+	 * - Road network
+	 * - Vehicle generator
+	 * - Traffic signals
+	 * - Core systems
+	 */
 	void init() {
 		m_roads = Sim::AllRoads::get( );
 		//// tmp, aka single-vehicle generator
@@ -35,15 +63,15 @@ protected:
 			uint road_index = path.second[ 0 ];
 			inboundRoads.insert( { road_index, &m_roads[ road_index ] } );
 		}
-		m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >( 
+		m_vehicleGenerator = std::make_unique< Sim::VehicleGenerator >(
 			c_vehicleRate, allPaths, inboundRoads );
 		// add_traffic_signal
 		Sim::Road::TrafficSignal::signalRoads_t signalRoads;
-		Sim::AllRoads::signalIdxRoads_t signalIdxRoads = 
+		Sim::AllRoads::signalIdxRoads_t signalIdxRoads =
 			Sim::AllRoads::getSignalIdxRoads( );
-		for ( auto const& pair : signalIdxRoads ) 
+		for ( auto const& pair : signalIdxRoads )
 			signalRoads.push_back( { &m_roads[ pair[ 0 ] ], &m_roads[ pair[ 1 ] ] } );
-		m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >( 
+		m_trafficSignal = std::make_unique< Sim::Road::TrafficSignal >(
 			signalRoads );
 
 		m_updater = std::make_unique< Updater >( &m_roads, m_trafficSignal.get( ), m_vehicleGenerator.get( ) );
