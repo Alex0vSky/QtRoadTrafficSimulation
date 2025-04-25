@@ -7,7 +7,7 @@ class DraggableQGraphicsView : public ZoomableQGraphicsView {
 	// @insp https://stackoverflow.com/questions/55007339/allow-qgraphicsview-to-move-outside-scene/55043082
 	void mouseMoveEvent(QMouseEvent* event) override {
 		QGraphicsView::mouseMoveEvent(event);
-		if (event->buttons() & Qt::LeftButton) 
+		if ( ( event ->buttons( ) & Qt::LeftButton ) && scene( ) ) 
 			// If we are moveing with the left button down, update the scene to trigger autocompute
 			scene()->update(mapToScene(rect()).boundingRect());
 	}
