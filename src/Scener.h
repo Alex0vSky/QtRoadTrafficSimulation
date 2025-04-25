@@ -43,11 +43,12 @@ public:
 		for ( auto & road : (*m_roads) ) {
 			Sim::IVehicle::vehicles_t const& vehicles = road.getVehicles( );
 			for ( auto & vehicle : vehicles ) {
-				qreal l = vehicle ->length( ), h = vehicle ->width( );
-				qreal sin = road.angle_sin( ), cos = road.angle_cos( );
-				qreal x = road.start( ).x( ) + cos * vehicle ->x( );
-				qreal y = road.start( ).y( ) + sin * vehicle ->x( );
-				auto points = m_draw.rotated_box( { x, y }, { l, h }, cos, sin, true );
+				const qreal l = vehicle ->length( ), h = vehicle ->width( );
+				const qreal sin = road.angle_sin( ), cos = road.angle_cos( );
+				const auto position = vehicle ->x( );
+				const qreal x = road.start( ).x( ) + cos * position;
+				const qreal y = road.start( ).y( ) + sin * position;
+				const auto points = m_draw.rotated_box( { x, y }, { l, h }, cos, sin, true );
 				QPolygonF polygons;
 				for ( auto const& elem : points )
 					polygons << elem;

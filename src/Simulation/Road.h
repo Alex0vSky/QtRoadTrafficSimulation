@@ -4,7 +4,7 @@
 namespace syscross::TraffModel::Sim {
 class Road {
 	IVehicle::vehicles_t m_cars;
-	uint m_index;
+	uint m_index = 0;
 	qreal m_distance;
 	QPointF m_start, m_end;
 	qreal m_angle_sin, m_angle_cos;
@@ -56,7 +56,7 @@ public:
 
 private:
 	bool m_hasTrafficSignal = false;
-	TrafficSignal *m_trafficSignal;
+	TrafficSignal *m_trafficSignal = nullptr;
 	uint m_trafficSignalGroup = 0;
 	void setTrafficSignal(TrafficSignal *trafficSignal, uint group) {
         m_hasTrafficSignal = true;

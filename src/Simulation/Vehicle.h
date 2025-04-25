@@ -180,7 +180,7 @@ public:
 	void update(IVehicle* lead, qreal dt, Road* road) override {
 		//# Update position and velocity
 		if ( ( m_v + m_a * dt ) < 0) {
-			m_x -= 1 / 2 * m_v * m_v / m_a;
+			m_x -= static_cast<double>(1) / 2 * m_v * m_v / m_a;
 			m_v = 0;
 		} else {
 			m_v += m_a * dt;

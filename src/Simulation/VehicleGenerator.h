@@ -57,8 +57,9 @@ public:
 				vehicle ->zeroedSpeed( );
 		}
 		vehicle ->setVehicleIndex( m_generated );
-		auto pair = m_vehiclesHolder.emplace( vehicle.get( ), std::move( vehicle ) );
-		road ->addVehicle( pair.first ->first );
+		auto [it, inserted] = m_vehiclesHolder.try_emplace( vehicle.get( ), std::move( vehicle ) );
+		if ( inserted )
+			road ->addVehicle( it ->first );
 
 		m_previousGenTime = curr_t;
 		++m_generated;

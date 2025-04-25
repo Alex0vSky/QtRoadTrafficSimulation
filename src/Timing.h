@@ -45,6 +45,10 @@ private:
 		~ScopedTimerIncrementor() {
 			m_parent ->incrementTime_( );
 		}
+		// PVS
+		ScopedTimerIncrementor(const ScopedTimerIncrementor &other) = default;
+		ScopedTimerIncrementor &operator =(const ScopedTimerIncrementor &a) = default;
+
 		return_t get() {
 			return { m_parent ->m_t, m_parent ->m_lastDeltaTime };
 		}
