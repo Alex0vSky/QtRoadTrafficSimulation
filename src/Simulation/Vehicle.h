@@ -74,10 +74,14 @@ public:
         }
         //# Update acceleration
         qreal alpha = 0;
-        if ( lead ) {
-            qreal delta_x = lead->x( ) - m_x - lead->length( );
-            qreal delta_v = m_v - lead->v( );
-            alpha = (m_distanceDetweenNeighbor + std::max(0.0, m_T * m_v + delta_v * m_v / m_sqrt_ab)) / delta_x;
+		if ( lead ) {
+			const qreal delta_x = lead->x() - m_x - lead->length();
+			if ( delta_x <= 0.0 ) {
+				alpha = std::numeric_limits<qreal>::max( );
+			} else {
+				const qreal delta_v = m_v - lead->v( );
+				alpha = (m_distanceDetweenNeighbor + std::max(0.0, m_T * m_v + delta_v * m_v / m_sqrt_ab)) / delta_x;
+			}
         }
         m_a = m_a_max * (1 - std::pow(m_v / m_v_max, 4) - std::pow(alpha, 2));
         if ( m_isStopped ) {
