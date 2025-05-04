@@ -17,9 +17,9 @@ Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *
 
 ### 🚦 Simulation Model
 - **Road network** with straight sections and turns - _AllRoads_
-- **Traffic light control** with fixed cycles (TrafficSignal)
-- **Vehicle generation** with different routes (VehicleGenerator)
-- **Realistic movement physics** (Vehicle) including:
+- **Traffic light control** with fixed cycles - _TrafficSignal_
+- **Vehicle generation** with different routes - _VehicleGenerator_
+- **Realistic movement physics** _Vehicle_ including:
   - Acceleration/braking
   - Distance keeping
   - Traffic light response
@@ -42,7 +42,7 @@ Three implementation approaches with common functionality:
    - Uses standard Qt painting methods
 
 ### ⚙️ Technical Highlights
-- **Alternative QML resource locator** (QrcLocatorReplacement):
+- **Alternative QML resource locator** - _QrcLocatorReplacement_:
   - Enables QML usage without Qt plugins in MSVC
   - Searches for QML files in multiple paths
   - Uses QQmlAbstractUrlInterceptor for qrc path redirection
@@ -67,11 +67,11 @@ Three implementation approaches with common functionality:
 ### Build Options
 The project supports two build methods:
 
-1. **Standard build** - HelloQt.pro:
+1. **Standard build** - `HelloQt.pro`:
    - For Qt Creator and other IDEs
    - Uses standard Qt build system
 
-2. **MOC-free build** - HelloQt(Non_MocUic).sln:
+2. **MOC-free build** - `HelloQt(Non_MocUic).sln`:
    - For Visual Studio 2019
    - Specifically configured for Qt 5.15
    - Without Qt 5.15 you may encounter errors like:
