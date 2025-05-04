@@ -7,7 +7,6 @@
 
 A road traffic simulator with three different Qt-based visualization approaches.
 Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
-![QtRoadTrafficSimulation](https://github.com/Alex0vSky/QtRoadTrafficSimulation/assets/52796897/f26689eb-eb79-459b-86b8-198bb3f7aa7c)
 
 ## ✨ Key Features
 
@@ -17,7 +16,7 @@ Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *
 - **Simulation state** managed via State pattern
 
 ### 🚦 Simulation Model
-- **Road network** with straight sections and turns (AllRoads)
+- **Road network** with straight sections and turns - _AllRoads_
 - **Traffic light control** with fixed cycles (TrafficSignal)
 - **Vehicle generation** with different routes (VehicleGenerator)
 - **Realistic movement physics** (Vehicle) including:
@@ -68,21 +67,19 @@ Three implementation approaches with common functionality:
 ### Build Options
 The project supports two build methods:
 
-1. **Standard build** (HelloQt.pro):
+1. **Standard build** - HelloQt.pro:
    - For Qt Creator and other IDEs
    - Uses standard Qt build system
 
-2. **MOC-free build** (HelloQt(Non_MocUic).sln):
+2. **MOC-free build** - HelloQt(Non_MocUic).sln:
    - For Visual Studio 2019
    - Specifically configured for Qt 5.15
-   - Requires additional environment variables:
-     ```
-     PATH=%PATH%;C:\Prj\_L\Qt\bin;C:\Prj\_L\Qt\qml
-     QT_PLUGIN_PATH=C:\Prj\_L\Qt\plugins
-     ```
-   - Without these settings you may encounter errors like:
+   - Without Qt 5.15 you may encounter errors like:
      ```
      The code execution cannot proceed because Qt5Cored.dll was not found
+     The code execution cannot proceed because Qt5Guid.dll was not found
+     The code execution cannot proceed because Qt5Quickd.dll was not found
+     The code execution cannot proceed because Qt5Widgetsd.dll was not found
      ```
 
 ### Requirements
