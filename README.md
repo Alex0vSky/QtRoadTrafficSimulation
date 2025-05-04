@@ -87,7 +87,7 @@ The project supports two build methods:
 #### For Visual Studio 2019 Build
 - Qt 5.15 (exact version required)
 - Microsoft Visual Studio 2019 Community
-#### For Qt Creator/Other IDEs (HelloQt.pro)
+#### For Qt Creator/Other IDEs
 - Qt 5.15 or later
 - Standard Qt build system
 - Any IDE supporting .pro files (Qt Creator, CLion, etc.)
