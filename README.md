@@ -41,6 +41,15 @@ Three implementation approaches with common functionality:
    - More flexible but less performant than _QQuickItem_
    - Uses standard Qt painting methods
 
+#### Visualization Architecture
+Three implementations following a hierarchical class structure:
+1. **Base** → **Zoomable** → **Draggable** → **LoopLauncher/Main**
+   
+Each layer adds specific functionality:
+- **Zoomable**: Mouse wheel zoom implementation
+- **Draggable**: Scene dragging/panning support  
+- **LoopLauncher**: Main simulation loop handling
+
 ### ⚙️ Technical Highlights
 - **Alternative QML resource locator** - _QrcLocatorReplacement_:
   - Enables QML usage without Qt plugins in MSVC
