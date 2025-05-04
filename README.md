@@ -12,8 +12,8 @@ Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *
 
 ### 🏗️ Architecture
 - **Flexible rendering system** with three independent implementations
-- **Separation of logic and presentation** through Common, Simulation and Via components
-- **Simulation state** managed via State pattern
+- **Separation of logic and presentation** through _Common_, _Simulation_ and _Via_ components
+- **Simulation state** managed via _State_ pattern
 
 ### 🚦 Simulation Model
 - **Road network** with straight sections and turns - _AllRoads_
@@ -28,35 +28,35 @@ Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *
 Three implementation approaches with common functionality:
 1. **QGraphicsView**:
    - Classic approach with main-thread rendering
-   - Uses QGraphicsPolygonItem for drawing
+   - Uses _QGraphicsPolygonItem_ for drawing
    - Simpler implementation but less performant
 
 2. **QQuickItem**:
    - Modern Scene Graph rendering
    - Separate render thread (high performance)
-   - Uses QSGGeometryNode for efficient drawing
+   - Uses _QSGGeometryNode_ for efficient drawing
 
 3. **QQuickPaintedItem**:
    - QPainter-based rendering in separate thread
-   - More flexible but less performant than QQuickItem
+   - More flexible but less performant than _QQuickItem_
    - Uses standard Qt painting methods
 
 ### ⚙️ Technical Highlights
 - **Alternative QML resource locator** - _QrcLocatorReplacement_:
   - Enables QML usage without Qt plugins in MSVC
   - Searches for QML files in multiple paths
-  - Uses QQmlAbstractUrlInterceptor for qrc path redirection
+  - Uses _QQmlAbstractUrlInterceptor_ for qrc path redirection
 
 - **MOC-free operation support**:
-  - Conditional compilation with A0S_QT_PRO
-  - Alternative Q_OBJECT implementation via W_OBJECT/W_OBJECT_IMPL
+  - Conditional compilation with _A0S_QT_PRO_
+  - Alternative _Q_OBJECT_ implementation via _W_OBJECT/W_OBJECT_IMPL_
   - Compilation without Qt's meta-object system
 
 - **Unified polygon handling**:
-  - Consistent QPolygonF usage across all implementations
+  - Consistent _QPolygonF_ usage across all implementations
   - Qt6 compatibility adaptations:
-    - Replaced deprecated DrawTriangleFan with DrawTriangleStrip
-    - Replaced DrawLineLoop with DrawLineStrip
+    - Replaced deprecated _DrawTriangleFan_ with _DrawTriangleStrip_
+    - Replaced _DrawLineLoop_ with _DrawLineStrip_
   - Benefits:
     - Compatibility with both Qt5 and Qt6
     - More modern and efficient rendering methods
@@ -83,9 +83,14 @@ The project supports two build methods:
      ```
 
 ### Requirements
-- Qt 5.15 (exact version required for MOC-free build)
-- Microsoft Visual Studio 2019 Community (for .sln build)
-- C++17
+
+#### For Visual Studio 2019 Build
+- Qt 5.15 (exact version required)
+- Microsoft Visual Studio 2019 Community
+#### For Qt Creator/Other IDEs (HelloQt.pro)
+- Qt 5.15 or later
+- Standard Qt build system
+- Any IDE supporting .pro files (Qt Creator, CLion, etc.)
 
 ## 🚀 Usage
 - Launch the application
