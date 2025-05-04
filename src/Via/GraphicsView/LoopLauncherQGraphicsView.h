@@ -1,16 +1,33 @@
 ﻿// src\Via\GraphicsView\LoopLauncherQGraphicsView.h - render/game loop on `QTimer::timeout`
 namespace syscross::TraffModel::Via::GraphicsView {
+/**
+ * QGraphicsView with built-in animation loop
+ */
 class LoopLauncherQGraphicsView : public DraggableQGraphicsView {
+	/// Animation timer instance
 	QTimer m_timer;
+
+	/**
+	 * @brief Executes main animation frame
+	 *
+	 * Pure virtual method requiring:
+	 * - Scene updates
+	 * - State progression
+	 * - Visual refresh
+	 */
 	virtual void loop() = 0;
 
-public: 
-    explicit LoopLauncherQGraphicsView(QMainWindow *parent) : 
+public:
+	/**
+	 * @brief Constructs loop-enabled view
+	 * @param parent Parent main window
+	 */
+	explicit LoopLauncherQGraphicsView(QMainWindow *parent) :
 		DraggableQGraphicsView( parent )
 	{
-		// @insp https://stackoverflow.com/questions/28728820/qgraphicsview-doesnt-always-update
+		// @insp SO/qgraphicsview-doesnt-always-update
 		QObject::connect( &m_timer, &QTimer::timeout
-				, [this] { 
+				, [this] {
 					this ->loop( );
 				}
 			);

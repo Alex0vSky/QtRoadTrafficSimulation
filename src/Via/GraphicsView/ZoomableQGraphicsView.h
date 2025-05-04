@@ -1,8 +1,21 @@
 ﻿// src\Via\GraphicsView\ZoomableQGraphicsView.h - add zoom
 namespace syscross::TraffModel::Via::GraphicsView {
+/**
+ * QGraphicsView with zoom interaction capabilities
+ */
 class ZoomableQGraphicsView : public BaseQGraphicsView {
-	// @insp https://stackoverflow.com/questions/47708282/zoom-functionality-using-qt
-    void wheelEvent(QWheelEvent *pQEvent) override {
+	/**
+	 * @brief Handles mouse wheel zoom events
+	 * 
+	 * Processes:
+	 * - Wheel delta to zoom factor conversion
+	 * - Viewport-relative zoom centering
+	 * - Smooth transformation application
+	 * @insp SO/zoom-functionality-using-qt
+	 * 
+	 * @param pQEvent Mouse wheel event data
+	 */
+	void wheelEvent(QWheelEvent *pQEvent) override {
 		// pos() -> virtual canvas
 		QPointF point = pQEvent->position( );
 		QPointF pos = mapToScene( point.toPoint( ) );
@@ -19,7 +32,11 @@ class ZoomableQGraphicsView : public BaseQGraphicsView {
 	}
 
 public: 
-    explicit ZoomableQGraphicsView(QMainWindow *parent) : 
+	/**
+	 * @brief Constructs zoomable view
+	 * @param parent Parent main window
+	 */
+	explicit ZoomableQGraphicsView(QMainWindow *parent) : 
 		BaseQGraphicsView( parent )
 	{
 		setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
