@@ -22,7 +22,7 @@ class ZoomableQQuickItem : public BaseQQuickItem {
 	 *
 	 * @param pQEvent Mouse wheel event data
 	 */
-    void wheelEvent(QWheelEvent *pQEvent) override {
+	void wheelEvent(QWheelEvent *pQEvent) override {
 		float delta = pQEvent ->angleDelta( ).y( ) / 1800.0f;
 		delta = roundf( delta * 100 ) / 100;
 		m_zoom += delta;
