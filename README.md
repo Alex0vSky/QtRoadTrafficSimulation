@@ -1,56 +1,109 @@
-# QtRoadTrafficSimulation
-[![cpp-logo](https://img.shields.io/badge/C%2B%2B-v17-blue?logo=cplusplus)](
-https://en.wikipedia.org/wiki/C++
-)
-[![qt-logo](https://img.shields.io/badge/Qt-v5.15-blue?logo=qt)](
-https://en.wikipedia.org/wiki/C++
-)
+# QtRoadTrafficSimulation - Road Traffic Simulator with Qt
+[![C++](https://img.shields.io/badge/C%2B%2B-17-blue?logo=cplusplus)](https://en.wikipedia.org/wiki/C++)
+[![Qt](https://img.shields.io/badge/Qt-5.15-blue?logo=qt)](https://www.qt.io/)
+[![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/Alex0vSky/QtRoadTrafficSimulation/blob/main/LICENSE)
 
-Road traffic simulation using Qt 
+![Demo](https://github.com/Alex0vSky/QtRoadTrafficSimulation/assets/52796897/f26689eb-eb79-459b-86b8-198bb3f7aa7c)
+
+A road traffic simulator with three different Qt-based visualization approaches.
+Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
 ![QtRoadTrafficSimulation](https://github.com/Alex0vSky/QtRoadTrafficSimulation/assets/52796897/f26689eb-eb79-459b-86b8-198bb3f7aa7c)
 
-@todo
-- [x] roads in QGraphicsView, zoomable and movable
-- [x] roads in QQuickItem, zoomable and movable
-- [x] roads in QQuickPaintedItem, zoomable and movable
-- [x] car animation in QGraphicsView
-- [x] car animation in QQuickItem
-- [x] car animation in QQuickPaintedItem
-- [x] code cleaning
+## ✨ Key Features
 
-## Features
-Traffic modeling with three found ways to display graphics in Qt:
- - `QGraphicsView + scene` and rendering in main thread;
- - `QQuickItem + updatePaintNode` and rendering in separate thread;
- - `QQuickPaintedItem + QPainter` and rendering in separate thread;
+### 🏗️ Architecture
+- **Flexible rendering system** with three independent implementations
+- **Separation of logic and presentation** through Common, Simulation and Via components
+- **Simulation state** managed via State pattern
 
-Cars and roads based on __python__ solution from *BilHim/trafficSimulator* and *yossidoctor/AI-Traffic-Lights-Controller*
+### 🚦 Simulation Model
+- **Road network** with straight sections and turns (AllRoads)
+- **Traffic light control** with fixed cycles (TrafficSignal)
+- **Vehicle generation** with different routes (VehicleGenerator)
+- **Realistic movement physics** (Vehicle) including:
+  - Acceleration/braking
+  - Distance keeping
+  - Traffic light response
 
-## Requirements
-Qt 5.15
+### 🎨 Visualization
+Three implementation approaches with common functionality:
+1. **QGraphicsView**:
+   - Classic approach with main-thread rendering
+   - Uses QGraphicsPolygonItem for drawing
+   - Simpler implementation but less performant
 
-## Install
-The application consists of one file. Does not require installation. 
+2. **QQuickItem**:
+   - Modern Scene Graph rendering
+   - Separate render thread (high performance)
+   - Uses QSGGeometryNode for efficient drawing
 
-## Usage
-Zoomable and movable canvas
+3. **QQuickPaintedItem**:
+   - QPainter-based rendering in separate thread
+   - More flexible but less performant than QQuickItem
+   - Uses standard Qt painting methods
 
-## Tests
+### ⚙️ Technical Highlights
+- **Alternative QML resource locator** (QrcLocatorReplacement):
+  - Enables QML usage without Qt plugins in MSVC
+  - Searches for QML files in multiple paths
+  - Uses QQmlAbstractUrlInterceptor for qrc path redirection
 
-## Build
-Building the project from the source code requires the presence of the __Microsoft Visual Studio 2019 Community__, and using *.sln and *.vcxproj project files.
+- **MOC-free operation support**:
+  - Conditional compilation with A0S_QT_PRO
+  - Alternative Q_OBJECT implementation via W_OBJECT/W_OBJECT_IMPL
+  - Compilation without Qt's meta-object system
 
-## Contributing
-Can ask questions. PRs are accepted. No requirements for contributing.
+- **Unified polygon handling**:
+  - Consistent QPolygonF usage across all implementations
+  - Qt6 compatibility adaptations:
+    - Replaced deprecated DrawTriangleFan with DrawTriangleStrip
+    - Replaced DrawLineLoop with DrawLineStrip
+  - Benefits:
+    - Compatibility with both Qt5 and Qt6
+    - More modern and efficient rendering methods
+    - Improved graphics performance
 
-## Thanks
-[Qt](https://www.qt.io/)
+## 📦 Installation & Setup
 
-[BilHim/trafficSimulator](https://github.com/BilHim/trafficSimulator)
+### Build Options
+The project supports two build methods:
 
-[yossidoctor/AI-Traffic-Lights-Controller](https://github.com/yossidoctor/AI-Traffic-Lights-Controller)
+1. **Standard build** (HelloQt.pro):
+   - For Qt Creator and other IDEs
+   - Uses standard Qt build system
 
-[woboq/verdigris](https://github.com/woboq/verdigris)
+2. **MOC-free build** (HelloQt(Non_MocUic).sln):
+   - For Visual Studio 2019
+   - Specifically configured for Qt 5.15
+   - Requires additional environment variables:
+     ```
+     PATH=%PATH%;C:\Prj\_L\Qt\bin;C:\Prj\_L\Qt\qml
+     QT_PLUGIN_PATH=C:\Prj\_L\Qt\plugins
+     ```
+   - Without these settings you may encounter errors like:
+     ```
+     The code execution cannot proceed because Qt5Cored.dll was not found
+     ```
 
-## License
-See the [LICENSE](https://github.com/Alex0vSky/QtRoadTrafficSimulation/blob/main/LICENSE) file for license rights and limitations (MIT).
+### Requirements
+- Qt 5.15 (exact version required for MOC-free build)
+- Microsoft Visual Studio 2019 Community (for .sln build)
+- C++17
+
+## 🚀 Usage
+- Launch the application
+- Use mouse wheel to zoom
+- Drag the scene with left mouse button
+- Observe vehicle movement and traffic light operation
+
+## 🤝 Contributing
+PRs and questions are welcome! No strict requirements for contributors.
+
+## 📚 Acknowledgments
+- [Qt](https://www.qt.io/) - for the framework
+- [BilHim/trafficSimulator](https://github.com/BilHim/trafficSimulator) - for the model basis
+- [yossidoctor/AI-Traffic-Lights-Controller](https://github.com/yossidoctor/AI-Traffic-Lights-Controller) - for traffic light ideas
+- [woboq/verdigris](https://github.com/woboq/verdigris) - for MOC-free operation
+
+## 📜 License
+Project is MIT licensed. See [LICENSE](https://github.com/Alex0vSky/QtRoadTrafficSimulation/blob/main/LICENSE) for details.
